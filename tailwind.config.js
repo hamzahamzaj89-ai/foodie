@@ -5,10 +5,13 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
       extend: {
-
+    
         colors: {
          buttonBackground: "#FF8A2B" ,
          buttonShadow : "#FF8A2B",
+         secondaryCard: "#14171C",
+         card : "#111317",
+         border: "#23272F"
 
         },
 

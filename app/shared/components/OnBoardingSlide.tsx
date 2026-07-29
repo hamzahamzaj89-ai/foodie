@@ -9,7 +9,7 @@ export default function OnBoardingSlide({item}: {item:ISlideData}) {
 
       <Image
         source={require("@/assets/images/foodie-logo.png")}
-        className="w-[130px] h-[130px] mt-3 "
+        className="w-[130px] h-[130px] mt-0 "
         resizeMode="cover"
       />
 

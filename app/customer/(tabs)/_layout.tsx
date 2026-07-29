@@ -2,9 +2,80 @@ import { Tabs } from "expo-router";
 import {
   House,
   Search,
+  ShoppingCart,
   ReceiptText,
   UserRound,
+  Compass,
+  CompassIcon,
 } from "lucide-react-native";
+import { View, Text } from "react-native";
+
+type TabIconProps = {
+  focused: boolean;
+  Icon: any;
+  label: string;
+};
+function TabIcon({
+  focused,
+  Icon,
+  label,
+}: TabIconProps) {
+  return (
+    <View
+      style={{
+        marginTop: focused ? 0 : 9,
+        alignItems: "center",
+        justifyContent: "center",
+        width: 60,
+      }}
+    >
+      {/* Fixed-height icon container */}
+      <View
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 22,
+
+          alignItems: "center",
+          justifyContent: "center",
+
+          backgroundColor: focused ? "#1B1E23" : "transparent",
+
+          borderWidth: focused ? 1 : 0,
+
+          borderColor: focused ? "#FF8A2B" : "transparent",
+        }}
+      >
+        <Icon
+          size={22}
+          color={focused ? "#FF8A2B" : "#FFFFFF"}
+          strokeWidth={focused ? 2.8 : 2.4}
+        />
+      </View>
+
+      {/* Fixed-height label container */}
+      <View
+        style={{
+           position: "relative",
+           top : focused ? 1: -7,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 0,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 10,
+            fontWeight: "600",
+            color: focused ? "#FF8A2B" : "#FFFFFF",
+          }}
+        >
+          {label}
+        </Text>
+      </View>
+    </View>
+  );
+}
 
 export default function TabLayout() {
   return (
@@ -12,79 +83,83 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
 
+        tabBarShowLabel: false,
+
         tabBarHideOnKeyboard: true,
 
         tabBarStyle: {
           position: "absolute",
 
           left: 0,
-
           right: 0,
-
           bottom: 0,
 
-          height: 90,
+          height: 80,
 
-          paddingTop: 10,
+          paddingTop: 8,
+          paddingBottom: 14,
 
-          paddingBottom: 16,
+          backgroundColor: "#111317",
 
-          backgroundColor: "black",
+          borderTopWidth: 0,
 
-         borderColor: "black",
+          borderTopLeftRadius: 28,
+          borderTopRightRadius: 28,
+
           elevation: 0,
 
           shadowColor: "#000",
 
+          shadowOpacity: 0.3,
+
+          shadowRadius: 20,
+
           shadowOffset: {
             width: 0,
-            height: -6,
+            height: -8,
           },
-
-          shadowOpacity: 0.15,
-
-          shadowRadius: 16,
         },
 
         tabBarItemStyle: {
           justifyContent: "center",
           alignItems: "center",
         },
-
-        tabBarLabelStyle: {
-          marginTop: 3,
-          fontSize: 12,
-          fontWeight: "600",
-        },
-
-        tabBarActiveTintColor: "#FF8A2B",
-
-        tabBarInactiveTintColor: "white",
       }}
     >
       <Tabs.Screen
         name="Home"
         options={{
-          title: "Home",
-          tabBarIcon: ({ focused, color }) => (
-            <House
-              size={26}
-              color={color}
-              strokeWidth={focused ? 2.8 : 2.4}
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              Icon={House}
+              label="Home"
             />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="Search"
+        name="Explore"
         options={{
-          title: "Search",
-          tabBarIcon: ({ focused, color }) => (
-            <Search
-              size={26}
-              color={color}
-              strokeWidth={focused ? 2.8 : 2.4}
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              Icon={CompassIcon}
+              label="Explore"
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Cart"
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              Icon={ShoppingCart}
+              label="Cart"
             />
           ),
         }}
@@ -93,12 +168,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Orders"
         options={{
-          title: "Orders",
-          tabBarIcon: ({ focused, color }) => (
-            <ReceiptText
-              size={26}
-              color={color}
-              strokeWidth={focused ? 2.8 : 2.4}
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              Icon={ReceiptText}
+              label="Orders"
             />
           ),
         }}
@@ -107,12 +181,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Profile"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ focused, color }) => (
-            <UserRound
-              size={26}
-              color={color}
-              strokeWidth={focused ? 2.8 : 2.4}
+          tabBarIcon: ({ focused }) => (
+            <TabIcon
+              focused={focused}
+              Icon={UserRound}
+              label="Profile"
             />
           ),
         }}

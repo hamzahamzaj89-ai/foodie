@@ -75,7 +75,7 @@ export default function OnboardingScreen() {
 
       {/* Bottom Navigation */}
 
-      <View className="px-8 pb-4 flex-row items-center justify-between">
+      <View className="px-8 pb-10 flex-row items-center justify-between">
 
         <Pagination
           currentIndex={currentIndex}

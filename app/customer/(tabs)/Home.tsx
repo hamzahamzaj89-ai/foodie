@@ -1,23 +1,83 @@
-import { View, Text } from "react-native";
+import { View, Text, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LiquidFoodCard from "../components/liquid-ui/LiquidFoodCard";
-import GlassCard from "../components/Card";
-import FoodCard from "../components/Card";
+import GlassCard from "../components/FoodCard";
+import FoodCard from "../components/FoodCard";
+import Header from "../components/Home/Header";
+import SearchBar from "../components/SearchBar";
+import DealCarousel from "../components/Home/DealCarousel";
+import Categories from "../components/CategoryItems";
 
 const Home = () => {
+
+
+
+  const foods = [
+  { id: "1" },
+  { id: "2" },
+  { id: "3" },
+  { id: "4" },
+  { id: "5" },
+  { id: "6" },
+  { id: "7" },
+  { id: "8" },
+];
+
+
   return (
     <>
-      <View className="flex-1 bg-black p-4">
-        <SafeAreaView className="flex-1 flex-row gap-x-2 justify-center items-center p-4">
+  
+      <View className="flex-1 bg-black ">
+        <SafeAreaView className="flex-1 ">
+          <View className=" flex flex-1   mt-[-8px]">
 
-            <View className="flex flex-row">
-              <FoodCard/>
-              <FoodCard/>
-
+            <View className="flex flex-row px-4 pt-0">
+              <Header />
             </View>
+
+
+   <FlatList
+      data={foods}
+      keyExtractor={(item) => item.id}
+      numColumns={2}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingBottom: 50,
+      }}
+      columnWrapperStyle={{
+        justifyContent: "space-between",
+        paddingHorizontal: 10,
+        marginBottom: 28,
+      }}
+      ListHeaderComponent={
+        <>
+          <View className="px-4 ">
+            
+
+            <SearchBar />
+          </View>
+
+          <DealCarousel />
+
+          <View className="px-4 pt-2 pb-8">
+            <Categories />
+          </View>
+
+
+        
+        </>
+      }
+      renderItem={({item, index}) => (
+        <FoodCard index={index}/>
+      )}
+    />
+
+
+          </View>
+          
         </SafeAreaView>
       </View>
+
     </>
   );
 };
