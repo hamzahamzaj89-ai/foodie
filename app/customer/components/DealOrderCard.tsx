@@ -16,7 +16,7 @@ export default function DealOrderCard() {
 
   return (
     <Pressable
-      className=" mb-5 rounded-[28px] border border- bg-card p-4"
+      className=" mb-5 rounded-3xl bg-card p-4"
       android_ripple={{
         color: "rgba(255,255,255,0.05)",
       }}

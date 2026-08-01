@@ -7,9 +7,10 @@ import {
 } from "react-native";
 import { Plus } from "lucide-react-native";
 import clsx from "clsx"
+import { router } from "expo-router";
 export default function FoodCard({index}: {index:number}) {
   return (
-    <View className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
+    <Pressable onPress={() => router.push("/customer/(pages)/MenuDetail")} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
       {/* Floating Image */}
 
       <Image
@@ -73,6 +74,6 @@ export default function FoodCard({index}: {index:number}) {
           </Pressable>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }

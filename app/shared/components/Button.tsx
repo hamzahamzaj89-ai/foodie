@@ -12,7 +12,7 @@ interface Props {
 
 const Button = ({ text, Icon, left, right , onPress }: Props) => {
   return (
-    <Pressable onPress={onPress} className="bg-buttonBackground py-4 rounded-2xl gap-x-2 flex flex-row justify-center">
+    <Pressable onPress={onPress} className="bg-buttonBackground py-4  rounded-2xl gap-x-2 flex flex-row  justify-center">
       {left && (
         <>
           <Text className="font-poppins-semibold text-white text-base">

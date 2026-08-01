@@ -14,7 +14,7 @@ export default function OrderCard() {
 
   return (
     <Pressable
-      className=" mb-5 relative  rounded-[28px]  bg-card p-4"
+      className=" mb-5 relative  rounded-3xl  bg-card p-4"
      
     >
       {/* Top Section */}
