@@ -16,58 +16,38 @@ export default function CustomizationCard({
 }: Props) {
   return (
     <Pressable
-      className={`mr-4 w-[135px] rounded-[28px] border pt-12 pb-4 px-4 ${
+      className={` w-[105px] rounded-2xl border-[2px] pt-3 pb-3 px-2 ${
         selected
-          ? "border-[#FF8A2B] bg-[#181B20]"
-          : "border-white/5 bg-card"
+          ? "border-[#FF8A2B] bg-card"
+          : " bg-card"
       }`}
-      style={{
-        shadowColor: selected
-          ? "#FF8A2B"
-          : "#000",
-        shadowOpacity: selected
-          ? 0.18
-          : 0.1,
-        shadowRadius: 18,
-        shadowOffset: {
-          width: 0,
-          height: 8,
-        },
-        elevation: selected ? 10 : 4,
-      }}
+     
     >
-      {/* Floating Image */}
 
-      <Image
-        source={require("@/assets/images/cheese.png")}
-        resizeMode="contain"
-        className="absolute -top-7 self-center h-20 w-20"
-      />
-
-      {/* Selected Badge */}
-
-      {selected && (
-        <View className="absolute right-3 top-3 h-6 w-6 items-center justify-center rounded-full bg-[#FF8A2B]">
-          <Check
-            size={14}
-            color="#050608"
-            strokeWidth={3}
-          />
-        </View>
-      )}
-
-      {/* Name */}
-
-      <Text
+        <Text
         numberOfLines={2}
-        className="text-center font-poppins-semibold text-base text-white"
+        className="text-center font-poppins-semibold text-sm text-white"
       >
         Extra Cheese
       </Text>
 
+      {/* Floating Image */}
+
+      <Image
+        source={require("@/assets/images/french_fries.png")}
+        resizeMode="contain"
+        className="  self-center h-10 w-15"
+      />
+
+      {/* Selected Badge */}
+
+
+      {/* Name */}
+
+      
       {/* Price */}
 
-      <Text className="mt-2 text-center font-poppins-semibold text-[#FF8A2B]">
+      <Text className="mt-1 text-center font-poppins-semibold text-xs text-buttonBackground">
         +$1.50
       </Text>
     </Pressable>

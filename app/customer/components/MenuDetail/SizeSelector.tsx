@@ -29,7 +29,7 @@ export default function SizeSelector() {
     useState("2");
 
   return (
-    <View className="mt-8">
+    <View className="mt-6">
       {/* Section Title */}
 
       <View className="flex-row items-center justify-between">
@@ -50,11 +50,13 @@ export default function SizeSelector() {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 18,
+            position: "relative",
+            left: 0,
+          paddingTop: 12,
           paddingBottom: 2,
         }}
         ItemSeparatorComponent={() => (
-          <View style={{ width: 14 }} />
+          <View style={{ width: 8 }} />
         )}
         renderItem={({ item }) => {
           const selected =
@@ -65,10 +67,10 @@ export default function SizeSelector() {
               onPress={() =>
                 setSelectedSize(item.id)
               }
-              className={`w-[105px] rounded-3xl border p-4 ${
+              className={`w-[105px] rounded-2xl flex flex-col justify-center border-[2px] p-3 py-4 ${
                 selected
-                  ? "border-[#FF8A2B] bg-[#1A1E23]"
-                  : "border-white/5 bg-card"
+                  ? "border-buttonBackground  bg-card"
+                  : " bg-card"
               }`}
             >
               {/* Name */}
@@ -85,7 +87,7 @@ export default function SizeSelector() {
 
               {/* Price */}
 
-              <Text className="mt-2 text-center font-poppins-medium text-xs text-zinc-400">
+              <Text className="mt-1 text-center font-poppins-medium text-xs text-zinc-400">
                 {item.price === 0
                   ? "Included"
                   : `+$${item.price}`}
@@ -93,9 +95,7 @@ export default function SizeSelector() {
 
               {/* Indicator */}
 
-              {selected && (
-                <View className="mt-4 h-1 rounded-full bg-[#FF8A2B]" />
-              )}
+              
             </Pressable>
           );
         }}

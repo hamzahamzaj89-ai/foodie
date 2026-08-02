@@ -13,13 +13,13 @@ import {
 
 export default function HeroSection() {
   return (
-    <View className="relative h-[360px] overflow-hidden rounded-b-[34px]">
+    <View className="relative h-[360px] overflow-hidden ">
       {/* Hero Image */}
 
       <Image
         source={require("@/assets/images/burger.png")}
-        resizeMode="cover"
-        className="absolute h-full w-full"
+        resizeMode="contain"
+        className="absolute h-[400px] w-[400px] left-[-17px]"
       />
 
       {/* Gradient */}
@@ -29,7 +29,7 @@ export default function HeroSection() {
           "transparent",
           "rgba(5,6,8,0.20)",
           "rgba(5,6,8,0.55)",
-          "#050608",
+          "black",
         ]}
         locations={[0.25, 0.55, 0.8, 1]}
         className="absolute inset-0"
@@ -37,7 +37,7 @@ export default function HeroSection() {
 
       {/* Header Buttons */}
 
-      <View className="absolute left-5 right-5 top-[45px] flex-row justify-between">
+      <View className="absolute left-4 right-4 top-[35px] flex-row justify-between">
         <Pressable className="h-12 w-12 items-center justify-center rounded-full bg-black/35">
           <ArrowLeft
             size={22}

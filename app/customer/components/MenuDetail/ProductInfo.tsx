@@ -11,7 +11,7 @@ import {
 
 export default function ProductInfo() {
   return (
-    <View className="mt-6">
+    <View className="-mt-4">
       {/* Food Name */}
 
       <Text className="font-poppins-bold text-[32px] text-white">
@@ -20,7 +20,7 @@ export default function ProductInfo() {
 
       {/* Rating + Time + Calories */}
 
-      <View className="mt-4 flex-row items-center">
+      <View className="mt-3 flex-row items-center">
         {/* Rating */}
 
         <View className="mr-5 flex-row items-center">
@@ -28,6 +28,9 @@ export default function ProductInfo() {
             size={16}
             color="#FFB547"
             fill="#FFB547"
+             style={{
+                marginBottom: 3
+            }}
           />
 
           <Text className="ml-2 font-poppins-semibold text-white">
@@ -41,10 +44,13 @@ export default function ProductInfo() {
 
         {/* Time */}
 
-        <View className="mr-5 flex-row items-center">
+        <View className="mr-5  flex-row items-center">
           <Clock3
             size={15}
             color="#9CA3AF"
+            style={{
+                marginBottom: 3
+            }}
           />
 
           <Text className="ml-2 font-poppins-medium text-zinc-400">
@@ -58,6 +64,9 @@ export default function ProductInfo() {
           <Flame
             size={15}
             color="#FF8A2B"
+             style={{
+                marginBottom: 3
+            }}
           />
 
           <Text className="ml-2 font-poppins-medium text-zinc-400">
@@ -68,7 +77,7 @@ export default function ProductInfo() {
 
       {/* Description */}
 
-      <Text className="mt-5 font-poppins-medium leading-6 text-zinc-400">
+      <Text className="mt-4 font-poppins-medium leading-6 text-zinc-400">
         Double grilled beef patty layered with melted cheddar cheese,
         crisp lettuce, fresh tomatoes, pickles and our signature
         house sauce served inside a freshly toasted brioche bun.

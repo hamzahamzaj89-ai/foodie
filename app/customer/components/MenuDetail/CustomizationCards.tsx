@@ -17,7 +17,7 @@ export default function CustomizationSection({
   data,
 }: Props) {
   return (
-    <View className="mt-10">
+    <View className="mt-8">
       {/* Header */}
 
       <View className="flex-row items-center justify-between">
@@ -37,8 +37,11 @@ export default function CustomizationSection({
         data={data}
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={() => (
+                  <View style={{ width: 10 }} />
+                )}
         contentContainerStyle={{
-          paddingTop: 45,
+          paddingTop: 12,
           paddingBottom: 8,
           paddingRight: 20,
         }}
