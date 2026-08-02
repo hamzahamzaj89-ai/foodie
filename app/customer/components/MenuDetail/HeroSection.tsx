@@ -10,6 +10,7 @@ import {
   Heart,
   EllipsisVertical,
 } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function HeroSection() {
   return (
@@ -38,10 +39,11 @@ export default function HeroSection() {
       {/* Header Buttons */}
 
       <View className="absolute left-4 right-4 top-[35px] flex-row justify-between">
-        <Pressable className="h-12 w-12 items-center justify-center rounded-full bg-black/35">
+        <Pressable onPress={() => {router.back()}} className="h-12 w-12 items-center justify-center rounded-full bg-black/35">
           <ArrowLeft
             size={22}
             color="white"
+
           />
         </Pressable>
 

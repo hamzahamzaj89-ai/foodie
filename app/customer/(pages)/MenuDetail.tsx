@@ -12,6 +12,8 @@ import CustomizationSection from "@/app/customer/components/MenuDetail/Customiza
 import AddOnSection from "@/app/customer/components/MenuDetail/CustomizationCards";
 import BottomActionBar from "@/app/customer/components/MenuDetail/ActionBar";
 
+
+
 const customizations = [
   {
     id: "1",

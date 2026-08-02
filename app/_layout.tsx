@@ -32,7 +32,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
 
 
-      <Slot screenOptions={{headerShown: false}}/>
+      <Stack screenOptions={{headerShown: false}}/>
 
 
 

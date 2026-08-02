@@ -8,6 +8,7 @@ import {
   Compass,
   CompassIcon,
 } from "lucide-react-native";
+import { useEffect } from "react";
 import { View, Text } from "react-native";
 
 type TabIconProps = {
@@ -20,6 +21,9 @@ function TabIcon({
   Icon,
   label,
 }: TabIconProps) {
+
+
+  
   return (
     <View
       style={{
@@ -78,6 +82,10 @@ function TabIcon({
 }
 
 export default function TabLayout() {
+
+
+
+
   return (
     <Tabs
       screenOptions={{

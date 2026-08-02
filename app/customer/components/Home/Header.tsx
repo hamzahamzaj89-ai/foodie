@@ -6,6 +6,7 @@ import {
   ChevronDown,
   ShoppingBag,
 } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function Header() {
   return (
@@ -55,7 +56,7 @@ export default function Header() {
         {/* Notification */}
 
        <View className="flex flex-row gap-x-1">
-             <Pressable className=" px-1 rounded-2xl  items-center justify-center">
+             <Pressable onPress={() => router.push("/customer/(pages)/NotificationPgae")} className=" px-1 rounded-2xl  items-center justify-center">
 
           <Bell
             size={22}
@@ -67,7 +68,7 @@ export default function Header() {
 
 
 
-             <Pressable className="px-1 rounded-2xl  items-center justify-center">
+             <Pressable onPress={() => router.push("/customer/(tabs)/Cart")} className="px-1 rounded-2xl  items-center justify-center">
 
           <ShoppingBag
             size={22}
