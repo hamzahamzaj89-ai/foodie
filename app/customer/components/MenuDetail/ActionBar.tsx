@@ -72,7 +72,7 @@ export default function BottomActionBar() {
 
         {/* Add To Cart */}
 
-        <Pressable className="flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-[#FF8A2B] px-5 py-4">
+        <Pressable className="flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-buttonBackground px-5 py-[13px]">
          
 
           <View className="flex-row items-center">
@@ -81,7 +81,7 @@ export default function BottomActionBar() {
               color="black"
             />
 
-            <Text className="ml-2 font-poppins-bold text-black">
+            <Text className="ml-2 mt-1 font-poppins-bold text-black">
               Add to Cart   $20
             </Text>
           </View>

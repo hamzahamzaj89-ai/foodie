@@ -17,7 +17,7 @@ export default function CustomizationSection({
   data,
 }: Props) {
   return (
-    <View className="mt-8">
+    <View className="mt-8 w-[100%]">
       {/* Header */}
 
       <View className="flex-row items-center justify-between">
@@ -32,7 +32,8 @@ export default function CustomizationSection({
 
       {/* Cards */}
 
-      <FlatList
+        <View className="flex flex-row no-wrap">
+          <FlatList
         horizontal
         data={data}
         keyExtractor={(item) => item.id}
@@ -51,6 +52,7 @@ export default function CustomizationSection({
           />
         )}
       />
+        </View>
     </View>
   );
 }
