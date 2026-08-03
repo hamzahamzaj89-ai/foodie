@@ -3,10 +3,11 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GlassCard from "../components/FoodCard";
 import FoodCard from "../components/FoodCard";
-import Header from "../components/Home/Header";
 import SearchBar from "../components/SearchBar";
 import DealCarousel from "../components/Home/DealCarousel";
 import Categories from "../components/CategoryItems";
+import { Bell, ShoppingBag } from "lucide-react-native";
+import TabHeader from "../components/TabHeader";
 
 const Home = () => {
 
@@ -32,7 +33,11 @@ const Home = () => {
           <View className=" flex flex-1   mt-[-8px]">
 
             <View className="flex flex-row px-4 pt-0">
-              <Header />
+               <TabHeader
+                   Home={true}
+                   Icon1={Bell}
+                   Icon2={ShoppingBag}
+               />
             </View>
 
 

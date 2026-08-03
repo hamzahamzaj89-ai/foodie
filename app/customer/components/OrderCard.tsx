@@ -14,23 +14,25 @@ export default function OrderCard() {
 
   return (
     <Pressable
-      className=" mb-5 relative  rounded-3xl  bg-card p-4"
+      className=" mb-5   rounded-3xl  bg-card p-4"
      
     >
       {/* Top Section */}
 
-      <View className="flex-row relative pl-28 pb-5">
+      <View className="flex-row  ">
         {/* Food Image */}
 
-          <Image
+           <View className="w-20 h-24 relative">
+              <Image
             source={require("@/assets/images/burger.png")}
             resizeMode="contain"
-            className="h-28 w-[160px] absolute -left-10 "
+            className="h-36 w-36 absolute -left-5 -top-4 "
           />
+           </View>
 
         {/* Content */}
 
-        <View className="ml-4 mt-2 flex-1 justify-between">
+        <View className="ml-10 mt-3 flex-1 justify-between">
           <View>
             <Text className="font-poppins-semibold text-lg text-white">
               Cheese Burger

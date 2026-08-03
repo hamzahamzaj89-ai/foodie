@@ -10,6 +10,7 @@ import SearchBar from "@/app/customer/components/SearchBar";
 import FoodCard from "@/app/customer/components/FoodCard";
 import SectionItems from "@/app/customer/components/SectionItems";
 import { SafeAreaView } from "react-native-safe-area-context";
+import TabHeader from "../components/TabHeader";
 
 const foods = [
   { id: "1" },
@@ -31,15 +32,12 @@ export default function Explore() {
           
 
          <SafeAreaView className="flex-1 ">
-           <View className="ml-1 px-4 pb-4" >
-                <Text className="font-poppins-bold text-3xl text-white">
-                Explore
-              </Text>
-
-              <Text className="mt-1 font-poppins-medium text-sm text-zinc-400">
-                Discover delicious meals near you
-              </Text>
-              </View>
+                <View className="px-4">
+                  <TabHeader
+              title={"Explore Now"}
+              description={"Discover delicious meals near you"}
+             />
+                </View>
       <FlatList
         data={foods}
         keyExtractor={(item) => item.id}

@@ -12,6 +12,8 @@ import SpecialInstructions from "@/app/customer/components/SpecialInstruction";
 import BottomActionBar from "../components/BottomActionBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DealHeader from "../components/DealDetail/DealHeader";
+import Header from "../components/Header";
+import { router } from "expo-router";
 
 export default function DealDetail() {
   const [quantity, setQuantity] = useState(1);
@@ -52,7 +54,12 @@ export default function DealDetail() {
     <SafeAreaView className="flex-1 bg-black px-4 pt-0">
       <View className="flex-1">
 
-        <DealHeader/>
+          <View className="mb-2">
+              <Header
+              title="Deal Details"
+              onPress={() => router.back()}
+              />
+          </View>
 
         
         <ScrollView

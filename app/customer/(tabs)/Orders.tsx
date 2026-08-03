@@ -10,6 +10,7 @@ import DateHeader from "@/app/customer/components/DateHeader";
 import OrderCard from "@/app/customer/components/OrderCard";
 import DealOrderCard from "@/app/customer/components/DealOrderCard";
 import { SafeAreaView } from "react-native-safe-area-context";
+import TabHeader from "../components/TabHeader";
 
 
 
@@ -66,19 +67,15 @@ export default function OrdersScreen() {
           <>
             {/* Header */}
 
-            <View className="pl-1 pt-0">
-              <Text className="font-poppins-bold text-3xl text-white">
-                My Orders
-              </Text>
 
-              <Text className="mt-1 font-poppins-medium text-sm text-zinc-400">
-                Track your current & previous orders
-              </Text>
-            </View>
-
+                <TabHeader
+                   title={"My Orders"}
+                   description={"Track your current & previous orders"}
+                />
+           
             {/* Tabs */}
 
-              <View className="mt-6 mb-6">
+              <View className="mt-2 mb-6">
                 <OrderTabs
               selected={selectedTab}
               onSelect={setSelectedTab}
@@ -102,7 +99,14 @@ export default function OrdersScreen() {
               )}
 
               {item.type === "deal" ? (
-                <DealOrderCard />
+         <DealOrderCard
+  image={require("@/assets/images/deal1.jpeg")}
+  title="Family Feast Combo"
+  previewItem="2 Cheese Burgers"
+  moreItems={5}
+  price={34.99}
+  status="Delivered"
+/>
               ) : (
                 <OrderCard />
               )}

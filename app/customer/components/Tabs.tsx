@@ -1,58 +1,58 @@
 import React from "react";
 import {
-  FlatList,
   Pressable,
   Text,
+  View,
 } from "react-native";
 
-export default function OrderTabs({
+type Props = {
+  tabs: string[];
+  selected: string;
+  onSelect: (tab: string) => void;
+};
+
+export default function SegmentedTabs({
+  tabs,
   selected,
   onSelect,
-  tabs
-}: {
-    tabs: string[]
-    selected: string
-    onSelect: (text:string) => void
-}) {
-
-
+}: Props) {
   return (
-    <FlatList
-      horizontal
-      data={tabs}
-      keyExtractor={(item) => item}
-      showsHorizontalScrollIndicator={false}
-     
-      ItemSeparatorComponent={() => (
-        <Pressable style={{ width: 12 }} />
-      )}
-      renderItem={({ item }) => {
-        const active =
-          item === selected;
+    <View
+      className="flex-row rounded-2xl bg-card p-1"
+      style={{
+        shadowColor: "#000",
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+        shadowOffset: {
+          width: 0,
+          height: 8,
+        },
+        elevation: 5,
+      }}
+    >
+      {tabs.map((tab) => {
+        const active = tab === selected;
 
         return (
           <Pressable
-            onPress={() =>
-              onSelect(item)
-            }
-            className={`px-[15px] py-[10px] rounded-2xl items-center justify-center ${
-              active
-                ? "bg-[#FF8A2B]"
-                : "bg-[#171A1F]"
+            key={tab}
+            onPress={() => onSelect(tab)}
+            className={`flex-1 items-center justify-center rounded-2xl py-4 ${
+              active ? "bg-[#FF8A2B]" : ""
             }`}
           >
             <Text
-              className={`font-poppins-semibold ${
+              className={`font-poppins-semibold text-sm ${
                 active
                   ? "text-[#050608]"
-                  : "text-white"
+                  : "text-zinc-400"
               }`}
             >
-              {item}
+              {tab}
             </Text>
           </Pressable>
         );
-      }}
-    />
+      })}
+    </View>
   );
 }

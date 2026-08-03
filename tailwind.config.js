@@ -12,7 +12,7 @@ module.exports = {
          secondaryCard: "#14171C",
          card : "#111317",
          border: "#23272F",
-         primaryCard: "#0F1115"
+         primaryCard: "#171A1F"
 
         },
 

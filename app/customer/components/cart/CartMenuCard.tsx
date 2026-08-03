@@ -13,7 +13,7 @@ import {
 export default function CartMenuCard() {
   return (
     <View
-      className="flex-row items-center rounded-3xl border border-border bg-card p-4"
+      className="flex-row items-center rounded-3xl bg-card p-4"
       style={{
         shadowColor: "#000",
         shadowOpacity: 0.15,

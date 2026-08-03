@@ -10,39 +10,25 @@ const DealHeader = () => {
                 <View className='flex flex-row gap-x-2 items-center'>
                            <Pressable
            onPress={() => router.back()}
-           className="   items-center justify-center rounded-full "
+           className=" flex flex-row mb-1  justify-center items-center rounded-full p-1 "
          >
            <ChevronLeft
              size={28}
              color="white"
              strokeWidth={2.7}
-             style={{
-                marginBottom: 4
-             }}
+             
            />
 
 
              
          </Pressable>
 
-         <Text className='text-white font-poppins-bold text-[2rem]'>
+         <Text className='text-white font-poppins-bold text-3xl mb-1'>
                 DealDetails
              </Text>
                 </View>
    
-         {/* Favourite */}
-   
-         <Pressable className="  items-center justify-center rounded-full ">
-           <Heart
-             size={28}
-             color="white"
-             strokeWidth={2.4}
-              style={{
-                marginBottom: 5
-             }}
-           />
-         </Pressable>
-   
+    
    
               </View>
    

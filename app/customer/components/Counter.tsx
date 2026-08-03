@@ -28,7 +28,7 @@ const Counter = ({
                  <View className="mr-4 flex-row items-center rounded-2xl bg-[#111317] p-1">
           <Pressable
             onPress={onDecrease}
-            className="h-11 w-11 items-center justify-center rounded-full bg-[#1B1E23]"
+            className="p-2 items-center justify-center rounded-full bg-[#1B1E23]"
           >
             <Minus
               size={18}
@@ -37,13 +37,13 @@ const Counter = ({
             />
           </Pressable>
 
-          <Text className="mx-5 font-poppins-bold text-lg text-white">
+          <Text className="mx-3 font-poppins-bold text-lg text-white">
             {quantity}
           </Text>
 
           <Pressable
             onPress={onIncrease}
-            className="h-11 w-11 items-center justify-center rounded-full bg-[#FF8A2B]"
+            className="p-2 items-center justify-center rounded-full bg-[#FF8A2B]"
           >
             <Plus
               size={18}

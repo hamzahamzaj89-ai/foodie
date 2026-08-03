@@ -12,10 +12,10 @@ import {
 
 import CartMenuCard from "@/app/customer/components/cart/CartMenuCard";
 import CartDealCard from "@/app/customer/components/cart/CartDealCard";
-import CartHeader from "../components/cart/CartHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CartBottom from "../components/cart/CartBottom";
 import Button from "@/app/shared/components/Button";
+import TabHeader from "../components/TabHeader";
 
 const cart = [
   {
@@ -44,7 +44,13 @@ export default function Cart() {
      <SafeAreaView className="flex-1 p-4 pt-0 justify-center bg-black">
       {/* Header */}
 
-              <CartHeader/>
+                <View className="mb-2">
+                  <TabHeader
+                 title={"Your Cart"}
+                 description={" Manage you order items from this cart"}
+              
+              />
+                </View>
       {/* Cart */}
 
       <FlatList
