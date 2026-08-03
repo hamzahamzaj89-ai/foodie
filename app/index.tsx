@@ -28,7 +28,7 @@ import { Redirect, SplashScreen } from 'expo-router'
     
 
 
-           return  <Redirect href={"/customer"}/>
+           return  <Redirect href={"/customer/(tabs)/Home"}/>
   
 
 

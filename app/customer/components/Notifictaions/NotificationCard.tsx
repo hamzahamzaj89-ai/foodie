@@ -97,7 +97,7 @@ export default function NotificationCard({
       android_ripple={{
         color: "rgba(255,255,255,0.05)",
       }}
-      className="mb-4 flex-row items-start rounded-3xl bg-card p-4"
+      className="mb-4 flex-row items-start rounded-2xl bg-card p-4"
       style={{
         shadowColor: "#000",
         shadowOpacity: 0.15,

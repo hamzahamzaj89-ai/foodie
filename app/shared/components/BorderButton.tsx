@@ -4,7 +4,7 @@ import { ArrowRight, LucideIcon } from "lucide-react-native";
 
 interface Props {
   text: string;
-  Icon: LucideIcon;
+  Icon: LucideIcon | null;
   left?: boolean;
   right?: boolean;
   onPress: () => void;
@@ -19,23 +19,32 @@ const BorderButton = ({ text, Icon, left, right , onPress }: Props) => {
             {text}
           </Text>
 
-          <Icon
+            {
+              Icon && (
+                <Icon
             size={20}
             color="#FF8A2B"
             strokeWidth={2.5}
            
           />
+              )
+            }
         </>
       )}
 
       {right && (
         <>
-          <Icon
+          
+            {
+              Icon && (
+                <Icon
             size={20}
             color="#FF8A2B"
             strokeWidth={2.5}
+           
           />
-
+              )
+            }
           <Text className="font-poppins-semibold text-buttonBackground text-base">
             {text}
           </Text>

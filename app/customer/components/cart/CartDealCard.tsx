@@ -25,7 +25,7 @@ export default function CartDealCard() {
       <View className="flex-row">
         {/* Deal Image */}
 
-        <View className="h-24 w-24 items-center justify-center rounded-2xl bg-[#0F1115]">
+        <View className="h-24 w-24 items-center justify-center rounded-2xl bg-primaryCard">
           <Image
             source={require("@/assets/images/deal1.jpeg")}
             resizeMode="contain"

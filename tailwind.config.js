@@ -11,7 +11,8 @@ module.exports = {
          buttonShadow : "#FF8A2B",
          secondaryCard: "#14171C",
          card : "#111317",
-         border: "#23272F"
+         border: "#23272F",
+         primaryCard: "#0F1115"
 
         },
 

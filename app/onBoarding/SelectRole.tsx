@@ -70,7 +70,7 @@ export default function SelectRole() {
          <BorderButton
          text="Continue As Resturant"
          right={true}
-         onPress={() => {router.replace("/resturant/index")}}
+         onPress={() => {router.replace("/resturant")}}
          Icon={StoreIcon}
          />
 

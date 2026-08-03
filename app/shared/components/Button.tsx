@@ -4,7 +4,7 @@ import { ArrowRight, LucideIcon } from "lucide-react-native";
 
 interface Props {
   text: string;
-  Icon: LucideIcon;
+  Icon: LucideIcon | null;
   left?: boolean;
   right?: boolean;
   onPress: () => void;
@@ -12,30 +12,42 @@ interface Props {
 
 const Button = ({ text, Icon, left, right , onPress }: Props) => {
   return (
-    <Pressable onPress={onPress} className="bg-buttonBackground py-4  rounded-2xl gap-x-2 flex flex-row  justify-center">
+    <Pressable onPress={onPress} className="bg-buttonBackground py-4  rounded-2xl gap-x-1 flex flex-row w-[100%] items-center  justify-center">
       {left && (
         <>
-          <Text className="font-poppins-semibold text-white text-base">
+          <Text className="font-poppins-bold text-black text-base">
             {text}
           </Text>
 
-          <Icon
+         
+            {
+              Icon && (
+                <Icon
             size={20}
-            color="white"
-            strokeWidth={2.5}
+            color="black"
+            strokeWidth={3}
+           
           />
+              )
+            }
         </>
       )}
 
       {right && (
         <>
-          <Icon
+         
+            {
+              Icon && (
+                <Icon
             size={20}
-            color="white"
-            strokeWidth={2.5}
+            color="black"
+            strokeWidth={3}
+           
           />
+              )
+            }
 
-          <Text className="font-poppins-semibold text-white text-base">
+          <Text className="font-poppins-bold text-black text-base">
             {text}
           </Text>
         </>

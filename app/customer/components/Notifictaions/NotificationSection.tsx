@@ -38,10 +38,10 @@ export default function NotificationSection({
   notifications,
 }: Props) {
   return (
-    <View className="px-5">
+    <View className="">
       {/* Section Title */}
 
-      <Text className="mb-4 font-poppins-semibold text-lg text-white">
+      <Text className="mb-4 px-1 font-poppins-semibold text-lg text-white">
         {title}
       </Text>
 

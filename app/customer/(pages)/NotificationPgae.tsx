@@ -7,6 +7,7 @@ import {
 import NotificationHeader from "@/app/customer/components/Notifictaions/NotificationHeader";
 import NotificationSection from "@/app/customer/components/Notifictaions/NotificationSection";
 import { SafeAreaView } from "react-native-safe-area-context";
+import StatusScreen from "../screens/StatusScreen";
 
 const notifications = [
   {
@@ -78,9 +79,20 @@ const notifications = [
   },
 ];
 
+
+
+
+
+
 export default function NotificationScreen() {
+
+
+
+
+    
+  
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <SafeAreaView className="flex-1 bg-black px-4">
       <FlatList
         data={notifications}
         keyExtractor={(item) => item.title}
@@ -90,7 +102,7 @@ export default function NotificationScreen() {
         }}
         ListHeaderComponent={<NotificationHeader />}
         renderItem={({ item }) => (
-          <View className="mt-8">
+          <View className="mt-6">
             <NotificationSection
               title={item.title}
               notifications={item.data}

@@ -27,7 +27,7 @@ export default function CartMenuCard() {
     >
       {/* Image */}
 
-      <View className="h-24 w-24 relative items-center justify-center rounded-2xl bg-[#0F1115]">
+      <View className="h-24 w-24 relative items-center justify-center rounded-2xl bg-primaryCard">
         <Image
           source={require("@/assets/images/burger.png")}
           resizeMode="contain"
