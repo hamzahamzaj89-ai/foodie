@@ -1,5 +1,6 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions, Pressable } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
 const { width } = Dimensions.get("window");
@@ -26,7 +27,7 @@ export default function DealCarousel() {
         loop={true}
         width={CARD_WIDTH}
         autoPlay={true}
-        autoPlayInterval={1000}
+        autoPlayInterval={2000}
         height={CARD_HEIGHT}
         data={deals}
         pagingEnabled
@@ -36,13 +37,13 @@ export default function DealCarousel() {
         
         onSnapToItem={(i) => setIndex(i)}
         renderItem={({ item }) => (
-          <View className="overflow-hidden mx-3 rounded-2xl">
+          <Pressable onPress={() => router.push("/customer/(pages)/DealDetail")} className="overflow-hidden mx-3 rounded-2xl">
             <Image
               source={item.image}
               resizeMode="cover"
               className="w-full h-full"
             />
-          </View>
+          </Pressable>
         )}
       />
 

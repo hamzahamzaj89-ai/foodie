@@ -5,17 +5,19 @@ import {
   View,
 } from "react-native";
 
-import CustomizationCard from "./CustomizationCard";
+import CustomizationCard from "./ExtraCard";
 
 type Props = {
   title: string;
   data: any[];
 };
 
-export default function CustomizationSection({
+export default function ExtraSection({
   title,
   data,
 }: Props) {
+
+  
   return (
     <View className="mt-8 w-[100%]">
       {/* Header */}

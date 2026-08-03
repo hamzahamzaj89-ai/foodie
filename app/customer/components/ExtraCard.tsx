@@ -11,7 +11,7 @@ type Props = {
   selected?: boolean;
 };
 
-export default function CustomizationCard({
+export default function ExtraCard({
   selected = false,
 }: Props) {
   return (

@@ -8,9 +8,9 @@ import {
 import HeroSection from "@/app/customer/components/MenuDetail/HeroSection";
 import ProductInfo from "@/app/customer/components/MenuDetail/ProductInfo";
 import SizeSelector from "@/app/customer/components/MenuDetail/SizeSelector";
-import CustomizationSection from "@/app/customer/components/MenuDetail/CustomizationCards";
-import AddOnSection from "@/app/customer/components/MenuDetail/CustomizationCards";
-import BottomActionBar from "@/app/customer/components/MenuDetail/ActionBar";
+import CustomizationSection from "@/app/customer/components/ExtraSection";
+import AddOnSection from "@/app/customer/components/ExtraSection";
+import BottomActionBar from "@/app/customer/components/BottomActionBar";
 
 
 
