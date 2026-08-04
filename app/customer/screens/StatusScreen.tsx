@@ -10,6 +10,7 @@ import {
   CircleAlert,
   CircleCheckBig,
   Info,
+  LucideIcon,
 } from "lucide-react-native";
 import Button from "@/app/shared/components/Button";
 
@@ -26,7 +27,11 @@ type Props = {
   message: string;
 
   buttonTitle?: string;
+  Icon?: LucideIcon | null;
+  left?:boolean ;
+  right?: boolean ;
 
+  
   onPress?: () => void;
 };
 
@@ -35,6 +40,10 @@ export default function StatusScreen({
   title,
   message,
   buttonTitle,
+  Icon,
+  right = false,
+  left = false,
+
   onPress,
 }: Props) {
 
@@ -95,14 +104,29 @@ export default function StatusScreen({
 
           <View className="mt-4 flex-row ">
          
-                <Button
+               {Icon ? (<>
+                 <Button
              
            text={buttonTitle}
-           Icon={ChevronLeftIcon}
+           Icon={Icon}
            onPress={() => {onPress && onPress() }}
-           right={true}
+           right={right}
+           left={left}
            
            />
+               </>) : (<>
+               
+
+                 <Button
+             
+           text={buttonTitle}
+           onPress={() => {onPress && onPress() }}
+           right={right}
+           left={left}
+           
+           />
+               
+               </>)}
           </View>
           
           </>

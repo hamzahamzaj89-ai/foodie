@@ -4,7 +4,7 @@ import { ArrowRight, LucideIcon } from "lucide-react-native";
 
 interface Props {
   text: string;
-  Icon: LucideIcon | null;
+  Icon?: LucideIcon | null;
   left?: boolean;
   right?: boolean;
   onPress: () => void;
