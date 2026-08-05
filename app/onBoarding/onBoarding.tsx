@@ -13,7 +13,7 @@ import { ArrowRight } from "lucide-react-native";
 import OnboardingSlide from "@/app/shared/components/OnBoardingSlide";
 import Pagination from "@/app/shared/components/Pagination";
 import { onboardingData } from "@/data/onBoardingData";
-import { ISlideData } from "../shared/interface/ISlideData";
+import { ISlideData } from "../../interface/ISlideData";
 import { router } from "expo-router";
 
 

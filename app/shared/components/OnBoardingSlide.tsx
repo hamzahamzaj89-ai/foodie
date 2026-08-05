@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import { ISlideData } from "../interface/ISlideData";
+import { ISlideData } from "../../../interface/ISlideData";
 
 export default function OnBoardingSlide({item}: {item:ISlideData}) {
   return (

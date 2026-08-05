@@ -12,13 +12,15 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 
-export default function HeroSection() {
+export default function HeroSection({imageUrl}: {imageUrl:string | null}) {
   return (
     <View className="relative h-[360px] overflow-hidden ">
       {/* Hero Image */}
 
       <Image
-        source={require("@/assets/images/burger.png")}
+        source={{
+           uri: imageUrl ?? ""
+        }}
         resizeMode="contain"
         className="absolute h-[400px] w-[400px] left-[-17px]"
       />

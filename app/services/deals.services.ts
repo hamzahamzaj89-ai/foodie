@@ -1,7 +1,7 @@
 // services/deal.service.ts
 
 import { supabase } from "../lib/supabase";
-import { IDealCard } from "../shared/interface/IDealCard";
+import { IDealCard } from "../../interface/IDealCard";
 
 const PAGE_SIZE = 10;
 

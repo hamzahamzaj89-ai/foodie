@@ -1,4 +1,4 @@
-import { ISlideData } from "@/app/shared/interface/ISlideData";
+import { ISlideData } from "@/interface/ISlideData";
 
 export const onboardingData:ISlideData[] = [
   {

@@ -8,10 +8,10 @@ import {
 import { Plus } from "lucide-react-native";
 import clsx from "clsx"
 import { router } from "expo-router";
-import { IMenuCard } from "@/app/shared/interface/IMenuCard";
-export default function FoodCard({item , index}: {item:IMenuCard , index:number}) {
+import { IMenuCard } from "@/interface/IMenuCard";
+export default function FoodCard({item , index , onPress}: {item:IMenuCard , index:number , onPress: () => void}) {
   return (
-    <Pressable onPress={() => router.push("/customer/(pages)/MenuDetail")} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
+    <Pressable onPress={onPress} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
       {/* Floating Image */}
 
       <Image

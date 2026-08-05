@@ -5,7 +5,8 @@ export const queryKeys = {
     menu: (id: string) => ["public", "food", id] as const,
     categories: ["public", "categories"] as const,
     manus: (id:string) => ["public" , "menus" , id] as const,
-
+    addOns: ["public" , "addOns" ] as const,
+    
     deals: (infinite : boolean) => ["public" , "deals" , infinite && "infinite"] as const
   },
 

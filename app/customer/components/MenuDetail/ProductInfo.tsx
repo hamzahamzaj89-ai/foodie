@@ -9,13 +9,23 @@ import {
   Star,
 } from "lucide-react-native";
 
-export default function ProductInfo() {
+
+interface IProductInfo {
+  title:string,
+  description: string | null,
+  rating: number | null,
+  reviewsCount: number | null,
+  calories: number 
+}
+
+export default function ProductInfo({productInfo} : {productInfo: IProductInfo}) {
   return (
     <View className="-mt-4">
       {/* Food Name */}
 
+
       <Text className="font-poppins-bold text-[32px] text-white">
-        Cheese Burger
+        {productInfo.title}  
       </Text>
 
       {/* Rating + Time + Calories */}
@@ -34,11 +44,11 @@ export default function ProductInfo() {
           />
 
           <Text className="ml-2 font-poppins-semibold text-white">
-            4.8
+            {productInfo.rating ?? 0}
           </Text>
 
           <Text className="ml-1 font-poppins-medium text-zinc-400">
-            (1.2k)
+            ({productInfo.reviewsCount ?? 0})
           </Text>
         </View>
 
@@ -69,8 +79,10 @@ export default function ProductInfo() {
             }}
           />
 
+
           <Text className="ml-2 font-poppins-medium text-zinc-400">
-            650 kcal
+
+            {productInfo.calories ?? 0}
           </Text>
         </View>
       </View>
@@ -78,9 +90,7 @@ export default function ProductInfo() {
       {/* Description */}
 
       <Text className="mt-4 font-poppins-medium leading-6 text-zinc-400">
-        Double grilled beef patty layered with melted cheddar cheese,
-        crisp lettuce, fresh tomatoes, pickles and our signature
-        house sauce served inside a freshly toasted brioche bun.
+        {productInfo.description}
       </Text>
     </View>
   );

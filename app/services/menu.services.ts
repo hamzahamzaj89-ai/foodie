@@ -1,7 +1,7 @@
 
 import { supabase } from "@/app/lib/supabase";
-import IMenu from "../shared/interface/IMenu";
-import { IMenuCard } from "../shared/interface/IMenuCard";
+import {IMenuItem} from "../../interface/IMenu";
+import { IMenuCard } from "../../interface/IMenuCard";
 
 const PAGE_SIZE = 10;
 
@@ -36,4 +36,59 @@ export async function getResturantMenus(page?: number) {
 
 
 
+}
+
+
+
+
+export async function getMenu(menuId: string) {
+  const { data, error } = await supabase
+    .from("menu")
+    .select(`
+      id,
+      title,
+      description,
+      calories,
+
+      old_price,
+      average_rating,
+      reviews_count,
+
+      price,
+      image_url,
+
+      menu_customization_group(
+        display_order,
+        
+        customization_group(
+          id,
+          name,
+          description,
+          required,
+          min_selection,
+          max_selection,
+
+          customizations(
+            id,
+            name,
+            description,
+            image_url,
+            price
+          )
+        )
+      )
+    `)
+    .eq("id", menuId)
+    .order("display_order", {
+      referencedTable: "menu_customization_group",
+      ascending: true,
+    })
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data as IMenuItem;
 }

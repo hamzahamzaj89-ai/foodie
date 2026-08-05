@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getResturantMenus } from "@/app/services/menu.services";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { getMenu, getResturantMenus } from "@/app/services/menu.services";
 import { queryKeys } from "@/app/constants/queryKeys";
 import { useState } from "react";
 import { useResturantStore } from "../store/useResturantStore";
@@ -36,3 +36,21 @@ const [page , setPage] = useState(0)
 
 
 }
+
+
+
+
+export function useMenuItem(menuId: string) {
+  return useQuery({
+    queryKey:  queryKeys.public.menu(menuId),
+
+    queryFn: () => getMenu(menuId),
+
+    enabled: !!menuId,
+
+    
+  });
+}
+
+
+

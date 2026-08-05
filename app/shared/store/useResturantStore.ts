@@ -1,7 +1,7 @@
 // store/restaurant.store.ts
 
 import { create } from "zustand";
-import  IRestaurant  from "@/app/shared/interface/IResturant";
+import  IRestaurant  from "@/interface/IResturant";
 
 interface RestaurantStore {
   selectedRestaurant: IRestaurant | null;

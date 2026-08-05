@@ -15,9 +15,10 @@ import Categories from "../components/CategoryItems";
 import { Bell, ShoppingBag } from "lucide-react-native";
 import TabHeader from "../components/TabHeader";
 import { useResturant } from "@/app/shared/hooks/useResturant";
-import { useInfiniteMenus } from "@/app/shared/hooks/useInfiniteMenu";
-import IMenu from "@/app/shared/interface/IMenu";
-import { IMenuCard } from "@/app/shared/interface/IMenuCard";
+import { useInfiniteMenus } from "@/app/shared/hooks/useMenu";
+import IMenu from "@/interface/IMenu";
+import { IMenuCard } from "@/interface/IMenuCard";
+import { router } from "expo-router";
 
 const Home = () => {
   const resturantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
@@ -86,7 +87,12 @@ const Home = () => {
                 </>
               }
               renderItem={({ item, index }) => (
-                <FoodCard item={item} index={index} />
+                <FoodCard onPress={() => router.push({
+                  pathname: "/customer/(pages)/MenuDetail",
+                  params: {
+                    menuId: item.id
+                  }
+                })} item={item} index={index} />
               )}
             />
           </View>

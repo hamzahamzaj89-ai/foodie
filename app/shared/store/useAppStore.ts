@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Session } from "@supabase/supabase-js";
-import { IAppState } from "../interface/IAppStore";
+import { IAppState } from "../../../interface/IAppStore";
 
 
 

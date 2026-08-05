@@ -11,6 +11,10 @@ import SizeSelector from "@/app/customer/components/MenuDetail/SizeSelector";
 import CustomizationSection from "@/app/customer/components/ExtraSection";
 import AddOnSection from "@/app/customer/components/ExtraSection";
 import BottomActionBar from "@/app/customer/components/BottomActionBar";
+import { useLocalSearchParams } from "expo-router";
+import { useMenuItem } from "@/app/shared/hooks/useMenu";
+import StatusScreen from "../screens/StatusScreen";
+import Loader from "@/app/shared/components/Loader";
 
 
 
@@ -61,6 +65,32 @@ const addOns = [
 
 
 export default function MenuDetailsScreen() {
+
+
+  const {id} = useLocalSearchParams();
+
+
+  const {data:menu, isPending, error} = useMenuItem(id as string)
+
+  if (error) {
+     
+      return <StatusScreen
+          type="error"
+          title={error.name}
+          message={error.message}
+
+      />
+  }
+
+
+
+  if (isPending){
+    return(<>
+         <Loader/>
+    </>)
+
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-black">
       <FlatList
@@ -72,10 +102,20 @@ export default function MenuDetailsScreen() {
         }}
         ListHeaderComponent={
           <>
-            <HeroSection />
+            <HeroSection imageUrl={menu.image_url} />
 
             <View className="px-5">
-              <ProductInfo />
+              <ProductInfo 
+              productInfo={
+                  {
+                    reviewsCount: menu.reviews_count,
+                  rating: menu.average_rating,
+                  title: menu.title,
+                  description: menu.description,
+                  calories: menu.calories
+                  }
+              } 
+              />
 
               <SizeSelector />
 
