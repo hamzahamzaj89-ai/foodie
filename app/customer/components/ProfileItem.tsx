@@ -5,15 +5,17 @@ type ProfileItemProps = {
   Icon: LucideIcon;
   title: string;
   danger?: boolean;
+  onPress?:() => void
 };
 
 export default function ProfileItem({
   Icon,
   title,
   danger,
+  onPress
 }: ProfileItemProps) {
   return (
-    <Pressable className="flex-row items-center rounded-2xl   bg-card px-5 py-5">
+    <Pressable onPress={onPress} className="flex-row items-center rounded-2xl   bg-card px-5 py-5">
       <Icon
        size={22}
         color="#FF8A2B"

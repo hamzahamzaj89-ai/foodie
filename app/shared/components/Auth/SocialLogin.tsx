@@ -19,7 +19,7 @@ export default function SocialLogin({
   showApple = true,
 }: Props) {
   return (
-    <View className="mt-4 px-5">
+    <View className="mt-2 px-5">
       {/* Google */}
 
       <Pressable

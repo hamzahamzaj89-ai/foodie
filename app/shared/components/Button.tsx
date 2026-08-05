@@ -8,11 +8,12 @@ interface Props {
   left?: boolean;
   right?: boolean;
   onPress: () => void;
+  disabled?: boolean 
 }
 
-const Button = ({ text, Icon, left, right , onPress }: Props) => {
+const Button = ({ text, Icon, left, right , onPress , disabled = false }: Props) => {
   return (
-    <Pressable onPress={onPress} className="bg-buttonBackground py-4  rounded-2xl gap-x-1 flex flex-row w-[100%] items-center  justify-center">
+    <Pressable disabled={disabled} onPress={onPress} className="bg-buttonBackground py-4  rounded-2xl gap-x-1 flex flex-row w-[100%] items-center  justify-center">
       {left && (
         <>
           <Text className="font-poppins-bold text-black text-base">

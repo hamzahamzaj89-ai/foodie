@@ -3,23 +3,75 @@ import {
   Pressable,
   ScrollView,
   Text,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Linking from "expo-linking";
 
 import { router } from "expo-router";
 
-import AuthHero from "@/app/customer/components/Auth/AuthHero";
-import AuthHeader from "@/app/customer/components/Auth/AuthHeader";
-import SignupForm from "@/app/customer/components/Auth/SignUpForm";
-import SocialLogin from "@/app/customer/components/Auth/SocialLogin";
-import AuthFooter from "@/app/customer/components/Auth/AuthFooter";
+import AuthHero from "@/app/shared/components/Auth/AuthHero";
+import AuthHeader from "@/app/shared/components/Auth/AuthHeader";
+import SignupForm from "@/app/shared/components/Auth/SignUpForm";
+import SocialLogin from "@/app/shared/components/Auth/SocialLogin";
+import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
+import Button from "@/app/shared/components/Button";
+import { useSignUp } from "../shared/hooks/Auth/useSignUp";
+import { toast } from "../shared/utils/toast";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] =useState("");
+
+
+
+  const { mutate, isPending, error } = useSignUp();
+
+
+
+  const onSubmit = async () => {
+
+    if (password !== confirmPassword) {
+         return toast.error("Password Mismatch" , "Please try again")
+    }
+
+
+
+  try {
+
+
+
+     const data = await mutate({
+      email:email,
+      password:password,
+      fullName:name
+      
+    });
+
+
+     console.log("sucess")
+
+
+     router.push("/(auth)/VerifyEmail")
+
+   
+     
+
+    
+  } catch (error) {
+    console.log(error);
+  }
+
+
+  }
+  
+  
+
+
+
+
 
   return (
     <SafeAreaView
@@ -33,20 +85,19 @@ export default function SignUp() {
           paddingBottom: 40,
         }}
       >
-        {/* Hero */}
 
         <AuthHero
           image={require("@/assets/images/deal1.jpeg")}
         />
 
-        {/* Header */}
-
+            <View className="-mt-10">
+              
         <AuthHeader
           title="Create Account"
           description="Join thousands of food lovers and discover amazing meals near you."
         />
+            </View>
 
-        {/* Form */}
 
         <SignupForm
           name={name}
@@ -59,31 +110,25 @@ export default function SignUp() {
           onConfirmPasswordChange={setConfirmPassword}
         />
 
-        {/* Create Account Button */}
 
-        <Pressable
-          className="mx-6 mt-8 items-center rounded-2xl bg-[#FF8A2B] py-5"
-          onPress={() => {}}
-        >
-          <Text className="font-poppins-bold text-lg text-[#050608]">
-            Create Account
-          </Text>
-        </Pressable>
+          <View className="px-5 mt-2">
+               <Button
+         text="Create Account"
+         onPress={onSubmit}
+         left={true}
+         disabled={isPending}
+         
+         />
 
-        {/* Divider */}
+          </View>
+        
 
-        <Text className="mt-8 text-center font-poppins-medium text-zinc-500">
-          ─────────── OR ───────────
-        </Text>
-
-        {/* Social Login */}
 
         <SocialLogin
           onGooglePress={() => {}}
           onApplePress={() => {}}
         />
 
-        {/* Footer */}
 
         <AuthFooter
           text="Already have an account?"

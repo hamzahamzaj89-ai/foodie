@@ -28,7 +28,7 @@ export default function LoginForm({
   onForgotPassword,
 }: Props) {
   return (
-    <View className="mt-4 px-5">
+    <View className="mt-8 px-5">
       {/* Email */}
 
       <AuthInput

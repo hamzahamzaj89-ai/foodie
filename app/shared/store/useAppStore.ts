@@ -16,6 +16,8 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
+
+  
   session: null,
   appState: null,
   isInitialized: false,

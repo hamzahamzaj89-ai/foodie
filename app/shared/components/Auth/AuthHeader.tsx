@@ -14,7 +14,7 @@ export default function AuthHeader({
   description,
 }: Props) {
   return (
-    <View className="mt-8 px-6">
+    <View className="mt-8 px-5">
       {/* Title */}
 
       <Text className="font-poppins-bold text-4xl text-white">
@@ -24,7 +24,7 @@ export default function AuthHeader({
       {/* Description */}
 
       <Text
-        className="mt-3 font-poppins-medium text-base leading-7 text-zinc-400"
+        className="mt-1 font-poppins-medium text-base leading-7 text-zinc-400"
       >
         {description}
       </Text>

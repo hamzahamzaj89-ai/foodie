@@ -8,13 +8,16 @@ import {
 import { Plus } from "lucide-react-native";
 import clsx from "clsx"
 import { router } from "expo-router";
-export default function FoodCard({index}: {index:number}) {
+import { IMenuCard } from "@/app/shared/interface/IMenuCard";
+export default function FoodCard({item , index}: {item:IMenuCard , index:number}) {
   return (
     <Pressable onPress={() => router.push("/customer/(pages)/MenuDetail")} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
       {/* Floating Image */}
 
       <Image
-        source={require("@/assets/images/burger.png")}
+        source={{
+          uri: item.image_url,
+        }}
         resizeMode="contain"
         className={clsx("absolute  self-center  z-10 w-[190px] h-[160px]" , index % 2 ? "-top-16" : "-top-16")}
       />
@@ -37,7 +40,7 @@ export default function FoodCard({index}: {index:number}) {
         {/* Food Name */}
 
         <Text className="text-center text-[17px] text-white font-poppins-semibold">
-          Cheese Burger
+          {item.title}
         </Text>
 
         {/* Subtitle */}
@@ -58,7 +61,7 @@ export default function FoodCard({index}: {index:number}) {
          
 
             <Text className="text-[22px] text-buttonBackground  font-poppins-bold">
-              $14.99
+              {item.price}
             </Text>
           </View>
 

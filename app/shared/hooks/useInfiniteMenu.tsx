@@ -1,0 +1,38 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getResturantMenus } from "@/app/services/menu.services";
+import { queryKeys } from "@/app/constants/queryKeys";
+import { useState } from "react";
+import { useResturantStore } from "../store/useResturantStore";
+import { toast } from "../utils/toast";
+
+export function useInfiniteMenus(resturantId: string) {
+
+
+
+    const selectedRestaurant = useResturantStore((state) => state.selectedRestaurant)
+
+const [page , setPage] = useState(0)
+
+
+
+
+  return useInfiniteQuery({
+    queryKey:  queryKeys.public.manus(selectedRestaurant?.id as string),
+
+    queryFn: ({ pageParam }) => getResturantMenus(pageParam),
+
+      initialPageParam: 0,
+
+    getNextPageParam(data) {
+
+      if (data && data.length < 10) {
+        return undefined;
+      }
+
+      return data && data.length;
+
+    },
+  });
+
+
+}

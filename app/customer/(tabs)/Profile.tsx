@@ -17,11 +17,29 @@ import ProfileCard from "../components/ProfileCard";
 import ProfileItem from "../components/ProfileItem";
 import StatusScreen from "../screens/StatusScreen";
 import { router } from "expo-router";
+import { useAppStore } from "@/app/shared/store/useAppStore";
+import { useSignOut } from "@/app/shared/hooks/Auth/useSignOut";
 
 export default function Profile() {
 
 
-  return(<>
+  const session = useAppStore((state) => state.session)
+
+
+
+
+  const {mutate:onLogOut , isPending} = useSignOut()
+
+ 
+
+
+
+
+
+    if (!session) {
+
+
+     return(<>
   
      <View className="flex-1 bg-black">
       
@@ -31,12 +49,19 @@ export default function Profile() {
      buttonTitle="Sign In"
      left={true}
      Icon={LogInIcon}
-     onPress={() => router.push("/customer/(auth)/SignIn")}
+     onPress={() => router.push("/(auth)/SignIn")}
      />
      </View>
   
   
   </>)
+
+    }
+
+
+
+
+
 
 
   return (
@@ -71,6 +96,7 @@ export default function Profile() {
             Icon={LogOut}
             title="Logout"
             danger
+            onPress={onLogOut}
           />
         </View>
       </View>

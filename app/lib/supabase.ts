@@ -6,6 +6,7 @@ export const supabase = createClient(
   process.env.EXPO_PUBLIC_SUPABASE_KEY!,
   {
     auth: {
+      flowType: "pkce",
       storage: AsyncStorage,
       autoRefreshToken: true,
       persistSession: true,

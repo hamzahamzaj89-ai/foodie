@@ -11,7 +11,7 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 
-import { supabase } from "@/app/shared/utils/supabase";
+import { supabase } from "@/app/lib/supabase";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 import { Session } from "@supabase/supabase-js";
 
@@ -68,10 +68,13 @@ export function useInitializeApp() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log(session)
       setSession(session as Session);
     });
 
     return subscription;
+
+
   }
 
 

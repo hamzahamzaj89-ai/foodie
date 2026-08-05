@@ -9,18 +9,44 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { router } from "expo-router";
 
-import AuthHero from "@/app/customer/components/Auth/AuthHero";
-import AuthHeader from "@/app/customer/components/Auth/AuthHeader";
-import LoginForm from "@/app/customer/components/Auth/LoginForm";
-import SocialLogin from "@/app/customer/components/Auth/SocialLogin";
-import AuthFooter from "@/app/customer/components/Auth/AuthFooter";
+import AuthHero from "@/app/shared/components/Auth/AuthHero";
+import AuthHeader from "@/app/shared/components/Auth/AuthHeader";
+import LoginForm from "@/app/shared/components/Auth/LoginForm";
+import SocialLogin from "@/app/shared/components/Auth/SocialLogin";
+import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
 import Button from "@/app/shared/components/Button";
+import { toast } from "../shared/utils/toast";
+import { useSignIn } from "../shared/hooks/Auth/useSignIn";
 
 
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {mutateAsync, isPending, error} = useSignIn()
+
+  const onSubmit = async () => {
+
+
+    try {
+
+
+      await  mutateAsync({
+        email,
+        password
+      })
+
+
+        router.back();
+
+    } catch (error) {
+        toast.error("Sign In Failed " , "Please Try again")
+    }
+
+  }
+
+  
 
   return (
     <SafeAreaView
@@ -45,7 +71,7 @@ export default function SignIn() {
             
         <AuthHeader
           title="Welcome Back"
-          description="Sign in to continue ordering your favorite meals."
+          description="Sign in for ordering your favorite meals."
         />
            </View>
 
@@ -66,7 +92,8 @@ export default function SignIn() {
             <Button
             text="Continue"
             left={true}
-            onPress={() => {}}
+            onPress={onSubmit}
+            disabled={isPending}
             />
            </View>
             </View>
@@ -87,7 +114,7 @@ export default function SignIn() {
         <AuthFooter
           text="Don't have an account?"
           actionText="Create Account"
-          onPress={() => router.push("/customer/(auth)/SignUp")}
+          onPress={() => router.push("/(auth)/SignUp")}
         />
       </ScrollView>
     </SafeAreaView>

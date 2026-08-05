@@ -29,8 +29,7 @@ export default function SignupForm({
   onConfirmPasswordChange,
 }: Props) {
   return (
-    <View className="mt-8 px-6">
-      {/* Full Name */}
+    <View className="mt-4 px-5">
 
       <AuthInput
         label="Full Name"
@@ -47,7 +46,6 @@ export default function SignupForm({
         }
       />
 
-      {/* Email */}
 
       <AuthInput
         label="Email Address"
@@ -64,7 +62,6 @@ export default function SignupForm({
         }
       />
 
-      {/* Password */}
 
       <PasswordInput
         label="Password"
@@ -73,7 +70,6 @@ export default function SignupForm({
         onChangeText={onPasswordChange}
       />
 
-      {/* Confirm Password */}
 
       <PasswordInput
         label="Confirm Password"
