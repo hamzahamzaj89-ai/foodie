@@ -1,24 +1,42 @@
+import Loader from "@/app/shared/components/Loader";
+import { useDeals } from "@/app/shared/hooks/useDeals";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Image, Dimensions, Pressable } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import StatusScreen from "../../screens/StatusScreen";
 
 const { width } = Dimensions.get("window");
 
 const CARD_WIDTH = width  ;
 const CARD_HEIGHT = 170;
 
-const deals = [
-  {
-    id: "1",
-    image: require("@/assets/images/deal1.jpeg"),
-  },
-  
- 
-];
 
-export default function DealCarousel() {
+export default function DealCarousel({restaurantId}: {restaurantId:string}) {
   const [index, setIndex] = useState(0);
+
+  const {data:deals , isPending , error} = useDeals({
+    restaurantId : restaurantId,
+  })
+
+
+
+   //loader,error,undefined
+  
+    if (isPending)  return <Loader />;
+    
+  
+    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
+      
+    
+  
+    if (!deals) return <StatusScreen type="error" message="Not Found" title="404 error" />;
+    
+  
+
+
+
+
 
   return (
     <View className="mt-4 ">
@@ -29,7 +47,7 @@ export default function DealCarousel() {
         autoPlay={true}
         autoPlayInterval={2000}
         height={CARD_HEIGHT}
-        data={deals}
+        data={deals.data}
         pagingEnabled
          enabled={true}
         snapEnabled
@@ -39,7 +57,9 @@ export default function DealCarousel() {
         renderItem={({ item }) => (
           <Pressable onPress={() => router.push("/customer/(pages)/DealDetail")} className="overflow-hidden mx-3 rounded-2xl">
             <Image
-              source={item.image}
+              source={{
+                uri: item.image_url
+              }}
               resizeMode="cover"
               className="w-full h-full"
             />

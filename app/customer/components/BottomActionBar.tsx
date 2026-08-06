@@ -11,13 +11,12 @@ import {
 } from "lucide-react-native";
 import Counter from "./Counter";
 
-export default function BottomActionBar({onPress , cartQuantity}: {onPress: () => void , cartQuantity: number | null}) {
+export default function BottomActionBar({onPress , quantity , setQuantity}: {onPress: () => void , quantity: number  , setQuantity: any}) {
 
   
   
 
 
-  const [quantity , setQuantity] = useState(cartQuantity ?? 1)
  
 
   return (
@@ -41,8 +40,8 @@ export default function BottomActionBar({onPress , cartQuantity}: {onPress: () =
 
         <Counter
            quantity={quantity}
-           onIncrease={() => {setQuantity((prev) => prev + 1)}}
-           onDecrease={() => { quantity > 0 &&  setQuantity((prev) => prev - 1)}}
+           onIncrease={() => {setQuantity((prev : any) => (prev) + 1)}}
+           onDecrease={() => { quantity > 0 &&  setQuantity((prev : any) => prev - 1)}}
         
         />
      

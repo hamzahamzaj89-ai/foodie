@@ -12,7 +12,7 @@ import { useMenuItem } from "@/app/shared/hooks/useMenu";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { useCartStore } from "../store/useCartStore";
-import { ICartAddOns, ICartCustomization } from "@/interface/ICart";
+import { ICartAddOns, ICartCustomization, ICartItem } from "@/interface/ICart";
 import { IAddOns } from "@/interface/IAddOns";
 import AddOnsSection from "../components/AddOns";
 
@@ -38,32 +38,87 @@ const addOns = [
 ];
 
 export default function MenuDetailsScreen() {
-  const [customizations, setCustomizations] = useState<ICartCustomization[]>(
-    [],
-  );
-  const [addOns, setAddOns] = useState<ICartAddOns[]>([]);
+  
 
   const { id } = useLocalSearchParams();
 
   const cart = useCartStore((state) => state.getCartItem(id as string));
 
+  const [customizations, setCustomizations] = useState<ICartCustomization[]>(cart ? (cart as ICartItem).customizations : []);
+
+    const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? (cart as ICartItem).addOns : []);
+
   const { data: menu, isPending, error } = useMenuItem(id as string);
 
-  const handleCart = () => {};
+   const  addItem = useCartStore((state) => state.addItem)
 
-  if (error) {
-    return (
-      <StatusScreen type="error" title={error.name} message={error.message} />
-    );
-  }
+  const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
 
-  if (isPending) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
-  }
+
+
+  //loader, undefined , error
+   if (isPending)  return <Loader />;
+    
+  
+    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
+      
+    
+  
+    if (!menu) return <StatusScreen type="error" message="Not Found" title="404 error" />;
+    
+  
+
+
+
+
+  const handleCart = () => {
+
+
+       if (cart) {
+
+        const cartItem = {
+          ...cart,
+       
+        quantity: quantity,
+        customizations: customizations,
+        addOns: addOns
+ 
+
+    }
+     
+
+    addItem(cartItem)
+       
+
+   return
+           
+     
+         
+
+       }
+
+
+         const cartItem:ICartItem = {
+        id: menu?.id as string,
+        type: "cartItem",
+        imageUrl: menu?.image_url as string,
+        price: menu?.price as number,
+        title: menu?.title as string,
+        quantity: quantity,
+        customizations: customizations,
+        addOns: addOns
+ 
+
+    }
+
+    addItem(cartItem)
+
+  };
+
+
+
+
+
 
   return (
     <SafeAreaView className="flex-1 bg-black">
@@ -112,8 +167,11 @@ export default function MenuDetailsScreen() {
         onPress={() => {
           handleCart;
         }}
-        cartQuantity={cart ? cart.quantity : null}
+        quantity={quantity}
+        setQuantity={setQuantity}
       />
+
+
     </SafeAreaView>
   );
 }

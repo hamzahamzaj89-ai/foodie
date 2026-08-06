@@ -4,38 +4,58 @@ import {
   View,
 } from "react-native";
 
-export default function InfoSection() {
+
+interface Props {
+  title: string,
+  description : string,
+  subtitle: string,
+  originalPrice: number,
+  newPrice: number,
+  save: number
+}
+
+export default function InfoSection({
+  title,
+  description,
+  save,
+  originalPrice,
+  newPrice,
+  subtitle
+}: Props) {
+
+
   return (
     <View className=" pt-6">
       {/* Deal Name */}
 
       <Text className="font-poppins-bold text-3xl text-white">
-        Family Feast Deal
+        {title}
       </Text>
 
       {/* Subtitle */}
 
       <Text className="mt-2 font-poppins-medium text-base text-zinc-400">
-        Perfect for 3–4 people
+        {subtitle}
       </Text>
 
       {/* Save Badge */}
 
       <View className="mt-5 self-start rounded-full bg-[#1A1208] px-4 py-2">
         <Text className="font-poppins-semibold text-sm text-buttonBackground">
-          Save $14.50
+          Save ${save}
         </Text>
       </View>
 
       {/* Price */}
 
       <View className="mt-5 flex-row items-end">
+
         <Text className="font-poppins-bold text-4xl text-white">
-          $34.99
+          ${newPrice}
         </Text>
 
         <Text className="ml-3 mb-1 font-poppins-medium text-lg text-zinc-500 line-through">
-          $49.49
+          ${originalPrice}
         </Text>
       </View>
 

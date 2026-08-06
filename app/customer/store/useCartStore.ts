@@ -56,10 +56,10 @@ export const useCartStore = create<ICartStore>((set, get) => ({
 
           if (item.type === "menu") {
               const menu = item as ICartItem
-              customizationPrice =  menu.customizations.reduce(
+              customizationPrice =  menu.customizations?.reduce(
         (sum, option) => sum + option.price,
         0
-      );
+      ) ?? 0
 
 
           }

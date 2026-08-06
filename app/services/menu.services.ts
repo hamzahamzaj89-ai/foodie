@@ -23,7 +23,7 @@ export async function getResturantMenus(page?: number) {
       created_at
     `)
     .order("created_at", { ascending: false })
-    .range(start, start + PAGE_SIZE + 1);
+    .range(start, start + PAGE_SIZE);
 
 
    
@@ -31,8 +31,16 @@ export async function getResturantMenus(page?: number) {
    if (error) throw error;
 
    
+   const hasNextPage = data.length > PAGE_SIZE;
 
-    return data  as IMenuCard[]
+
+   return {
+
+      data: data  as IMenuCard[],
+      hasNextPage
+
+   }
+
 
 
 
@@ -88,6 +96,13 @@ export async function getMenu(menuId: string) {
   if (error) {
     throw error;
   }
+
+
+  
+  if (!data) {
+  throw new Error("menu item not found");
+}
+
 
 
   return data as IMenuItem;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ScrollView, View } from "react-native";
 
 import DealHero from "@/app/customer/components/DealDetail/HeroSection";
@@ -10,42 +10,100 @@ import BottomActionBar from "../components/BottomActionBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DealHeader from "../components/DealDetail/DealHeader";
 import Header from "../components/Header";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import AddOnsSection from "../components/AddOns";
-import { ICartAddOns } from "@/interface/ICart";
+import { ICartAddOns, ICartDeal } from "@/interface/ICart";
+import { useCartStore } from "../store/useCartStore";
+import { useDealItem, useDeals } from "@/app/shared/hooks/useDeals";
+import { calculateDealPrice } from "@/app/shared/utils/calculatingPrice";
+import { IDealDetail } from "@/interface/IDeal";
+import Loader from "@/app/shared/components/Loader";
+import StatusScreen from "../screens/StatusScreen";
+import { toast } from "@/app/shared/utils/toast";
 
 export default function DealDetail() {
-  const [quantity, setQuantity] = useState(1);
+  const { id } = useLocalSearchParams();
 
-  const dealPrice = 34.99;
+  const cart = useCartStore((state) => state.getCartItem(id as string));
 
-  // Later you can include selected add-ons
-  const addOnPrice = 0;
+  const { data: deal, error, isPending } = useDealItem(id as string);
 
-  const total = (dealPrice + addOnPrice) * quantity;
+  const [quantity, setQuantity] = useState(cart ? cart.quantity : 1);
+  const addItem = useCartStore((state) => state.addItem);
 
-  const [addOns, setAddOns] = useState<ICartAddOns[]>([]);
+  const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? cart.addOns : []);
 
-  const AddOns = [
-    {
-      id: "1",
-      name: "Extra Cheese",
-      price: 1.5,
-      image: require("@/assets/images/cheese.png"),
-    },
-    {
-      id: "2",
-      name: "Beef Patty",
-      price: 3,
-      image: require("@/assets/images/burger_petty.png"),
-    },
-    {
-      id: "3",
-      name: "Jalapeños",
-      price: 0.8,
-      image: require("@/assets/images/cheese.png"),
-    },
-  ];
+
+  //memos
+  const oldPrice = useMemo(() => {
+    return calculateDealPrice(deal?.menus);
+  }, [deal]);
+
+  const newPrice = useMemo(() => {
+    return deal?.fixed_discount
+      ? oldPrice - deal.fixed_discount
+      : oldPrice - (deal?.discount_percentage ?? 0) * oldPrice;
+  }, [deal]);
+
+
+
+  //loader,error,undefined
+
+  if (isPending)  return <Loader />;
+  
+
+  if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
+    
+  
+
+  if (!deal) return <StatusScreen type="error" message="Not Found" title="404 error" />;
+  
+
+
+
+  //functions
+    //functions
+
+  const handleCartDeal = () => {
+    if (!deal) {
+      return toast.error("$404", "No Deal Found");
+    }
+
+    if (cart) {
+      const cartDeal = {
+        ...cart,
+
+        quantity: quantity,
+        addOns: addOns,
+      };
+
+      addItem(cartDeal);
+
+      return;
+    }
+
+    const cartItem: ICartDeal = {
+      id: deal.id as string,
+      imageUrl: deal.image_url as string,
+      price: newPrice,
+      title: deal.title as string,
+      quantity: quantity,
+      addOns: addOns,
+      items: deal.menus,
+      discount: oldPrice - newPrice,
+      type: "deal",
+      freeDelivery: deal.free_delivery,
+      oldPrice: oldPrice,
+    };
+
+    addItem(cartItem);
+  };
+
+
+
+
+
+
 
   return (
     <>
@@ -63,11 +121,18 @@ export default function DealDetail() {
           >
             {/* Hero Image */}
 
-            <DealHero />
+            <DealHero imageUrl={deal.image_url as string} />
 
             {/* Deal Information */}
 
-            <DealInfo />
+            <DealInfo
+              title={deal.title}
+              description={deal.description as string}
+              subtitle={deal.subtitle}
+              originalPrice={oldPrice}
+              newPrice={newPrice}
+              save={oldPrice - newPrice}
+            />
 
             {/* Included Items */}
 
@@ -87,7 +152,11 @@ export default function DealDetail() {
       </SafeAreaView>
 
       <View>
-        <BottomActionBar onPress={() => {}} cartQuantity={null} />
+        <BottomActionBar
+          onPress={handleCartDeal}
+          quantity={quantity}
+          setQuantity={setQuantity}
+        />
       </View>
     </>
   );

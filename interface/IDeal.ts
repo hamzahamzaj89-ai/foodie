@@ -1,4 +1,4 @@
-export interface IDeal {
+export interface IDealDetail {
   id: string;
 
   restaurant_id: string;
@@ -21,7 +21,33 @@ export interface IDeal {
 
   is_active: boolean;
 
-  created_at: string;
+  created_at?: string;
 
-  updated_at: string;
+  updated_at?: string;
+
+  menus : IDealMenu[];
+  subtitle: string;
+
+
 }
+export interface IDealMenu {
+  quantity : number
+  menuItem : IDealMenuItem[]
+  
+}
+
+
+export interface IDealMenuItem {
+  id: string;
+
+  title: string;
+
+  description: string | null;
+
+  image_url: string | null;
+
+  price: number;
+}
+
+
+

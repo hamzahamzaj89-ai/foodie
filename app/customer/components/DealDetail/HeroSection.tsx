@@ -12,8 +12,14 @@ import {
   Heart,
 } from "lucide-react-native";
 
-export default function HeroSection() {
+export default function HeroSection({
+  imageUrl
+}: {
+  imageUrl:string | undefined
+}) {
+
   const router = useRouter();
+
 
   return (
     <View className="flex flex-col w-[100%]">
@@ -21,7 +27,9 @@ export default function HeroSection() {
 
 
       <Image
-        source={require("@/assets/images/deal1.jpeg")}
+        source={{
+          uri: imageUrl?? ""
+        }}
         resizeMode="contain"
         className="w-full h-[170px] rounded-2xl"
         

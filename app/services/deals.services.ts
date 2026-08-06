@@ -2,8 +2,9 @@
 
 import { supabase } from "../lib/supabase";
 import { IDealCard } from "../../interface/IDealCard";
+import {  IDealDetail } from "@/interface/IDeal";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 export async function getActiveDeals(page:number) {
 
@@ -13,22 +14,78 @@ export async function getActiveDeals(page:number) {
     .from("deals")
     .select(`
       id,
-      title,
-      description,
-      banner_url,
-      discount_percentage,
-      start_date,
-      end_date,
-      created_at
+      image_url
     `)
     .filter("start_date", "lte", "now()")
     .filter("end_date", "gte", "now()")
     .order("created_at", { ascending: false })
-    .range(start , start + PAGE_SIZE + 1);
+    .range(start , start + PAGE_SIZE );
 
 
   if (error) throw error;
 
+  
+   const hasNextPage = data.length > PAGE_SIZE;
 
-  return data
+
+   return {
+
+      data: data  as IDealCard[],
+      hasNextPage
+
+   }
+
+}
+
+
+
+
+
+
+export async function getDeal(dealId: string) {
+const { data , error } = await supabase
+  .from("deals")
+  .select(`
+    id,
+    restaurant_id,
+    title,
+    description,
+    image_url,
+    discount_percentage,
+    fixed_discount,
+    free_delivery,
+    start_date,
+    end_date,
+    subtitle,
+    is_active,
+    created_at,
+    updated_at,
+
+    menus:deals_group(
+      quantity,
+      menuItem(
+        id,
+        title,
+        description,
+        image_url,
+        price
+      )
+    )
+  `)
+  .eq("id", dealId)
+  .single();
+
+  if (error) {
+    throw error;
+  }
+
+
+  if (!data) {
+  throw new Error("deal item not found");
+  return
+}
+
+
+
+  return data as IDealDetail;
 }

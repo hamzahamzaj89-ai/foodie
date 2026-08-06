@@ -1,62 +1,58 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getActiveDeals } from "@/app/services/deals.services";
+import { getActiveDeals, getDeal } from "@/app/services/deals.services";
 import { useState } from "react";
 import { queryKeys } from "@/app/constants/queryKeys";
 
-type UseDealsProps = {
-  infinite?: boolean;
-};
-
-export function useDeals({
-  infinite = false,
-}: UseDealsProps = {}) {
 
 
+interface UseDealsProps {
+  restaurantId: string;
+}
 
-  const query = useQuery({
-    queryKey: queryKeys.public.deals(infinite),
+export function useDeals({ restaurantId }: UseDealsProps) {
+  return useQuery({
+    queryKey: queryKeys.public.deals(restaurantId),
 
-    queryFn: async () => {
-      const result = await getActiveDeals(0);
+    queryFn: () => getActiveDeals(0),
 
-      return result;
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+}
+
+export function useInfiniteDeals({ restaurantId }: UseDealsProps) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.public.infiniteDeals(restaurantId),
+
+    queryFn: ({ pageParam }) => getActiveDeals(pageParam),
+
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage, allPages) => {
+      // No more data
+      if (!lastPage.hasNextPage) {
+        return undefined;
+      }
+
+      // Next offset
+      return allPages.flat().length;
     },
 
-    enabled: !infinite,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
 
 
-
-
- 
- 
- 
- 
-
- 
- 
- 
- 
-    useInfiniteQuery({
-     queryKey:  queryKeys.public.deals(infinite),
- 
-     queryFn: ({ pageParam }) => getActiveDeals(pageParam),
- 
-       initialPageParam: 0,
- 
-     getNextPageParam(data) {
- 
-       if (data && data.length < 11) {
-         return undefined;
-       }
- 
-       return data && data.length;
- 
-     },
-   });
- 
- 
- 
-  return infinite ? useInfiniteQuery : query;
 }
+
+
+export function useDealItem(dealId: string) {
+  return useQuery({
+    queryKey:  queryKeys.public.deal(dealId),
+
+    queryFn: () => getDeal(dealId),
+
+    enabled: !!dealId,
+  });
+}
+
+

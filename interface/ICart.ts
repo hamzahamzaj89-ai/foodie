@@ -1,3 +1,5 @@
+import { IDealMenu, IDealMenuItem } from "./IDeal";
+
 export interface ICartCustomization {
   groupId: string;
   groupName: string;
@@ -50,16 +52,19 @@ export interface ICartDeal {
   title: string;
 
   type: string
-  items: string[];
+  items: IDealMenu[];
 
   oldPrice: number;
 
   price: number;
   quantity : number;
+  imageUrl: string | null;
+
 
   discount: number;
 
   freeDelivery: boolean;
+  addOns: ICartAddOns[]
   
 }
 

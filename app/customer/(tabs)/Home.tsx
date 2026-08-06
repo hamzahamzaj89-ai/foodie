@@ -16,12 +16,13 @@ import { Bell, ShoppingBag } from "lucide-react-native";
 import TabHeader from "../components/TabHeader";
 import { useResturant } from "@/app/shared/hooks/useResturant";
 import { useInfiniteMenus } from "@/app/shared/hooks/useMenu";
-import IMenu from "@/interface/IMenu";
 import { IMenuCard } from "@/interface/IMenuCard";
 import { router } from "expo-router";
+import Loader from "@/app/shared/components/Loader";
+import StatusScreen from "../screens/StatusScreen";
 
 const Home = () => {
-  const resturantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
+  const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
 
   const foods = [
     { id: "1" },
@@ -34,7 +35,7 @@ const Home = () => {
     { id: "8" },
   ];
 
-  const { data: restaurant, error } = useResturant(resturantId);
+  const { data: restaurant, error } = useResturant(restaurantId);
 
   const {
     data,
@@ -45,11 +46,25 @@ const Home = () => {
     isFetching,
     error: menuError,
     isFetchingNextPage,
-  } = useInfiniteMenus(resturantId);
+  } = useInfiniteMenus(restaurantId);
 
   const menus = useMemo(() => {
-    return data?.pages.flatMap((page) => page) ?? [];
+    return data?.pages.flatMap((page) => page.data) ?? [];
   }, [data]);
+
+
+
+
+   if (isPending)  return <Loader />;
+    
+  
+    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
+      
+    
+  
+    if (!data) return <StatusScreen type="error" message="Not Found" title="404 error" />;
+    
+  
 
   return (
     <>
@@ -79,7 +94,7 @@ const Home = () => {
                     <SearchBar />
                   </View>
 
-                  <DealCarousel />
+                  <DealCarousel  restaurantId={restaurantId}/>
 
                   <View className="px-4 pt-2 pb-8">
                     <Categories />

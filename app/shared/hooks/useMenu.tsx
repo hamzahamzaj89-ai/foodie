@@ -23,14 +23,14 @@ const [page , setPage] = useState(0)
 
       initialPageParam: 0,
 
-    getNextPageParam(data) {
+    getNextPageParam(lastPage , allPages) {
 
-      if (data && data.length < 10) {
+      if (!lastPage.hasNextPage) {
         return undefined;
       }
 
-      return data && data.length;
-
+        // Next offset
+      return allPages.flat().length;
     },
   });
 
