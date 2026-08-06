@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  ScrollView,
-  View,
-} from "react-native";
+import { ScrollView, View } from "react-native";
 
 import DealHero from "@/app/customer/components/DealDetail/HeroSection";
 import DealInfo from "@/app/customer/components/DealDetail/InfoSection";
@@ -14,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import DealHeader from "../components/DealDetail/DealHeader";
 import Header from "../components/Header";
 import { router } from "expo-router";
+import AddOnsSection from "../components/AddOns";
+import { ICartAddOns } from "@/interface/ICart";
 
 export default function DealDetail() {
   const [quantity, setQuantity] = useState(1);
@@ -25,97 +24,71 @@ export default function DealDetail() {
 
   const total = (dealPrice + addOnPrice) * quantity;
 
-
-
+  const [addOns, setAddOns] = useState<ICartAddOns[]>([]);
 
   const AddOns = [
-  {
-    id: "1",
-    name: "Extra Cheese",
-    price: 1.5,
-    image: require("@/assets/images/cheese.png"),
-  },
-  {
-    id: "2",
-    name: "Beef Patty",
-    price: 3,
-    image: require("@/assets/images/burger_petty.png"),
-  },
-  {
-    id: "3",
-    name: "Jalapeños",
-    price: 0.8,
-    image: require("@/assets/images/cheese.png"),
-  },
-];
+    {
+      id: "1",
+      name: "Extra Cheese",
+      price: 1.5,
+      image: require("@/assets/images/cheese.png"),
+    },
+    {
+      id: "2",
+      name: "Beef Patty",
+      price: 3,
+      image: require("@/assets/images/burger_petty.png"),
+    },
+    {
+      id: "3",
+      name: "Jalapeños",
+      price: 0.8,
+      image: require("@/assets/images/cheese.png"),
+    },
+  ];
 
   return (
-      <>
-    <SafeAreaView className="flex-1 bg-black px-4 pt-0">
-      <View className="flex-1">
-
+    <>
+      <SafeAreaView className="flex-1 bg-black px-4 pt-0">
+        <View className="flex-1">
           <View className="mb-2">
-              <Header
-              title="Deal Details"
-              onPress={() => router.back()}
-              />
+            <Header title="Deal Details" onPress={() => router.back()} />
           </View>
 
-        
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 140,
-          }}
-        >
-          {/* Hero Image */}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 140,
+            }}
+          >
+            {/* Hero Image */}
 
-          <DealHero />
+            <DealHero />
 
-          {/* Deal Information */}
+            {/* Deal Information */}
 
-          <DealInfo />
+            <DealInfo />
 
-          {/* Included Items */}
+            {/* Included Items */}
 
-          <IncludedItemsSection />
+            <IncludedItemsSection />
 
-          {/* Add Extras */}
+            {/* Add Extras */}
 
-          <AddExtrasSection 
+            <AddOnsSection selectedAddOns={addOns} setData={setAddOns} />
 
-          title={"Add Extra Items"}
-          data={AddOns}
-          
-          />
+            {/* Notes */}
 
-          {/* Notes */}
+            <SpecialInstructions />
+          </ScrollView>
 
-          <SpecialInstructions />
-        </ScrollView>
+          {/* Sticky Bottom */}
+        </View>
+      </SafeAreaView>
 
-        {/* Sticky Bottom */}
-
-         
-      </View>
-
-
-    </SafeAreaView>
-
-   
-
-   
       <View>
-       
-       <BottomActionBar/>
-
+        <BottomActionBar onPress={() => {}} cartQuantity={null} />
       </View>
-    
-
-
-      </>
-      
-      
-    
+    </>
   );
 }

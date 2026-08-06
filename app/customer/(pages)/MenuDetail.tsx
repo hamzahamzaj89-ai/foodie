@@ -1,9 +1,5 @@
-import React from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { FlatList, SafeAreaView, View } from "react-native";
 
 import HeroSection from "@/app/customer/components/MenuDetail/HeroSection";
 import ProductInfo from "@/app/customer/components/MenuDetail/ProductInfo";
@@ -15,29 +11,10 @@ import { useLocalSearchParams } from "expo-router";
 import { useMenuItem } from "@/app/shared/hooks/useMenu";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
-
-
-
-const customizations = [
-  {
-    id: "1",
-    name: "Extra Cheese",
-    price: 1.5,
-    image: require("@/assets/images/cheese.png"),
-  },
-  {
-    id: "2",
-    name: "Beef Patty",
-    price: 3,
-    image: require("@/assets/images/burger_petty.png"),
-  },
-  {
-    id: "3",
-    name: "Jalapeños",
-    price: 0.8,
-    image: require("@/assets/images/cheese.png"),
-  },
-];
+import { useCartStore } from "../store/useCartStore";
+import { ICartAddOns, ICartCustomization } from "@/interface/ICart";
+import { IAddOns } from "@/interface/IAddOns";
+import AddOnsSection from "../components/AddOns";
 
 const addOns = [
   {
@@ -60,35 +37,32 @@ const addOns = [
   },
 ];
 
-
-
-
-
 export default function MenuDetailsScreen() {
+  const [customizations, setCustomizations] = useState<ICartCustomization[]>(
+    [],
+  );
+  const [addOns, setAddOns] = useState<ICartAddOns[]>([]);
 
+  const { id } = useLocalSearchParams();
 
-  const {id} = useLocalSearchParams();
+  const cart = useCartStore((state) => state.getCartItem(id as string));
 
+  const { data: menu, isPending, error } = useMenuItem(id as string);
 
-  const {data:menu, isPending, error} = useMenuItem(id as string)
+  const handleCart = () => {};
 
   if (error) {
-     
-      return <StatusScreen
-          type="error"
-          title={error.name}
-          message={error.message}
-
-      />
+    return (
+      <StatusScreen type="error" title={error.name} message={error.message} />
+    );
   }
 
-
-
-  if (isPending){
-    return(<>
-         <Loader/>
-    </>)
-
+  if (isPending) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
   }
 
   return (
@@ -105,36 +79,41 @@ export default function MenuDetailsScreen() {
             <HeroSection imageUrl={menu.image_url} />
 
             <View className="px-5">
-              <ProductInfo 
-              productInfo={
-                  {
-                    reviewsCount: menu.reviews_count,
+              <ProductInfo
+                productInfo={{
+                  reviewsCount: menu.reviews_count,
                   rating: menu.average_rating,
                   title: menu.title,
                   description: menu.description,
-                  calories: menu.calories
-                  }
-              } 
+                  calories: menu.calories,
+                }}
               />
 
               <SizeSelector />
 
-              <CustomizationSection
-                title="Customization"
-                data={customizations}
-              />
+              {menu.menu_customization_group.map((item, inwdex) => (
+                <>
+                  <CustomizationSection
+                    data={item.customization_group[0]}
+                    setData={setCustomizations}
+                    selectedCustomizations={customizations}
+                  />
+                </>
+              ))}
 
-              <AddOnSection
-                title="Add-ons"
-                data={addOns}
-              />
+              <AddOnsSection selectedAddOns={addOns} setData={setAddOns} />
             </View>
           </>
         }
         renderItem={null}
       />
 
-      <BottomActionBar />
+      <BottomActionBar
+        onPress={() => {
+          handleCart;
+        }}
+        cartQuantity={cart ? cart.quantity : null}
+      />
     </SafeAreaView>
   );
 }

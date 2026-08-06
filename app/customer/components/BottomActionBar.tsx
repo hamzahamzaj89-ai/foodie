@@ -11,10 +11,13 @@ import {
 } from "lucide-react-native";
 import Counter from "./Counter";
 
-export default function BottomActionBar() {
+export default function BottomActionBar({onPress , cartQuantity}: {onPress: () => void , cartQuantity: number | null}) {
+
+  
+  
 
 
-  const [quantity , setQuantity] = useState(1)
+  const [quantity , setQuantity] = useState(cartQuantity ?? 1)
  
 
   return (
@@ -47,7 +50,7 @@ export default function BottomActionBar() {
 
         {/* Add To Cart */}
 
-        <Pressable className="flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-buttonBackground px-5 py-[13px]">
+        <Pressable onPress={onPress}  className="flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-buttonBackground px-5 py-[13px]">
          
 
           <View className="flex-row items-center">

@@ -22,30 +22,59 @@ export interface ICartAddOns {
 
 export interface ICartItem {
 
-  menuId: string;
+  id: string;
 
   title: string;
+  type: string;
+
 
   imageUrl: string | null;
 
-  basePrice: number;
+
+  price: number;
 
   quantity: number;
 
   customizations: ICartCustomization[];
   addOns: ICartAddOns[];
+
+
+}
+
+
+
+export interface ICartDeal {
+
+  id: string;
+
+  title: string;
+
+  type: string
+  items: string[];
+
+  oldPrice: number;
+
+  price: number;
+  quantity : number;
+
+  discount: number;
+
+  freeDelivery: boolean;
+  
 }
 
 
 
 
 export interface ICartStore {
-    
-  items: ICartItem[];
 
-  addItem: (item: ICartItem) => void;
+  items: (ICartItem |ICartDeal)[];
+
+  addItem: (item: ICartItem | ICartDeal) => void;
 
   removeItem: (cartItemId: string) => void;
+  getCartItem: (id: string) => (ICartItem | ICartDeal) | undefined;
+
 
   updateQuantity: (cartItemId: string, quantity: number) => void;
 

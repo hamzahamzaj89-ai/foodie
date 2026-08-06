@@ -6,29 +6,103 @@ import {
 } from "react-native";
 
 import CustomizationCard from "./ExtraCard";
+import { ICustomizationGroup, ICustomizationOption, IMenuCustomizationGroup } from "@/interface/IMenu";
+import SizeSelector from "./MenuDetail/SizeSelector";
+import { ICartCustomization } from "@/interface/ICart";
+import { toast } from "@/app/shared/utils/toast";
 
-type Props = {
-  title: string;
-  data: any[];
+interface Props  {
+  data: ICustomizationGroup;
+  setData: React.Dispatch<React.SetStateAction<ICartCustomization[]>>;
+  selectedCustomizations: ICartCustomization[]
 };
 
 export default function ExtraSection({
-  title,
-  data,
+  data:customizations,
+  setData,
+  selectedCustomizations
 }: Props) {
 
+
+  const handledata = (selectedCard:ICustomizationOption) => {
+  
+
+
+           
+
+
+          
+
+          const selected = selectedCustomizations.findIndex((item) => item.id === selectedCard.id)
+
+
+          if (selected > -1) {
+
+           selectedCustomizations.splice( selected, 1)
+           return
+          }
+
+
+
+          if (customizations.max_selection === 1) {
+              
+
+            
+            setData((prev : ICartCustomization[]) => [...prev , {
+            groupId: customizations.id ,
+            groupName: customizations.name  ,
+            id:  selectedCard.id ,
+            name: selectedCard.name  ,
+            image_url: selectedCard.image_url as string,
+            price: selectedCard.price,
+            quantity: 1
+         }])
+           
+         return
+
+          }
+
+
+          const selectedGroup = selectedCustomizations.filter((item) => item.groupId === customizations.id)
+
+          if (selectedGroup.length >= customizations.max_selection) {
+
+            toast.error("Limit Accseed","You can only select" + customizations.max_selection + "for this customization group")
+               return
+          }
+
+
+          
+          
+            setData((prev : ICartCustomization[]) => [...prev , {
+            groupId: customizations.id ,
+            groupName: customizations.name  ,
+            id:  selectedCard.id ,
+            name: selectedCard.name  ,
+            image_url: selectedCard.image_url as string,
+            price: selectedCard.price,
+            quantity: 1
+         }])
+
+  
+
+
+  }
+
+      
   
   return (
     <View className="mt-8 w-[100%]">
-      {/* Header */}
+
+            {/* Header */}
 
       <View className="flex-row items-center justify-between">
         <Text className="font-poppins-semibold text-xl text-white">
-          {title}
+          {customizations.name}
         </Text>
 
         <Text className="font-poppins-medium text-sm text-zinc-500">
-          Optional
+          {customizations.required ? "required" : "optional"}
         </Text>
       </View>
 
@@ -37,7 +111,7 @@ export default function ExtraSection({
         <View className="flex flex-row no-wrap">
           <FlatList
         horizontal
-        data={data}
+        data={customizations.customizations}
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => (
@@ -49,12 +123,36 @@ export default function ExtraSection({
           paddingRight: 20,
         }}
         renderItem={({ item, index }) => (
-          <CustomizationCard
-            selected={index === 0}
+           <>
+             
+             {customizations.max_selection <=1 ? (<>
+               
+              <CustomizationCard
+            onPress={() => {handledata(item)}}
+            customization={item}
+            selected = {(selectedCustomizations.find((i) => i.id === item.id) && true) || (customizations.required && (index== 0 && true)) }
           />
+               
+
+
+             </>) : (<>
+             
+
+              <CustomizationCard
+            onPress={() => {handledata(item)}}
+            customization={item}
+            selected = {(selectedCustomizations.find((i) => i.id === item.id) && true) || (customizations.required && (index== 0 && true)) }
+          />
+             </>)}
+           
+           
+           </>
         )}
       />
         </View>
+          
+          
+      
     </View>
   );
 }

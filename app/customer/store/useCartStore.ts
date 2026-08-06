@@ -1,50 +1,41 @@
-import { ICartItem } from "@/interface/ICart";
+import { ICartItem, ICartStore } from "@/interface/ICart";
 import { create } from "zustand";
 
 
 
 
-interface ICartStore {
-  items: ICartItem[];
 
-  addItem: (item: ICartItem) => void;
 
-  removeItem: (cartItemId: string) => void;
-
-  updateQuantity: (
-    cartItemId: string,
-    quantity: number
-  ) => void;
-
-  clearCart: () => void;
-
-  totalItems: () => number;
-
-  subtotal: () => number;
-}
 export const useCartStore = create<ICartStore>((set, get) => ({
   items: [],
+
+
+
+    getCartItem: (id) => {
+    return get().items.find((item) => item.id === id);
+  },
 
   addItem: (item) =>
     set((state) => ({
       items: [...state.items, item],
     })),
 
-  removeItem: (cartMenuId) =>
+  removeItem: (cartItemId) =>
     set((state) => ({
       items: state.items.filter(
-        (item) => item.menuId !== cartMenuId
+        (item) => item.id !== cartItemId
       ),
     })),
 
-  updateQuantity: (cartMenuId, quantity) =>
+  updateQuantity: (cartItemId, quantity) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.menuId === cartMenuId
+        item.id === cartItemId
           ? { ...item, quantity }
           : item
       ),
     })),
+
 
   clearCart: () =>
     set({
@@ -59,14 +50,22 @@ export const useCartStore = create<ICartStore>((set, get) => ({
 
   subtotal: () =>
     get().items.reduce((total, item) => {
-      const customizationPrice = item.customizations.reduce(
+
+        let customizationPrice= 0;
+
+
+          if (item.type === "menu") {
+              const menu = item as ICartItem
+              customizationPrice =  menu.customizations.reduce(
         (sum, option) => sum + option.price,
         0
       );
 
+
+          }
       return (
         total +
-        (item.basePrice + customizationPrice) * item.quantity
+        (item.price + customizationPrice) * item.quantity
       );
     }, 0),
 }));

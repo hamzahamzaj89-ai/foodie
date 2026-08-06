@@ -6,26 +6,41 @@ import {
   View,
 } from "react-native";
 import { Check, CheckCheckIcon, CheckCircle } from "lucide-react-native";
+import { ICustomizationOption } from "@/interface/IMenu";
+import { ICartCustomization } from "@/interface/ICart";
+import { IAddOns } from "@/interface/IAddOns";
 
 type Props = {
-  selected?: boolean;
+  selected?: boolean | undefined;
+  customization: ICustomizationOption | IAddOns| null;
+  onPress: () => void;
 };
 
 export default function ExtraCard({
+  customization,
+
   selected = false,
+  onPress
 }: Props) {
+
+
+
+    
   return (
     <Pressable
+    onPress={onPress}
       className={` w-[105px] relative rounded-2xl  pt-3 pb-3 px-2  `}
      
     >
 
-      <View className="absolute right-3 bottom-3">
+         {selected && (
+          <View className="absolute right-3 bottom-3">
               <CheckCircle
               color={"orange"}
               size={15}
               />
       </View>
+         )}
 
          
 
@@ -33,8 +48,8 @@ export default function ExtraCard({
         numberOfLines={2}
         className="text-center font-poppins-semibold text-sm text-white"
       >
-        Extra Cheese
-      </Text>
+        {customization?.name}
+      </Text> 
 
       {/* Floating Image */}
 
@@ -53,7 +68,7 @@ export default function ExtraCard({
       {/* Price */}
 
       <Text className="mt-0 text-center font-poppins-semibold text-xs text-buttonBackground">
-        +$1.50
+        +${customization?.price}
       </Text>
     </Pressable>
   );
