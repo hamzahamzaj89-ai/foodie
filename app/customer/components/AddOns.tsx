@@ -26,6 +26,9 @@ export default function AddOnsSection({
 
     const  {data:addOns , isPending , error} = useAddOns()
  
+
+    console.log(addOns)
+
   
   return (
     <View className="mt-8 w-[100%]">

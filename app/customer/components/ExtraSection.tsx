@@ -37,30 +37,15 @@ export default function ExtraSection({
 
 
           if (selected > -1) {
-
-           selectedCustomizations.splice( selected, 1)
+            console.log(selected)
+            selectedCustomizations.splice(selected, 1)
+            const newArray = [...selectedCustomizations]
+           setData(newArray)
            return
           }
 
 
 
-          if (customizations.max_selection === 1) {
-              
-
-            
-            setData((prev : ICartCustomization[]) => [...prev , {
-            groupId: customizations.id ,
-            groupName: customizations.name  ,
-            id:  selectedCard.id ,
-            name: selectedCard.name  ,
-            image_url: selectedCard.image_url as string,
-            price: selectedCard.price,
-            quantity: 1
-         }])
-           
-         return
-
-          }
 
 
           const selectedGroup = selectedCustomizations.filter((item) => item.groupId === customizations.id)
@@ -89,7 +74,41 @@ export default function ExtraSection({
 
   }
 
+
+  
+  const handleSingleData = (selectedCard:ICustomizationOption) => {
+  
+
+
+
+          const selected = selectedCustomizations.findIndex((item) => item.groupId === customizations.id)
+
+
+          if (selected > -1) {
+
+           selectedCustomizations.splice(selected, 1)
+          }
+
+          
+            setData((prev : ICartCustomization[]) => [...prev , {
+            groupId: customizations.id ,
+            groupName: customizations.name  ,
+            id:  selectedCard.id ,
+            name: selectedCard.name  ,
+            image_url: selectedCard.image_url as string,
+            price: selectedCard.price,
+            quantity: 1
+         }])
+
+  
+
+
+  }
+
+
+  console.log(selectedCustomizations.length)
       
+
   
   return (
     <View className="mt-8 w-[100%]">
@@ -112,10 +131,10 @@ export default function ExtraSection({
           <FlatList
         horizontal
         data={customizations.customizations}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item?.id}
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => (
-                  <View style={{ width: 10 }} />
+                  <View style={{ width: 12 }} />
                 )}
         contentContainerStyle={{
           paddingTop: 12,
@@ -128,9 +147,9 @@ export default function ExtraSection({
              {customizations.max_selection <=1 ? (<>
                
               <CustomizationCard
-            onPress={() => {handledata(item)}}
+            onPress={() => {handleSingleData(item)}}
             customization={item}
-            selected = {(selectedCustomizations.find((i) => i.id === item.id) && true) || (customizations.required && (index== 0 && true)) }
+            selected = {(selectedCustomizations.find((i) => i?.id === item.id) && true)}
           />
                
 
@@ -141,7 +160,7 @@ export default function ExtraSection({
               <CustomizationCard
             onPress={() => {handledata(item)}}
             customization={item}
-            selected = {(selectedCustomizations.find((i) => i.id === item.id) && true) || (customizations.required && (index== 0 && true)) }
+            selected = {(selectedCustomizations.find((i) => i?.id === item.id) && true)}
           />
              </>)}
            

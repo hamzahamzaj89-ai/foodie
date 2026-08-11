@@ -3,7 +3,7 @@ import { IAddOns } from "../../interface/IAddOns";
 
 export async function getAddOns() {
   const { data, error } = await supabase
-    .from("addOns")
+    .from("add_ons")
     .select(`
       id,
       name,
@@ -13,6 +13,7 @@ export async function getAddOns() {
     `)
   
   if (error) {
+    console.log(error)
     throw error;
   }
 

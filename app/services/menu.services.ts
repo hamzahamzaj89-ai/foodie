@@ -89,7 +89,7 @@ export async function getMenu(menuId: string) {
       menu_customization_group(
         display_order,
         
-        customization_group(
+        customization_group:customization_groups(
           id,
           name,
           description,
@@ -115,6 +115,8 @@ export async function getMenu(menuId: string) {
     .single();
 
   if (error) {
+
+    console.log(error)
     throw error;
   }
 
@@ -123,6 +125,7 @@ export async function getMenu(menuId: string) {
   if (!data) {
   throw new Error("menu item not found");
 }
+
 
 
 

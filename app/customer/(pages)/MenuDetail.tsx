@@ -15,6 +15,7 @@ import { useCartStore } from "../store/useCartStore";
 import { ICartAddOns, ICartCustomization, ICartItem } from "@/interface/ICart";
 import { IAddOns } from "@/interface/IAddOns";
 import AddOnsSection from "../components/AddOns";
+import { ICustomizationGroup, IMenuCustomizationGroup } from "@/interface/IMenu";
 
 const addOns = [
   {
@@ -40,19 +41,23 @@ const addOns = [
 export default function MenuDetailsScreen() {
   
 
-  const { id } = useLocalSearchParams();
+  const { menuId } = useLocalSearchParams();
 
-  const cart = useCartStore((state) => state.getCartItem(id as string));
+  const cart = useCartStore((state) => state.getCartItem(menuId as string));
 
   const [customizations, setCustomizations] = useState<ICartCustomization[]>(cart ? (cart as ICartItem).customizations : []);
 
     const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? (cart as ICartItem).addOns : []);
 
-  const { data: menu, isPending, error } = useMenuItem(id as string);
+  const { data: menu, isPending, error } = useMenuItem(menuId as string);
 
    const  addItem = useCartStore((state) => state.addItem)
 
   const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
+
+
+
+  console.log(menuId)
 
 
 
@@ -117,7 +122,7 @@ export default function MenuDetailsScreen() {
 
 
 
-
+   console.log(menu.menu_customization_group[0].customization_group)
 
 
   return (
@@ -144,12 +149,11 @@ export default function MenuDetailsScreen() {
                 }}
               />
 
-              <SizeSelector />
 
               {menu.menu_customization_group.map((item, inwdex) => (
                 <>
                   <CustomizationSection
-                    data={item.customization_group[0]}
+                    data={item.customization_group as any}
                     setData={setCustomizations}
                     selectedCustomizations={customizations}
                   />

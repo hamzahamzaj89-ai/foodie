@@ -27,14 +27,18 @@ export default function ExtraCard({
 
     
   return (
-    <Pressable
-    onPress={onPress}
-      className={` w-[105px] relative rounded-2xl  pt-3 pb-3 px-2  `}
+    <View
+      className={` w-[100px] relative rounded-xl bg-card  pt-2 pb-2 px-2  `}
      
     >
 
+
+   <Pressable className="absolute inset-0 z-[40]" onPress={onPress}/>
+
+
+         
          {selected && (
-          <View className="absolute right-3 bottom-3">
+          <View className="absolute right-3 bottom-[8px]">
               <CheckCircle
               color={"orange"}
               size={15}
@@ -70,6 +74,6 @@ export default function ExtraCard({
       <Text className="mt-0 text-center font-poppins-semibold text-xs text-buttonBackground">
         +${customization?.price}
       </Text>
-    </Pressable>
+    </View>
   );
 }
