@@ -2,8 +2,13 @@ import { FlatList, Pressable, Text, View } from "react-native";
 import { useState } from "react";
 import { categories } from "@/data/categories";
 
-export default function Categories() {
-  const [selected, setSelected] = useState("0");
+export default function Categories({
+  category , 
+  setCategory
+}:{
+  category:string
+  setCategory:any
+}) {
 
   return (
     <FlatList
@@ -19,11 +24,11 @@ export default function Categories() {
       
       renderItem={({ item }) => {
         const Icon = item.icon;
-        const active = selected === item.id;
+        const active = category === item.name;
 
         return (
           <Pressable
-            onPress={() => setSelected(item.id)}
+            onPress={() => setCategory( item.name)}
             className={`px-5 py-3 rounded-2xl flex-row items-center ${
               active
                 ? "bg-[#FF8A2B]"
@@ -43,7 +48,7 @@ export default function Categories() {
                   : "text-white"
               }`}
             >
-              {item.name}
+              {item.name === "" ? "All" : item.name}
             </Text>
           </Pressable>
         );

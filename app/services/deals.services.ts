@@ -6,28 +6,34 @@ import {  IDealDetail } from "@/interface/IDeal";
 
 const PAGE_SIZE = 5;
 
-export async function getActiveDeals(page:number) {
+export async function getActiveDeals(page:number , restaurantId:string) {
 
 
-    const start = page || 0
+   const start = page || 0
    const { data, error }  = await supabase
     .from("deals")
     .select(`
       id,
       image_url
     `)
+    .eq("restaurant_id" , restaurantId)
     .filter("start_date", "lte", "now()")
     .filter("end_date", "gte", "now()")
     .order("created_at", { ascending: false })
     .range(start , start + PAGE_SIZE );
 
 
-  if (error) throw error;
+  if (error) {
+    console.log(error)
+
+    throw error;
+
+  } 
 
   
    const hasNextPage = data.length > PAGE_SIZE;
 
-
+    console.log(data)
    return {
 
       data: data  as IDealCard[],

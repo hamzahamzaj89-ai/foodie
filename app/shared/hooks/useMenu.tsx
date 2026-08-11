@@ -5,52 +5,41 @@ import { useState } from "react";
 import { useResturantStore } from "../store/useResturantStore";
 import { toast } from "../utils/toast";
 
-export function useInfiniteMenus(resturantId: string) {
+export function useInfiniteMenus(resturantId: string, category: string) {
+  const selectedRestaurant = useResturantStore(
+    (state) => state.selectedRestaurant,
+  );
 
-
-
-    const selectedRestaurant = useResturantStore((state) => state.selectedRestaurant)
-
-const [page , setPage] = useState(0)
-
-
-
+  const [page, setPage] = useState(0);
 
   return useInfiniteQuery({
-    queryKey:  queryKeys.public.manus(selectedRestaurant?.id as string),
+    queryKey: queryKeys.public.menus(
+      selectedRestaurant?.id as string,
+      category,
+    ),
 
-    queryFn: ({ pageParam }) => getResturantMenus(pageParam),
+    queryFn: ({ pageParam }) =>
+      getResturantMenus(resturantId, category, pageParam),
 
-      initialPageParam: 0,
+    initialPageParam: 0,
 
-    getNextPageParam(lastPage , allPages) {
-
+    getNextPageParam(lastPage, allPages) {
       if (!lastPage.hasNextPage) {
         return undefined;
       }
 
-        // Next offset
-      return allPages.flat().length;
+      // Next offset
+      return allPages.reduce((total, page) => total + page.data.length, 0);
     },
   });
-
-
 }
-
-
-
 
 export function useMenuItem(menuId: string) {
   return useQuery({
-    queryKey:  queryKeys.public.menu(menuId),
+    queryKey: queryKeys.public.menu(menuId),
 
     queryFn: () => getMenu(menuId),
 
     enabled: !!menuId,
-
-    
   });
 }
-
-
-

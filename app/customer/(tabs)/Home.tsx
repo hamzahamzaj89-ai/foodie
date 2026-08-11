@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GlassCard from "../components/FoodCard";
 import FoodCard from "../components/FoodCard";
@@ -20,6 +20,7 @@ import { IMenuCard } from "@/interface/IMenuCard";
 import { router } from "expo-router";
 import Loader from "@/app/shared/components/Loader";
 import StatusScreen from "../screens/StatusScreen";
+import MenuSection from "../components/Home/MenuSection";
 
 const Home = () => {
   const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
@@ -36,36 +37,9 @@ const Home = () => {
   ];
 
   const { data: restaurant, error } = useResturant(restaurantId);
+ 
 
-  const {
-    data,
-    isPending,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    error: menuError,
-    isFetchingNextPage,
-  } = useInfiniteMenus(restaurantId);
-
-  const menus = useMemo(() => {
-    return data?.pages.flatMap((page) => page.data) ?? [];
-  }, [data]);
-
-
-
-
-   if (isPending)  return <Loader />;
-    
   
-    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
-      
-    
-  
-    if (!data) return <StatusScreen type="error" message="Not Found" title="404 error" />;
-    
-  
-
   return (
     <>
       <View className="flex-1 bg-black ">
@@ -75,41 +49,16 @@ const Home = () => {
               <TabHeader Home={true} Icon1={Bell} Icon2={ShoppingBag} />
             </View>
 
-            <FlatList
-              data={menus}
-              keyExtractor={(item) => item.id}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                paddingBottom: 50,
-              }}
-              columnWrapperStyle={{
-                justifyContent: "space-between",
-                paddingHorizontal: 10,
-                marginBottom: 28,
-              }}
-              ListHeaderComponent={
-                <>
-                  <View className="px-4 ">
-                    <SearchBar />
-                  </View>
 
-                  <DealCarousel  restaurantId={restaurantId}/>
+            
 
-                  <View className="px-4 pt-2 pb-8">
-                    <Categories />
-                  </View>
-                </>
-              }
-              renderItem={({ item, index }) => (
-                <FoodCard onPress={() => router.push({
-                  pathname: "/customer/(pages)/MenuDetail",
-                  params: {
-                    menuId: item.id
-                  }
-                })} item={item} index={index} />
-              )}
+            <MenuSection
+            restaurantId={restaurantId}
             />
+
+
+
+
           </View>
         </SafeAreaView>
       </View>

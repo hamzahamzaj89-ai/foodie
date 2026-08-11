@@ -11,7 +11,7 @@ import { LayoutGrid   } from "lucide-react-native";
 export const categories = [ 
     {
         id: "0",
-    name: "All",
+    name: "",
     icon: LayoutGrid  ,
 
     },

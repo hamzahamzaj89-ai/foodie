@@ -13,7 +13,7 @@ export function useDeals({ restaurantId }: UseDealsProps) {
   return useQuery({
     queryKey: queryKeys.public.deals(restaurantId),
 
-    queryFn: () => getActiveDeals(0),
+    queryFn: () => getActiveDeals(0 , restaurantId),
 
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -23,7 +23,7 @@ export function useInfiniteDeals({ restaurantId }: UseDealsProps) {
   return useInfiniteQuery({
     queryKey: queryKeys.public.infiniteDeals(restaurantId),
 
-    queryFn: ({ pageParam }) => getActiveDeals(pageParam),
+    queryFn: ({ pageParam }) => getActiveDeals(pageParam , restaurantId),
 
     initialPageParam: 0,
 

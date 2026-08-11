@@ -80,7 +80,7 @@ export default function StatusScreen({
   }
 
   return (
-    <View className="flex-1 items-center justify-center px-4">
+    <View className="flex-1 items-center justify-center px-4 bg-black">
       {/* Icon */}
 
       <View className="h-28 w-28 items-center justify-center rounded-full bg-card">

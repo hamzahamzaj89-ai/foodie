@@ -11,21 +11,23 @@ import { router } from "expo-router";
 import { IMenuCard } from "@/interface/IMenuCard";
 export default function FoodCard({item , index , onPress}: {item:IMenuCard , index:number , onPress: () => void}) {
   return (
-    <Pressable onPress={onPress} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-10")}>
+    <Pressable onPress={onPress} className={clsx("w-[165px] relative pt-10" , index % 2 && "pt-14")}>
       {/* Floating Image */}
 
-      <Image
+     <View className={clsx("absolute self-center  z-10 w-[190px] h-[130px]" , index % 2 ? "-top-14" : "top-[-4.5rem]")}>
+         <Image
         source={{
           uri: item.image_url,
         }}
         resizeMode="contain"
-        className={clsx("absolute  self-center  z-10 w-[190px] h-[160px]" , index % 2 ? "-top-16" : "-top-16")}
+        className={clsx(" w-full h-full " )}
       />
 
+     </View>
       {/* Card */}
 
       <View
-        className="relative -top-8 rounded-[28px] bg-[#111317] border border-[#23272F] px-4 pt-[72px] pb-4"
+        className="relative -top-8  rounded-[28px] bg-[#111317]  px-4 pt-[72px] pb-4"
         style={{
           shadowColor: "#000",
           shadowOffset: {
@@ -38,8 +40,9 @@ export default function FoodCard({item , index , onPress}: {item:IMenuCard , ind
         }}
       >
         {/* Food Name */}
-
-        <Text className="text-center text-[17px] text-white font-poppins-semibold">
+    <View className="mt-[-15px]">
+      
+        <Text numberOfLines={1} className="text-center text-[17px] text-white font-poppins-semibold">
           {item.title}
         </Text>
 
@@ -61,7 +64,7 @@ export default function FoodCard({item , index , onPress}: {item:IMenuCard , ind
          
 
             <Text className="text-[22px] text-buttonBackground  font-poppins-bold">
-              {item.price}
+              ${item.price}
             </Text>
           </View>
 
@@ -71,11 +74,12 @@ export default function FoodCard({item , index , onPress}: {item:IMenuCard , ind
           >
             <Plus
               size={22}
-              color="white"
+              color="black"
               strokeWidth={2.8}
             />
           </Pressable>
         </View>
+    </View>
       </View>
     </Pressable>
   );

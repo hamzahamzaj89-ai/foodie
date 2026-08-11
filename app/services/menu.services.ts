@@ -5,34 +5,55 @@ import { IMenuCard } from "../../interface/IMenuCard";
 
 const PAGE_SIZE = 10;
 
-export async function getResturantMenus(page?: number) {
+export async function getResturantMenus(restaurantId:string , category:string ,  page?: number ) {
 
     
 
     const start = page || 0
 
-  const { data , error } =  await supabase
+ let query  =   supabase
     .from("menu")
     .select(`
       id,
       title,
       price,
       image_url,
-      rating,
+      average_rating,
       reviews_count,
       created_at
     `)
+    .eq("restaurant_id" , restaurantId)
     .order("created_at", { ascending: false })
     .range(start, start + PAGE_SIZE);
 
 
+    if (category !== "") {
+        query.eq("category" , category)
+    }
+
+
+
+
+
+    const { data , error }  = await query;
+
    
  
-   if (error) throw error;
+   if (error) {
+    console.log("helo")
+   
+    throw error;
+
+   } 
+   
+
 
    
    const hasNextPage = data.length > PAGE_SIZE;
+     
 
+   
+console.log(hasNextPage)
 
    return {
 

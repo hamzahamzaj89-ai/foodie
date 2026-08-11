@@ -7,14 +7,9 @@ export async function getResturant(restaurantId: string) {
       id,
       name,
       description,
-      banner_url,
       logo_url,
       address,
-      rating,
-      reviews_count,
       delivery_fee,
-      estimated_delivery_time,
-      minimum_order,
       is_open
     `)
     .eq("id", restaurantId)
@@ -23,6 +18,8 @@ export async function getResturant(restaurantId: string) {
   if (error) {
     throw error;
   }
+
+  console.log(data)
 
   return data;
 }

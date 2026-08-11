@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { View, Image, Dimensions, Pressable } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import StatusScreen from "../../screens/StatusScreen";
+import DealSkeleton from "../skeletons/Home/DealSkeleton";
 
 const { width } = Dimensions.get("window");
 
@@ -23,7 +24,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
 
    //loader,error,undefined
   
-    if (isPending)  return <Loader />;
+    if (isPending)  return <DealSkeleton/>;
     
   
     if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;

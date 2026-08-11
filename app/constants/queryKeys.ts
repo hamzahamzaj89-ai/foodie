@@ -4,7 +4,7 @@ export const queryKeys = {
     restaurant: (id: string) => ["public", "restaurant", id] as const,
     menu: (id: string) => ["public", "food", id] as const,
     categories: ["public", "categories"] as const,
-    manus: (id:string) => ["public" , "menus" , id] as const,
+    menus: (id:string , category:string) => ["public" , "menus" , category, id ] as const,
     addOns: ["public" , "addOns" ] as const,
     deal: (id : string) => ["public", "deal", id] as const,
     
