@@ -35,6 +35,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
     
   
 
+    console.log("hellloooooooooooo")
 
 
 
@@ -56,7 +57,12 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
         
         onSnapToItem={(i) => setIndex(i)}
         renderItem={({ item }) => (
-          <Pressable onPress={() => router.push("/customer/(pages)/DealDetail")} className="overflow-hidden mx-3 rounded-2xl">
+          <Pressable onPress={() => router.push({
+            pathname: "/customer/(pages)/DealDetail",
+            params: {
+              dealId: item.id
+            }
+          })} className="overflow-hidden mx-3 rounded-2xl">
             <Image
               source={{
                 uri: item.image_url

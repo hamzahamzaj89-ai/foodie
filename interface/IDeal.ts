@@ -32,7 +32,7 @@ export interface IDealDetail {
 }
 export interface IDealMenu {
   quantity : number
-  menuItem : IDealMenuItem[]
+  menu : IDealMenuItem | IDealMenuItem[]
   
 }
 

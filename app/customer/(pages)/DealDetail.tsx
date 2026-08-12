@@ -22,11 +22,10 @@ import StatusScreen from "../screens/StatusScreen";
 import { toast } from "@/app/shared/utils/toast";
 
 export default function DealDetail() {
-  const { id } = useLocalSearchParams();
+  const { dealId } = useLocalSearchParams();
 
-  const cart = useCartStore((state) => state.getCartItem(id as string));
+  const cart = useCartStore((state) => state.getCartItem(dealId as string));
 
-  const { data: deal, error, isPending } = useDealItem(id as string);
 
   const [quantity, setQuantity] = useState(cart ? cart.quantity : 1);
   const addItem = useCartStore((state) => state.addItem);
@@ -34,17 +33,27 @@ export default function DealDetail() {
   const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? cart.addOns : []);
 
 
+  const { data: deal, error, isPending } = useDealItem(dealId as string);
+
+
+
   //memos
   const oldPrice = useMemo(() => {
     return calculateDealPrice(deal?.menus);
   }, [deal]);
 
+
+
   const newPrice = useMemo(() => {
     return deal?.fixed_discount
-      ? oldPrice - deal.fixed_discount
-      : oldPrice - (deal?.discount_percentage ?? 0) * oldPrice;
+      ? oldPrice - deal?.fixed_discount
+      : oldPrice - (((deal?.discount_percentage ?? 0) /100) * oldPrice);
   }, [deal]);
 
+
+
+
+  
 
 
   //loader,error,undefined

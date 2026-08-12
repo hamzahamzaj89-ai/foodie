@@ -67,9 +67,9 @@ const { data , error } = await supabase
     created_at,
     updated_at,
 
-    menus:deals_group(
+    menus:deal_group(
       quantity,
-      menuItem(
+      menu(
         id,
         title,
         description,
@@ -82,6 +82,7 @@ const { data , error } = await supabase
   .single();
 
   if (error) {
+    console.log(error)
     throw error;
   }
 
@@ -90,6 +91,8 @@ const { data , error } = await supabase
   throw new Error("deal item not found");
   return
 }
+
+
 
 
 
