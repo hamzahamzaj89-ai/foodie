@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
 
 import HeroSection from "@/app/customer/components/MenuDetail/HeroSection";
@@ -12,7 +12,7 @@ import { useMenuItem } from "@/app/shared/hooks/useMenu";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { useCartStore } from "../store/useCartStore";
-import { ICartAddOns, ICartCustomization, ICartItem } from "@/interface/ICart";
+import { ICartAddOns, ICartCustomization, ICartDeal, ICartItem } from "@/interface/ICart";
 import { IAddOns } from "@/interface/IAddOns";
 import AddOnsSection from "../components/AddOns";
 import { ICustomizationGroup, IMenuCustomizationGroup } from "@/interface/IMenu";
@@ -47,14 +47,16 @@ export default function MenuDetailsScreen() {
 
   const [customizations, setCustomizations] = useState<ICartCustomization[]>(cart ? (cart as ICartItem).customizations : []);
 
-    const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? (cart as ICartItem).addOns : []);
+
+  const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? (cart as ICartItem).addOns : []);
 
   const { data: menu, isPending, error } = useMenuItem(menuId as string);
 
-   const  addItem = useCartStore((state) => state.addItem)
+  const  addItem = useCartStore((state) => state.addItem)
 
   const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
 
+  const [isRequiredCompelete , setIsRequiredCompelete] = useState(false)
 
 
   console.log(menuId)
@@ -73,6 +75,23 @@ export default function MenuDetailsScreen() {
     
   
 
+     
+   let  customizationsPrice = useMemo(()=> {
+              return customizations.reduce((crr , cus) => {
+                       return  crr + cus.price;
+
+              } , 0)
+   } , [customizations])
+
+   let addOnsPrice = useMemo(() => {
+
+
+     return addOns.reduce((crr , cus) => {
+                       return  crr + cus.price;
+                       
+              } , 0)
+
+   } , [addOns])
 
 
 
@@ -122,7 +141,6 @@ export default function MenuDetailsScreen() {
 
 
 
-   console.log(menu.menu_customization_group[0].customization_group)
 
 
   return (
@@ -156,6 +174,8 @@ export default function MenuDetailsScreen() {
                     data={item.customization_group as any}
                     setData={setCustomizations}
                     selectedCustomizations={customizations}
+                    isRequiredCompelete = {isRequiredCompelete}
+                    setIsRequiredCompelete={setIsRequiredCompelete}
                   />
                 </>
               ))}
@@ -172,8 +192,11 @@ export default function MenuDetailsScreen() {
           handleCart;
         }}
         quantity={quantity}
+        price={menu.price + customizationsPrice + addOnsPrice}
         setQuantity={setQuantity}
       />
+
+
 
 
     </SafeAreaView>

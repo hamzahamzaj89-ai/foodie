@@ -21,6 +21,7 @@ import { router } from "expo-router";
 import Loader from "@/app/shared/components/Loader";
 import StatusScreen from "../screens/StatusScreen";
 import MenuSection from "../components/Home/MenuSection";
+import { useResturantStore } from "@/app/shared/store/useResturantStore";
 
 const Home = () => {
   const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
@@ -37,6 +38,27 @@ const Home = () => {
   ];
 
   const { data: restaurant, error } = useResturant(restaurantId);
+
+  const setSelectedRestaurant = useResturantStore((state) => state.setSelectedRestaurant)
+
+  useEffect(() => {
+
+
+    if (restaurant) {
+         setSelectedRestaurant(restaurant)
+    }
+
+  } , [restaurant])
+
+
+
+  if (error) {
+       return <StatusScreen
+       title={error.name}
+       message={error.message}
+       type="error"
+       />
+  }
  
 
   

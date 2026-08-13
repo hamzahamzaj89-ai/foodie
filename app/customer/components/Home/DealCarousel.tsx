@@ -35,7 +35,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
     
   
 
-    console.log("hellloooooooooooo")
+    console.log("hellloooooooooooo123")
 
 
 
@@ -46,7 +46,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
       <Carousel
         loop={true}
         width={CARD_WIDTH}
-        autoPlay={true}
+        autoPlay={false}
         autoPlayInterval={2000}
         height={CARD_HEIGHT}
         data={deals.data}

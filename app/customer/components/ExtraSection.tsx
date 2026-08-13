@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   Text,
@@ -14,14 +14,34 @@ import { toast } from "@/app/shared/utils/toast";
 interface Props  {
   data: ICustomizationGroup;
   setData: React.Dispatch<React.SetStateAction<ICartCustomization[]>>;
-  selectedCustomizations: ICartCustomization[]
+  selectedCustomizations: ICartCustomization[];
+  isRequiredCompelete: boolean;
+  setIsRequiredCompelete: React.Dispatch<React.SetStateAction<boolean>>;
+
+
 };
 
 export default function ExtraSection({
   data:customizations,
   setData,
-  selectedCustomizations
+  selectedCustomizations,
+  isRequiredCompelete,
+  setIsRequiredCompelete
 }: Props) {
+
+
+
+
+  useEffect(() => {
+    
+     if (customizations.required) {
+           
+         setIsRequiredCompelete(true)
+
+     }
+
+
+  } , [customizations])
 
 
   const handledata = (selectedCard:ICustomizationOption) => {

@@ -11,6 +11,9 @@ import SizeSelector from "./MenuDetail/SizeSelector";
 import { ICartAddOns, ICartCustomization } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
 import { useAddOns } from "@/app/shared/hooks/useAddOns";
+import { useResturantStore } from "@/app/shared/store/useResturantStore";
+import StatusScreen from "../screens/StatusScreen";
+import ExtrasSkeletonList from "./skeletons/Extras/ExtraSkeleonList";
 
 interface Props  {
   setData: React.Dispatch<React.SetStateAction<ICartAddOns[]>>;
@@ -21,13 +24,25 @@ export default function AddOnsSection({
   setData,
    selectedAddOns
 }: Props) {
+  
+    const selectedRestaurant = useResturantStore((state) => state.selectedRestaurant)
 
 
-
-    const  {data:addOns , isPending , error} = useAddOns()
+    const  {data:addOns , isPending , error} = useAddOns(selectedRestaurant?.id as string)
  
 
     console.log(addOns)
+
+
+
+
+
+    if (error) {
+        return 
+    }
+
+
+
 
   
   return (
@@ -47,10 +62,22 @@ export default function AddOnsSection({
 
       {/* Cards */}
 
-        <View className="flex flex-row no-wrap">
+
+      {
+        isPending ? (<>
+
+        <ExtrasSkeletonList/>
+        
+        </>) : (
+
+          <>
+
+            <View className="flex flex-row no-wrap w-[100%]  ">
           <FlatList
         horizontal
         data={addOns}
+        className="w-full"
+
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => (
@@ -75,6 +102,12 @@ export default function AddOnsSection({
     />
         </View>
           
+          
+          
+          </>
+        )
+      }
+      
           
     </View>
   );

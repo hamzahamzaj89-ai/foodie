@@ -3,12 +3,12 @@ import { getAddOns } from "@/app/services/addOns.services";
 import { useQuery } from "@tanstack/react-query";
 
 
-export function useAddOns() {
+export function useAddOns(restaurantId:string) {
   return useQuery({
-    queryKey:  queryKeys.public.addOns,
 
-    queryFn: () => getAddOns(),
-    staleTime: 1000 * 60 * 60, // 1 hour
+    queryKey:  queryKeys.public.getAddOns(restaurantId),
+
+    queryFn: () => getAddOns(restaurantId),
 
     
   });

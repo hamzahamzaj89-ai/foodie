@@ -12,7 +12,7 @@ import { IAddOns } from "@/interface/IAddOns";
 
 type Props = {
   selected?: boolean | undefined;
-  customization: ICustomizationOption | IAddOns| null;
+  customization: ICustomizationOption | IAddOns;
   onPress: () => void;
 };
 
@@ -24,6 +24,8 @@ export default function ExtraCard({
 }: Props) {
 
 
+
+  console.log(customization.image_url)
 
     
   return (
@@ -49,18 +51,19 @@ export default function ExtraCard({
          
 
         <Text
-        numberOfLines={2}
-        className="text-center font-poppins-semibold text-sm text-white"
+        numberOfLines={1}
+        className="text-center font-poppins-semibold text-sm text-white pb-1"
       >
         {customization?.name}
       </Text> 
 
-      {/* Floating Image */}
 
       <Image
-        source={require("@/assets/images/french_fries.png")}
+        source={{
+          uri: customization.image_url ?? ""
+        }}
         resizeMode="contain"
-        className="  self-center h-10 w-15"
+        className="  self-center h-8 w-14 "
       />
 
       {/* Selected Badge */}
@@ -71,7 +74,7 @@ export default function ExtraCard({
       
       {/* Price */}
 
-      <Text className="mt-0 text-center font-poppins-semibold text-xs text-buttonBackground">
+      <Text className="mt-0 text-center font-poppins-semibold text-xs text-buttonBackground pt-1">
         +${customization?.price}
       </Text>
     </View>

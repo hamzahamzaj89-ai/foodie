@@ -6,15 +6,12 @@ import { useResturantStore } from "../store/useResturantStore";
 import { toast } from "../utils/toast";
 
 export function useInfiniteMenus(resturantId: string, category: string) {
-  const selectedRestaurant = useResturantStore(
-    (state) => state.selectedRestaurant,
-  );
 
   const [page, setPage] = useState(0);
 
   return useInfiniteQuery({
     queryKey: queryKeys.public.menus(
-      selectedRestaurant?.id as string,
+      resturantId as string,
       category,
     ),
 
@@ -23,6 +20,8 @@ export function useInfiniteMenus(resturantId: string, category: string) {
 
     initialPageParam: 0,
 
+    enabled: !!resturantId,
+    
     getNextPageParam(lastPage, allPages) {
       if (!lastPage.hasNextPage) {
         return undefined;

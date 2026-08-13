@@ -28,6 +28,8 @@ export interface ICartItem {
 
   title: string;
   type: string;
+  menuId:string;
+
 
 
   imageUrl: string | null;
@@ -50,6 +52,8 @@ export interface ICartDeal {
   id: string;
 
   title: string;
+  dealId: string;
+
 
   type: string
   items: IDealMenu[];
@@ -73,7 +77,7 @@ export interface ICartDeal {
 
 export interface ICartStore {
 
-  items: (ICartItem |ICartDeal)[];
+  items: (ICartItem |ICartDeal)[] | null;
 
   addItem: (item: ICartItem | ICartDeal) => void;
 
