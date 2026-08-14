@@ -25,12 +25,11 @@ export default function ExtraCard({
 
 
 
-  console.log(customization.image_url)
 
     
   return (
     <View
-      className={` w-[100px] relative rounded-xl bg-card  pt-2 pb-2 px-2  `}
+      className={` w-[100px] relative rounded-2xl bg-card  pt-2 pb-2 px-2  `}
      
     >
 

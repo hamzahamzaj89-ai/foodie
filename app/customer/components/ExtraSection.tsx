@@ -15,9 +15,8 @@ interface Props  {
   data: ICustomizationGroup;
   setData: React.Dispatch<React.SetStateAction<ICartCustomization[]>>;
   selectedCustomizations: ICartCustomization[];
-  isRequiredCompelete: boolean;
-  setIsRequiredCompelete: React.Dispatch<React.SetStateAction<boolean>>;
 
+  currentRef: any
 
 };
 
@@ -25,8 +24,8 @@ export default function ExtraSection({
   data:customizations,
   setData,
   selectedCustomizations,
-  isRequiredCompelete,
-  setIsRequiredCompelete
+  
+  currentRef
 }: Props) {
 
 
@@ -35,13 +34,16 @@ export default function ExtraSection({
   useEffect(() => {
     
      if (customizations.required) {
-           
-         setIsRequiredCompelete(true)
+            
+         console.log(selectedCustomizations.length )
+         selectedCustomizations.find((item , index) => item.groupId === customizations.id) ?  currentRef.current = true : currentRef.current = false 
 
      }
 
 
-  } , [customizations])
+  } , [selectedCustomizations])
+
+
 
 
   const handledata = (selectedCard:ICustomizationOption) => {
@@ -81,7 +83,8 @@ export default function ExtraSection({
           
             setData((prev : ICartCustomization[]) => [...prev , {
             groupId: customizations.id ,
-            groupName: customizations.name  ,
+            groupName: customizations.name,
+            required: customizations.required,
             id:  selectedCard.id ,
             name: selectedCard.name  ,
             image_url: selectedCard.image_url as string,
@@ -113,6 +116,7 @@ export default function ExtraSection({
             setData((prev : ICartCustomization[]) => [...prev , {
             groupId: customizations.id ,
             groupName: customizations.name  ,
+            required: customizations.required,
             id:  selectedCard.id ,
             name: selectedCard.name  ,
             image_url: selectedCard.image_url as string,
@@ -154,12 +158,13 @@ export default function ExtraSection({
         keyExtractor={(item) => item?.id}
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => (
-                  <View style={{ width: 12 }} />
+                  <View style={{ width: 13 }} />
                 )}
         contentContainerStyle={{
           paddingTop: 12,
           paddingBottom: 8,
-          paddingRight: 20,
+          paddingLeft : -2,
+          paddingRight: 10,
         }}
         renderItem={({ item, index }) => (
            <>

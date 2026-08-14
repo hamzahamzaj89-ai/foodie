@@ -4,6 +4,7 @@ export interface ICartCustomization {
   groupId: string;
   groupName: string;
   id: string;
+  required: boolean;
 
   image_url: string;
   name: string;
@@ -28,7 +29,6 @@ export interface ICartItem {
 
   title: string;
   type: string;
-  menuId:string;
 
 
 
@@ -52,7 +52,6 @@ export interface ICartDeal {
   id: string;
 
   title: string;
-  dealId: string;
 
 
   type: string
@@ -77,7 +76,7 @@ export interface ICartDeal {
 
 export interface ICartStore {
 
-  items: (ICartItem |ICartDeal)[] | null;
+  items: (ICartItem |ICartDeal)[] ;
 
   addItem: (item: ICartItem | ICartDeal) => void;
 
@@ -86,6 +85,7 @@ export interface ICartStore {
 
 
   updateQuantity: (cartItemId: string, quantity: number) => void;
+  updateItem: (cartItem: ICartDeal | ICartItem) => void;
 
   clearCart: () => void;
 

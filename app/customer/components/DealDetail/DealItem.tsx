@@ -17,20 +17,24 @@ export default function DealItem({
   quantity,
 }: IncludedItemRowProps) {
   return (
-    <View className="mb-3 flex-row items-center rounded-2xl  p-3">
+    <View className="mb-3 flex-row items-center rounded-2xl  py-1">
       {/* Food Image */}
 
-         <View className="relative h-16 w-16 ">
+         <View className=" h-16 w-16 ">
           <Image
-        source={image}
+        source={
+          {
+            uri: image
+          }
+        }
         resizeMode="contain"
-        className="h-24 w-24 -left-5 bottom-[13px]"
+        className="h-16 w-16 "
       />
          </View>
 
       {/* Food Name */}
 
-      <View className="ml-4 flex-1">
+      <View className="ml-3 flex-1">
         <Text className="font-poppins-semibold text-base text-white">
           {name}
         </Text>

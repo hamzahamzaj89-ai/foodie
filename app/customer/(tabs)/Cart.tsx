@@ -16,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CartBottom from "../components/cart/CartBottom";
 import Button from "@/app/shared/components/Button";
 import TabHeader from "../components/TabHeader";
+import { useCartStore } from "../store/useCartStore";
 
 const cart = [
   {
@@ -37,6 +38,12 @@ const cart = [
 ];
 
 export default function Cart() {
+
+   const cartItems = useCartStore((state) => state.items)
+
+
+   console.log(cartItems)
+
   return (
     <>
 

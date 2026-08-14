@@ -6,35 +6,31 @@ import {
 } from "react-native";
 
 import DealItem from "./DealItem";
+import { IDealAddOns, IDealMenu } from "@/interface/IDeal";
+import { IMenuItem } from "@/interface/IMenu";
 
-const includedItems = [
-  {
-    id: "1",
-    image: require("@/assets/images/burger.png"),
-    name: "Cheese Burger",
-    quantity: 2,
-  },
-  {
-    id: "2",
-    image: require("@/assets/images/burger.png"),
-    name: "Large Fries",
-    quantity: 2,
-  },
-  {
-    id: "3",
-    image: require("@/assets/images/burger.png"),
-    name: "Coca-Cola",
-    quantity: 4,
-  },
-  {
-    id: "4",
-    image: require("@/assets/images/burger.png"),
-    name: "Chicken Nuggets",
-    quantity: 1,
-  },
-];
 
-export default function DealItemsSection() {
+
+
+interface Props {
+
+  id:string;
+  name : string;
+  image: string;
+  quantity: number
+
+}
+
+export default function DealItemsSection({
+  items
+}: {
+  items:  IDealMenu[]
+}) {
+
+
+    console.log(items[0].menu)
+
+
   return (
     <View className="mt-8 ">
       {/* Section Title */}
@@ -49,15 +45,15 @@ export default function DealItemsSection() {
 
       <FlatList
         scrollEnabled={false}
-        data={includedItems}
-        keyExtractor={(item) => item.id}
+        data={items}
+        keyExtractor={(item) => (item.id)}
         contentContainerStyle={{
           marginTop: 18,
         }}
         renderItem={({ item }) => (
           <DealItem
-            image={item.image}
-            name={item.name}
+            image={(item.menu as IMenuItem).image_url}
+            name={(item.menu as IMenuItem).title}
             quantity={item.quantity}
           />
         )}

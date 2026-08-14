@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 
 import DealHero from "@/app/customer/components/DealDetail/HeroSection";
@@ -36,6 +36,7 @@ export default function DealDetail() {
   const { data: deal, error, isPending } = useDealItem(dealId as string);
 
 
+  const dealMenusItems = useRef([])
 
   //memos
   const oldPrice = useMemo(() => {
@@ -113,10 +114,15 @@ export default function DealDetail() {
 
 
 
+  console.log(deal.addOns)
+  console.log(deal.menus[0].customizations)
+
+
 
   return (
-    <>
-      <SafeAreaView className="flex-1 bg-black px-4 pt-0">
+  <>
+         <View className= "flex-1 bg-black">
+      <SafeAreaView className="flex-1 bg-black px-4 ">
         <View className="flex-1">
           <View className="mb-2">
             <Header title="Deal Details" onPress={() => router.back()} />
@@ -125,7 +131,7 @@ export default function DealDetail() {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-              paddingBottom: 140,
+              paddingBottom: 30,
             }}
           >
             {/* Hero Image */}
@@ -145,7 +151,9 @@ export default function DealDetail() {
 
             {/* Included Items */}
 
-            <IncludedItemsSection />
+            <IncludedItemsSection
+                 items={deal.menus}
+            />
 
             {/* Add Extras */}
 
@@ -160,13 +168,13 @@ export default function DealDetail() {
         </View>
       </SafeAreaView>
 
-      <View>
         <BottomActionBar
           onPress={handleCartDeal}
           quantity={quantity}
           setQuantity={setQuantity}
         />
-      </View>
-    </>
+    </View>   
+  
+  </>
   );
 }

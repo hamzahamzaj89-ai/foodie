@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  GestureResponderEvent,
   Pressable,
   Text,
   View,
@@ -22,7 +23,8 @@ export default function BottomActionBar({onPress , quantity , setQuantity , pric
   return (
     
     <View
-      className="absolute bottom-0 left-0 right-0 rounded-t-[30px] bg-card px-5 pt-5 pb-8"
+      className="relative bottom-0 left-0 right-0 rounded-t-[30px] bg-card px-5 pt-5 pb-8 "
+
       style={{
         shadowColor: "#000",
         shadowOpacity: 0.25,
@@ -49,7 +51,7 @@ export default function BottomActionBar({onPress , quantity , setQuantity , pric
 
         {/* Add To Cart */}
 
-        <Pressable onPress={onPress}  className="flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-buttonBackground px-5 py-[13px]">
+        <Pressable onPress={onPress}  className=" flex-1 flex-row items-center justify-center  mt-[2px] rounded-2xl bg-buttonBackground px-5 py-[13px]">
          
 
           <View className="flex-row items-center">

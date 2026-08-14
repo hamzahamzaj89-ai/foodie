@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, SafeAreaView, View } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { FlatList, View } from "react-native";
 
 import HeroSection from "@/app/customer/components/MenuDetail/HeroSection";
 import ProductInfo from "@/app/customer/components/MenuDetail/ProductInfo";
@@ -16,27 +16,10 @@ import { ICartAddOns, ICartCustomization, ICartDeal, ICartItem } from "@/interfa
 import { IAddOns } from "@/interface/IAddOns";
 import AddOnsSection from "../components/AddOns";
 import { ICustomizationGroup, IMenuCustomizationGroup } from "@/interface/IMenu";
+import { toast } from "@/app/shared/utils/toast";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const addOns = [
-  {
-    id: "1",
-    name: "French Fries",
-    price: 2.99,
-    image: require("@/assets/images/french_fries.png"),
-  },
-  {
-    id: "2",
-    name: "Coca-Cola",
-    price: 1.99,
-    image: require("@/assets/images/french_fries.png"),
-  },
-  {
-    id: "3",
-    name: "Chicken Nuggets",
-    price: 4.99,
-    image: require("@/assets/images/french_fries.png"),
-  },
-];
+
 
 export default function MenuDetailsScreen() {
   
@@ -56,8 +39,10 @@ export default function MenuDetailsScreen() {
 
   const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
 
-  const [isRequiredCompelete , setIsRequiredCompelete] = useState(false)
 
+
+
+  const currentRef = useRef(false);
 
   console.log(menuId)
 
@@ -73,8 +58,10 @@ export default function MenuDetailsScreen() {
   
     if (!menu) return <StatusScreen type="error" message="Not Found" title="404 error" />;
     
-  
 
+
+  
+   //caculating prices
      
    let  customizationsPrice = useMemo(()=> {
               return customizations.reduce((crr , cus) => {
@@ -94,10 +81,32 @@ export default function MenuDetailsScreen() {
    } , [addOns])
 
 
+   let requiredCustomizationsPrice = useMemo(() => {
+
+    return customizations.reduce((crr , cus) => {
+
+        if (cus.required) {
+                 return crr + cus.price;
+        }
+         
+        return crr
+    } , 0)
+
+   }, [customizations ])
+
+
 
   const handleCart = () => {
 
+       if (!currentRef.current) {
 
+
+              toast.error("Please select the required customizations")
+              return
+       }
+
+
+          
        if (cart) {
 
         const cartItem = {
@@ -106,7 +115,6 @@ export default function MenuDetailsScreen() {
         quantity: quantity,
         customizations: customizations,
         addOns: addOns
- 
 
     }
      
@@ -122,7 +130,7 @@ export default function MenuDetailsScreen() {
        }
 
 
-         const cartItem:ICartItem = {
+        const cartItem:ICartItem = {
         id: menu?.id as string,
         type: "cartItem",
         imageUrl: menu?.image_url as string,
@@ -137,6 +145,10 @@ export default function MenuDetailsScreen() {
 
     addItem(cartItem)
 
+
+
+    toast.success("Added to cart successfully")
+
   };
 
 
@@ -144,13 +156,13 @@ export default function MenuDetailsScreen() {
 
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <View className="flex-1 bg-black">
       <FlatList
         data={[]}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 140,
+          paddingBottom: 50,
         }}
         ListHeaderComponent={
           <>
@@ -174,8 +186,8 @@ export default function MenuDetailsScreen() {
                     data={item.customization_group as any}
                     setData={setCustomizations}
                     selectedCustomizations={customizations}
-                    isRequiredCompelete = {isRequiredCompelete}
-                    setIsRequiredCompelete={setIsRequiredCompelete}
+                    
+                    currentRef={currentRef}
                   />
                 </>
               ))}
@@ -188,17 +200,15 @@ export default function MenuDetailsScreen() {
       />
 
       <BottomActionBar
-        onPress={() => {
-          handleCart;
-        }}
+        onPress={handleCart}
         quantity={quantity}
-        price={menu.price + customizationsPrice + addOnsPrice}
+        price={(quantity * (menu.price + requiredCustomizationsPrice)) + (customizationsPrice-requiredCustomizationsPrice) + addOnsPrice}
         setQuantity={setQuantity}
       />
 
 
 
 
-    </SafeAreaView>
+    </View>
   );
 }

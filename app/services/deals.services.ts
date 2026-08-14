@@ -67,7 +67,19 @@ const { data , error } = await supabase
     created_at,
     updated_at,
 
+    addOns:deal_add_ons(
+        id,
+        quantity,
+        addOns:add_ons (
+           id,
+           name,
+           image_url,
+           price
+        )
+    ),
+
     menus:deal_group(
+      id,
       quantity,
       menu(
         id,
@@ -75,6 +87,16 @@ const { data , error } = await supabase
         description,
         image_url,
         price
+      ),
+
+      customizations:deal_menu_customizations(
+          id,
+          group_name,
+          customization_id,
+          customization_name,
+          customization_price,
+          customization_image_url
+
       )
     )
   `)

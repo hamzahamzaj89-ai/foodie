@@ -37,6 +37,16 @@ export const useCartStore = create<ICartStore>((set, get) => ({
     })),
 
 
+  updateItem: (cartItem) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === cartItem.id
+          ? {...cartItem}
+          : item
+      ),
+    })),
+
+
   clearCart: () =>
     set({
       items: [],

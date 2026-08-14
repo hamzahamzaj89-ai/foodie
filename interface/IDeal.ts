@@ -1,3 +1,5 @@
+import { IAddOns } from "./IAddOns";
+
 export interface IDealDetail {
   id: string;
 
@@ -24,15 +26,40 @@ export interface IDealDetail {
   created_at?: string;
 
   updated_at?: string;
+  addOns : IDealAddOns[];
 
   menus : IDealMenu[];
   subtitle: string;
 
 
 }
+
+export  interface IDealAddOns {
+  id: string;
+  quantity: number;
+  addOns : IAddOns[];
+
+}
+
+
+export interface IDealCustomizations{
+   id:string;
+   group_name: string;
+   customization_id: string;
+   customization_name: string;
+   customization_image_url: string;
+   customization_price: number;
+
+
+}
+
+
+
 export interface IDealMenu {
+  id:string;
   quantity : number
   menu : IDealMenuItem | IDealMenuItem[]
+  customizations: IDealCustomizations[]
   
 }
 
