@@ -38,7 +38,6 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
     );
 
     if (selected > -1) {
-      console.log(selected);
       selectedAddOns.splice(selected, 1);
       const newArray = [...selectedAddOns];
       setData(newArray);

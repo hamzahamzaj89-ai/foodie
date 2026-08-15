@@ -35,7 +35,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
     
   
 
-    console.log("hellloooooooooooo123")
+
 
 
 

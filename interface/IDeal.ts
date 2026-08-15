@@ -1,4 +1,5 @@
 import { IAddOns } from "./IAddOns";
+import { ICustomizationOption } from "./IMenu";
 
 export interface IDealDetail {
   id: string;
@@ -30,14 +31,12 @@ export interface IDealDetail {
 
   menus : IDealMenu[];
   subtitle: string;
-
-
 }
 
 export  interface IDealAddOns {
   id: string;
   quantity: number;
-  addOns : IAddOns[];
+  addOns : IAddOns |  IAddOns[];
 
 }
 
@@ -45,12 +44,9 @@ export  interface IDealAddOns {
 export interface IDealCustomizations{
    id:string;
    group_name: string;
-   customization_id: string;
-   customization_name: string;
-   customization_image_url: string;
-   customization_price: number;
+   group_id: string;
 
-
+   customization: ICustomizationOption | ICustomizationOption[];
 }
 
 

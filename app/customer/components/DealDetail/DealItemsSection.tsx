@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   Text,
@@ -8,27 +8,25 @@ import {
 import DealItem from "./DealItem";
 import { IDealAddOns, IDealMenu } from "@/interface/IDeal";
 import { IMenuItem } from "@/interface/IMenu";
+import { IAddOns } from "@/interface/IAddOns";
 
 
 
 
-interface Props {
-
-  id:string;
-  name : string;
-  image: string;
-  quantity: number
-
-}
 
 export default function DealItemsSection({
-  items
+  items,
+  dealAddOns,
+  dealMenuItem
 }: {
   items:  IDealMenu[]
+  dealAddOns: IDealAddOns[]
+  dealMenuItem: any
 }) {
 
+  
 
-    console.log(items[0].menu)
+
 
 
   return (
@@ -52,12 +50,36 @@ export default function DealItemsSection({
         }}
         renderItem={({ item }) => (
           <DealItem
-            image={(item.menu as IMenuItem).image_url}
+            image={(item.menu as IMenuItem)?.image_url}
             name={(item.menu as IMenuItem).title}
             quantity={item.quantity}
           />
         )}
       />
+
+
+       <FlatList
+        scrollEnabled={false}
+        data={dealAddOns}
+        keyExtractor={(item) => (item.id)}
+      
+        renderItem={({ item }) => (
+          <DealItem
+            image={(item.addOns as IAddOns).image_url}
+            name={(item.addOns as IAddOns).name}
+            quantity={item.quantity}
+          />
+        )}
+      />
+
+     
+
+      
+
+
+
+
+
     </View>
   );
 }

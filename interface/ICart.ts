@@ -4,12 +4,10 @@ export interface ICartCustomization {
   groupId: string;
   groupName: string;
   id: string;
-  required: boolean;
-
+  required?: boolean;
   image_url: string;
   name: string;
   quantity: number;
-
   price: number;
 }
 
@@ -28,7 +26,7 @@ export interface ICartItem {
   id: string;
 
   title: string;
-  type: string;
+  type?: string;
 
 
 
@@ -40,11 +38,14 @@ export interface ICartItem {
   quantity: number;
 
   customizations: ICartCustomization[];
-  addOns: ICartAddOns[];
+  addOns: ICartAddOns[] | [];
 
 
 }
 
+
+export interface IDealItems extends ICartItem {  
+}
 
 
 export interface ICartDeal {
@@ -54,8 +55,9 @@ export interface ICartDeal {
   title: string;
 
 
-  type: string
-  items: IDealMenu[];
+  type: "menuItem" | "deal";
+
+  items: IDealItems[];
 
   oldPrice: number;
 
@@ -95,3 +97,5 @@ export interface ICartStore {
 
 
 }
+
+

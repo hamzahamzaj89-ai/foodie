@@ -42,7 +42,6 @@ export default function Cart() {
    const cartItems = useCartStore((state) => state.items)
 
 
-   console.log(cartItems)
 
   return (
     <>
@@ -61,7 +60,7 @@ export default function Cart() {
       {/* Cart */}
 
       <FlatList
-        data={cart}
+        data={cartItems}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -71,10 +70,14 @@ export default function Cart() {
           <View style={{ height: 16 }} />
         )}
         renderItem={({ item }) =>
-          item.type === "menu" ? (
-            <CartMenuCard />
+          item?.type === "deal" ? (
+            <CartDealCard 
+              item={item}
+            />
+           
           ) : (
-            <CartDealCard />
+                <CartMenuCard
+                 />
           )
         }
         ListFooterComponent={

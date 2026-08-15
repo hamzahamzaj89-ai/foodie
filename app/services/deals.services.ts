@@ -33,7 +33,6 @@ export async function getActiveDeals(page:number , restaurantId:string) {
   
    const hasNextPage = data.length > PAGE_SIZE;
 
-    console.log(data)
    return {
 
       data: data  as IDealCard[],
@@ -92,10 +91,14 @@ const { data , error } = await supabase
       customizations:deal_menu_customizations(
           id,
           group_name,
-          customization_id,
-          customization_name,
-          customization_price,
-          customization_image_url
+          group_id,
+
+          customization: customizations(
+          id , 
+          name,
+          price,
+          image_url
+          )
 
       )
     )

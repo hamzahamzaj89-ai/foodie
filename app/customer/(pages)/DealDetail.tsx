@@ -12,67 +12,65 @@ import DealHeader from "../components/DealDetail/DealHeader";
 import Header from "../components/Header";
 import { router, useLocalSearchParams } from "expo-router";
 import AddOnsSection from "../components/AddOns";
-import { ICartAddOns, ICartDeal } from "@/interface/ICart";
+import { ICartAddOns, ICartDeal, ICartItem } from "@/interface/ICart";
 import { useCartStore } from "../store/useCartStore";
 import { useDealItem, useDeals } from "@/app/shared/hooks/useDeals";
-import { calculateDealPrice } from "@/app/shared/utils/calculatingPrice";
-import { IDealDetail } from "@/interface/IDeal";
+import { calculateDealAddOnsPrice, calculateDealMenuCustomizationsPrice, calculateDealPrice } from "@/app/shared/utils/calculatingPrice";
+import { IDealDetail, IDealMenuItem } from "@/interface/IDeal";
 import Loader from "@/app/shared/components/Loader";
 import StatusScreen from "../screens/StatusScreen";
 import { toast } from "@/app/shared/utils/toast";
+import { ICustomizationOption } from "@/interface/IMenu";
 
 export default function DealDetail() {
   const { dealId } = useLocalSearchParams();
 
   const cart = useCartStore((state) => state.getCartItem(dealId as string));
 
-
   const [quantity, setQuantity] = useState(cart ? cart.quantity : 1);
   const addItem = useCartStore((state) => state.addItem);
 
   const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? cart.addOns : []);
 
-
   const { data: deal, error, isPending } = useDealItem(dealId as string);
-
-
-  const dealMenusItems = useRef([])
+  const updateItem = useCartStore((state) => state.updateItem)
+  const dealMenusItems = useRef([]);
 
   //memos
   const oldPrice = useMemo(() => {
-    return calculateDealPrice(deal?.menus);
+    return calculateDealPrice(deal?.menus) + calculateDealAddOnsPrice(deal?.addOns) + calculateDealMenuCustomizationsPrice(deal?.menus);
   }, [deal]);
-
-
 
   const newPrice = useMemo(() => {
     return deal?.fixed_discount
       ? oldPrice - deal?.fixed_discount
-      : oldPrice - (((deal?.discount_percentage ?? 0) /100) * oldPrice);
+      : oldPrice - ((deal?.discount_percentage ?? 0) / 100) * oldPrice;
   }, [deal]);
 
-
-
-
-  
-
+  let addOnsPrice = useMemo(() => {
+    return addOns.reduce((crr, cus) => {
+      return crr + cus.price;
+    }, 0);
+  }, [addOns]);
 
   //loader,error,undefined
 
-  if (isPending)  return <Loader />;
-  
+  if (isPending) return <Loader />;
 
-  if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
-    
-  
+  if (error)
+    return (
+      <StatusScreen type="error" message={error.message} title={error.name} />
+    );
 
-  if (!deal) return <StatusScreen type="error" message="Not Found" title="404 error" />;
-  
-
-
+  if (!deal)
+    return <StatusScreen type="error" message="Not Found" title="404 error" />;
 
   //functions
-    //functions
+  //functions
+
+
+
+  console.log(dealId)
 
   const handleCartDeal = () => {
     if (!deal) {
@@ -87,10 +85,44 @@ export default function DealDetail() {
         addOns: addOns,
       };
 
-      addItem(cartDeal);
-
+      updateItem(cartDeal);
+         toast.success("Deal as been updated successfully")
       return;
     }
+
+
+
+const dealItems = deal.menus.map((item) => {
+  const menu = item.menu as IDealMenuItem;
+
+
+  const customizations = item.customizations.map((item) => {
+ 
+    return {
+      groupName: item.group_name,
+      groupId: item.group_id,
+      ...item.customization as ICustomizationOption,
+      quantity : 1
+    }
+       
+
+
+  })
+
+  return {
+    id: menu.id,
+    imageUrl: menu.image_url,
+    title: menu.title,
+    price: menu.price,
+    quantity: item.quantity,
+    customizations: customizations,
+    
+    addOns: [],
+  };
+});
+    
+
+    
 
     const cartItem: ICartDeal = {
       id: deal.id as string,
@@ -99,14 +131,19 @@ export default function DealDetail() {
       title: deal.title as string,
       quantity: quantity,
       addOns: addOns,
-      items: deal.menus,
-      discount: oldPrice - newPrice,
+      items: dealItems,
+      discount: Math.round(oldPrice) - Math.round(newPrice),
       type: "deal",
       freeDelivery: deal.free_delivery,
       oldPrice: oldPrice,
     };
 
+
     addItem(cartItem);
+
+    toast.success("Deal has been addedd succesfully")
+    
+
   };
 
 
@@ -114,67 +151,64 @@ export default function DealDetail() {
 
 
 
-  console.log(deal.addOns)
-  console.log(deal.menus[0].customizations)
-
-
-
   return (
-  <>
-         <View className= "flex-1 bg-black">
-      <SafeAreaView className="flex-1 bg-black px-4 ">
-        <View className="flex-1">
-          <View className="mb-2">
-            <Header title="Deal Details" onPress={() => router.back()} />
+    <>
+      <View className="flex-1 bg-black">
+        <SafeAreaView className="flex-1 bg-black px-4 ">
+          <View className="flex-1">
+            <View className="mb-2">
+              <Header title="Deal Details" onPress={() => router.back()} />
+            </View>
+
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingBottom: 30,
+              }}
+            >
+              {/* Hero Image */}
+
+              <DealHero imageUrl={deal.image_url as string} />
+
+              {/* Deal Information */}
+
+              <DealInfo
+                title={deal.title}
+                description={deal.description as string}
+                subtitle={deal.subtitle}
+                originalPrice={Math.round(oldPrice)}
+                newPrice={Math.round(newPrice)}
+                save={Math.round(oldPrice - newPrice)}
+              />
+
+              {/* Included Items */}
+
+              <IncludedItemsSection
+                dealAddOns={deal.addOns}
+                items={deal.menus}
+                dealMenuItem={dealMenusItems}
+              />
+
+              {/* Add Extras */}
+
+              <AddOnsSection selectedAddOns={addOns} setData={setAddOns} />
+
+              {/* Notes */}
+
+              <SpecialInstructions />
+            </ScrollView>
+
+            {/* Sticky Bottom */}
           </View>
-
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 30,
-            }}
-          >
-            {/* Hero Image */}
-
-            <DealHero imageUrl={deal.image_url as string} />
-
-            {/* Deal Information */}
-
-            <DealInfo
-              title={deal.title}
-              description={deal.description as string}
-              subtitle={deal.subtitle}
-              originalPrice={oldPrice}
-              newPrice={newPrice}
-              save={oldPrice - newPrice}
-            />
-
-            {/* Included Items */}
-
-            <IncludedItemsSection
-                 items={deal.menus}
-            />
-
-            {/* Add Extras */}
-
-            <AddOnsSection selectedAddOns={addOns} setData={setAddOns} />
-
-            {/* Notes */}
-
-            <SpecialInstructions />
-          </ScrollView>
-
-          {/* Sticky Bottom */}
-        </View>
-      </SafeAreaView>
+        </SafeAreaView>
 
         <BottomActionBar
           onPress={handleCartDeal}
+          price={quantity * newPrice + addOnsPrice}
           quantity={quantity}
           setQuantity={setQuantity}
         />
-    </View>   
-  
-  </>
+      </View>
+    </>
   );
 }

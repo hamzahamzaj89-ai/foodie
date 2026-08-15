@@ -5,9 +5,9 @@ export interface ICustomizationOption {
 
   name: string;
 
-  description: string | null;
+  description?: string | null;
 
-  image_url: string | null;
+  image_url: string;
 
   price: number;
 }
