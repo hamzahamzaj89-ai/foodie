@@ -5,17 +5,19 @@ import { ICartItem } from '@/interface/ICart'
 const ViewCardItem = ({item}:{
   item: ICartItem
 }) => {
+
+
   return (
 
-    <View className=' flex rounded-3xl flex-row justify-between items-center  px-2 py-2 '>
-            <View className='flex flex-row gap-x-4  justify-center items-center'>
-                 <View className="h-10 w-10 relative items-center justify-center rounded-2xl ">
+    <View className=' flex rounded-3xl flex-row justify-between items-center  px-2 pl-0 py-2 '>
+            <View className='flex flex-row gap-x-2  justify-center items-center'>
+                 <View className="h-16 w-16   items-center justify-center rounded-2xl ">
                <Image
                  source={{
-                  uri: item.imageUrl ?? ""
+                  uri: item.imageUrl as string
                  }}
                  resizeMode="contain"
-                 className="h-12 w-15  "
+                 className="h-16 w-16  "
                />
 
 
@@ -27,7 +29,7 @@ const ViewCardItem = ({item}:{
 
 
              <View>
-                <Text className="font-poppins-semibold ml-2 text text-white ">
+                <Text className="font-poppins-semibold ml-0 text text-white ">
                       {item.title}
                 </Text>
              </View>
@@ -38,8 +40,8 @@ const ViewCardItem = ({item}:{
       
 
 
-        <View>
-              <Text className='text-white font-poppins-medium'>
+        <View className='p-2 px-3  rounded-full'>
+              <Text className='text-buttonBackground font-poppins-semibold'>
                 x {item.quantity}
               </Text>
         </View>

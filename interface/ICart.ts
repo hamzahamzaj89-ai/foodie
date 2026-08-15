@@ -52,6 +52,9 @@ export interface ICartDeal {
 
   id: string;
 
+  newPrice: number;
+  
+
   title: string;
 
 

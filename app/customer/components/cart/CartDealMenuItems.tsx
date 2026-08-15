@@ -58,7 +58,7 @@ const CartDealMenuItems = ({
 
 
    {expanded && (
-          <View className="mt-4 rounded-2xl bg-[#15181D] px-3 -mx- py-3">
+          <View className="mt-4 rounded-2xl bg-[#15181D] px-3 -mx-2 py-3">
             <ViewDealItems 
             
 

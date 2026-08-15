@@ -51,23 +51,23 @@ export default function CartDealCard({
   );
 
 
+  
 
   const onIncrease = () => {
      
      updateItem({
       ...deal,
-      quantity: deal.quantity + 1
+      quantity: deal.quantity + 1,
+      price: deal.price + deal.newPrice
+
      })
-
-
-
   }
 
 
 
   const onDecrease = () => {
 
-
+    
     if (!(deal.quantity > 0)) {
       return  toast.error("You cannot decrease more!!!")
     }
@@ -75,10 +75,10 @@ export default function CartDealCard({
       
      updateItem({
       ...deal,
-      quantity: deal.quantity - 1
+     quantity: deal.quantity - 1,
+     price: deal.price - deal.newPrice
+
      })
-
-
 
   }
 
@@ -136,17 +136,20 @@ export default function CartDealCard({
         {/* Included Items */}
  
 
-            <CartDealMenuItems
+            <View className="">
+                <CartDealMenuItems
             onPress={() => setExpanded(!expanded)}
             expanded={expanded}
             menuItems={deal.items}
 
             />
+            </View>
       
 
         {/* Add-ons */}
          
-         <CartDealAddOns
+          <View className="">
+             <CartDealAddOns
                onPress={() => {
                 setAddonsExpanded(!addonsExpanded)
                }}
@@ -156,6 +159,7 @@ export default function CartDealCard({
                addonsExpanded = {addonsExpanded}
 
          />
+          </View>
                                               
         {/* Divider */}
 

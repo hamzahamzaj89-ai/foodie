@@ -113,6 +113,8 @@ export default function MenuDetailsScreen() {
           ...cart,
        
         quantity: quantity,
+        price: cart.price + (quantity * (menu.price + requiredCustomizationsPrice)),
+
         customizations: customizations,
         addOns: addOns
 
@@ -130,7 +132,7 @@ export default function MenuDetailsScreen() {
        }
 
 
-        const cartItem:ICartItem = {
+        const cartItem = {
         id: menu?.id as string,
         type: "cartItem",
         imageUrl: menu?.image_url as string,
@@ -141,7 +143,7 @@ export default function MenuDetailsScreen() {
         addOns: addOns
  
 
-    }
+    } as ICartItem
 
     addItem(cartItem)
 

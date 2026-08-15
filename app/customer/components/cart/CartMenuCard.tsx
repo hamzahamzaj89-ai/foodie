@@ -11,6 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react-native";
 import { useCartStore } from "../../store/useCartStore";
+import { ICartDeal, ICartItem } from "@/interface/ICart";
 
 type Addon = {
   id: string;
@@ -31,44 +32,35 @@ type CartMenuCardProps = {
 };
 
 export default function CartMenuCard({
-  title = "Cheese Burger",
-  customization = "Double Patty • Extra Cheese",
-  price = 14.99,
-  quantity = 2,
-  image = require("@/assets/images/burger.png"),
-  addons = [
-    {
-      id: "1",
-      name: "Fries"
-    },
-    {
-      id: "2",
-      name: "Cheese",
-    },
-    {
-      id: "3",
-      name: "Drink",
-    },
-  ],
-  totalAddonCount = 6,
-  onMinus,
-  onPlus,
-  onAddonsPress,
-}: CartMenuCardProps) {
+   item
+}: {
+    item: ICartItem | ICartDeal
+}) {
 
 
-
-  const cartItems = useCartStore((state) => state.items)
+  const menu = item as ICartItem
 
 
 
 
-  const visibleAddons = addons.slice(0, 3);
 
+
+  const visibleAddons = menu.addOns.slice(0, 3);
+  const totalAddonCount = menu.addOns.length
   const remainingAddons = Math.max(
     totalAddonCount - visibleAddons.length,
     0
   );
+
+
+  const onIncrease= () => {
+
+  }
+
+
+  const onDecrease = () => {
+
+  }
 
   return (
     <View
@@ -91,7 +83,9 @@ export default function CartMenuCard({
 
         <View className="h-24 w-24 relative items-center justify-center rounded-2xl bg-primaryCard">
           <Image
-            source={image}
+            source={{
+              uri: menu.imageUrl ?? ""
+            }}
             resizeMode="contain"
             className="absolute h-24 w-[90px]"
           />
@@ -106,7 +100,7 @@ export default function CartMenuCard({
             numberOfLines={1}
             className="font-poppins-semibold text-lg text-white"
           >
-            {title}
+            {menu.title}
           </Text>
 
           {/* Customization */}
@@ -115,13 +109,22 @@ export default function CartMenuCard({
             numberOfLines={1}
             className="mt-1 font-poppins-medium text-xs text-zinc-400"
           >
-            {customization}
+
+
+            {menu.customizations.map((item , index) => 
+                       <>
+
+                       {index !== menu.customizations.length -1  ? item.name +  "  • " : item.name }
+                       
+                       </>
+            )}
+            
           </Text>
 
           {/* Addons */}
 
           <Pressable
-            onPress={onAddonsPress}
+            onPress={() => {}}
             className="mt-3 flex-row items-center"
           >
             {/* Overlapping addon images */}
@@ -138,7 +141,7 @@ export default function CartMenuCard({
                 >
                   <Image
                     source={{
-                      uri: cartItems[0].addOns[index]?.image_url
+                      uri: menu.addOns[index].image_url
                     }}
                     resizeMode="contain"
                     className="h-full w-full"
@@ -182,7 +185,7 @@ export default function CartMenuCard({
           </Text>
 
           <Text className="mt-0.5 font-poppins-bold text-xl text-white">
-            ${(price * quantity).toFixed(2)}
+            ${(menu.price * menu.quantity).toFixed(2)}
           </Text>
         </View>
 
@@ -190,7 +193,7 @@ export default function CartMenuCard({
 
         <View className="flex-row items-center rounded-2xl bg-[#20242B] p-1">
           <Pressable
-            onPress={onMinus}
+            onPress={onDecrease}
             className="h-9 w-9 items-center justify-center rounded-xl"
           >
             <Minus
@@ -201,11 +204,11 @@ export default function CartMenuCard({
           </Pressable>
 
           <Text className="mx-3 min-w-[18px] text-center font-poppins-bold text-sm text-white">
-            {quantity}
+            {menu.quantity}
           </Text>
 
           <Pressable
-            onPress={onPlus}
+            onPress={onIncrease}
             className="h-9 w-9 items-center justify-center rounded-xl bg-[#FF8A2B]"
           >
             <Plus

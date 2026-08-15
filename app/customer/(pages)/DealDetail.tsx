@@ -83,6 +83,7 @@ export default function DealDetail() {
 
         quantity: quantity,
         addOns: addOns,
+        price: cart.price + (quantity * newPrice)
       };
 
       updateItem(cartDeal);
@@ -132,6 +133,8 @@ const dealItems = deal.menus.map((item) => {
       quantity: quantity,
       addOns: addOns,
       items: dealItems,
+      newPrice: newPrice,
+
       discount: Math.round(oldPrice) - Math.round(newPrice),
       type: "deal",
       freeDelivery: deal.free_delivery,
@@ -142,7 +145,7 @@ const dealItems = deal.menus.map((item) => {
     addItem(cartItem);
 
     toast.success("Deal has been addedd succesfully")
-    
+
 
   };
 
