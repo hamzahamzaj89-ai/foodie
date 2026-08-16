@@ -24,7 +24,7 @@ import { toast } from "@/app/shared/utils/toast";
 
 
 export default function CartDealCard({
-           item
+           item,
 } : {
   item: ICartDeal | ICartItem
 }) {
@@ -33,9 +33,12 @@ export default function CartDealCard({
 
   const deal = item as ICartDeal
 
+  
+
   const updateItem = useCartStore((state) => state.updateItem)
 
   
+   let oldDealPrice = 0;
 
   const [expanded, setExpanded] = useState(false);
   const [addonsExpanded, setAddonsExpanded] = useState(false);
@@ -43,11 +46,12 @@ export default function CartDealCard({
   const visibleAddons = deal.addOns.slice(0, 3);
   const totalAddonCount = deal.addOns.length
 
+
   
 
     let addOnsPrice = useMemo(() => {
     
-    
+            
          return deal.addOns.reduce((crr , cus) => {
                            return  crr + cus.price;
                            
@@ -60,7 +64,7 @@ export default function CartDealCard({
     0
   );
 
-
+   
   
 
   const onIncrease = () => {
@@ -89,7 +93,6 @@ export default function CartDealCard({
      })
 
   }
-
 
 
   return (

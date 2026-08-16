@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import { Mail, UserRound } from "lucide-react-native";
 
-import AuthInput from "./AuthInput";
+import AuthInput from "../InputField";
 import PasswordInput from "./PasswordInput";
 
 type Props = {

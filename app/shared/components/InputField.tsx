@@ -25,7 +25,7 @@ type Props = {
   autoCorrect?: boolean;
 };
 
-export default function AuthInput({
+export default function InputField({
   label,
   placeholder,
   value,

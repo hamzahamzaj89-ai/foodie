@@ -7,7 +7,7 @@ import {
 
 import { Mail } from "lucide-react-native";
 
-import AuthInput from "./AuthInput";
+import AuthInput from "../InputField";
 import PasswordInput from "./PasswordInput";
 
 type Props = {

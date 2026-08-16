@@ -52,7 +52,7 @@ export interface ICartDeal {
 
   id: string;
 
-  
+
 
   title: string;
 

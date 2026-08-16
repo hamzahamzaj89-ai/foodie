@@ -1,6 +1,6 @@
 import BorderButton from "@/app/shared/components/BorderButton";
 import { router } from "expo-router";
-import { ChevronLeft, ChevronLeftCircle, ChevronLeftCircleIcon, LucideChevronLeftCircle } from "lucide-react-native";
+import { ArrowLeft, ChevronLeft, ChevronLeftCircle, ChevronLeftCircleIcon, ChevronLeftIcon, LucideChevronLeftCircle } from "lucide-react-native";
 import React from "react";
 import {
   Pressable,
@@ -17,15 +17,15 @@ export default function NotificationHeader() {
 
 
            <View className="flex flex-row  items-center  ">
-                 <Pressable onPress={() => {router.back()}} className=" rounded-full gap-x-4 ">
+                 <Pressable onPress={() => {router.back()}} className=" rounded-2xl h-11 w-11 justify-center flex items-center mb-1 bg-card ">
                       
 
-                      <ChevronLeft
+                      <ArrowLeft
                            color="white"
                            size={24}
                            strokeWidth={3}
                            style={{
-                            marginBottom : 4
+                            marginBottom : 0
                            }}
 
                       />

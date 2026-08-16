@@ -1,4 +1,5 @@
 import { IAddOns } from "@/interface/IAddOns";
+import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { IDealAddOns, IDealMenu, IDealMenuItem } from "@/interface/IDeal";
 import { ICustomizationOption } from "@/interface/IMenu";
 
@@ -49,4 +50,33 @@ export const calculateDealMenuCustomizationsPrice = (menus: IDealMenu[] | undefi
 
 }
 
+
+
+
+
+
+export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
+
+
+
+  
+      const addonsTotal = item.addOns?.reduce((sum, crr) => {
+         return sum + (crr.price * crr.quantity);
+}, 0)?? 0
+
+       return addonsTotal 
+         
+
+
+       const customizationsTotal = (item as ICartItem).customizations?.reduce((sum, crr) => {
+         return sum + (crr.price * crr.quantity);
+}, 0)?? 0
+
+       return customizationsTotal 
+
+
+       return (addonsTotal + customizationsTotal + (item.price + item.quantity))
+
+
+}
 

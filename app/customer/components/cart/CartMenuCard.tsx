@@ -13,6 +13,7 @@ import {
 import { useCartStore } from "../../store/useCartStore";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
+import Counter from "../Counter";
 
 type Addon = {
   id: string;
@@ -33,7 +34,7 @@ type CartMenuCardProps = {
 };
 
 export default function CartMenuCard({
-   item
+   item,
 }: {
     item: ICartItem | ICartDeal
 }) {
@@ -270,33 +271,13 @@ export default function CartMenuCard({
 
         {/* Quantity */}
 
-        <View className="flex-row items-center rounded-2xl bg-[#20242B] p-1">
-          <Pressable
-            onPress={onDecrease}
-            className="h-9 w-9 items-center justify-center rounded-xl"
-          >
-            <Minus
-              size={17}
-              color="#FFFFFF"
-              strokeWidth={2.5}
+         <View className="-mr-4">
+            <Counter
+              quantity={menu.quantity}
+              onIncrease={onIncrease}
+              onDecrease={onDecrease}
             />
-          </Pressable>
-
-          <Text className="mx-3 min-w-[18px] text-center font-poppins-bold text-sm text-white">
-            {menu.quantity}
-          </Text>
-
-          <Pressable
-            onPress={onIncrease}
-            className="h-9 w-9 items-center justify-center rounded-xl bg-[#FF8A2B]"
-          >
-            <Plus
-              size={17}
-              color="#050608"
-              strokeWidth={2.8}
-            />
-          </Pressable>
-        </View>
+          </View>
       </View>
     </View>
   );

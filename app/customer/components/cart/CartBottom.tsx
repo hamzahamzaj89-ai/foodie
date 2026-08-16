@@ -1,7 +1,12 @@
 import { View, Text, Pressable } from 'react-native'
 import React from 'react'
+import { useResturantStore } from '@/app/shared/store/useResturantStore'
 
-const CartBottom = () => {
+const CartBottom = ({orderPrice , qualifiesForFreeDelivery}:{orderPrice : number, qualifiesForFreeDelivery:boolean}) => {
+
+  const deliveryFee = useResturantStore((state) => state.selectedRestaurant?.delivery_fee)?? 0
+
+
   return (
     <>
      <View className="mt-6 rounded-[24px] bg-card p-5">
@@ -15,7 +20,7 @@ const CartBottom = () => {
                 </Text>
 
                 <Text className="font-poppins-semibold text-white">
-                  $63.97
+                  ${orderPrice.toFixed(2)}
                 </Text>
               </View>
 
@@ -25,7 +30,7 @@ const CartBottom = () => {
                 </Text>
 
                 <Text className="font-poppins-semibold text-[#44D17A]">
-                  FREE
+                {(qualifiesForFreeDelivery)  ?  "FREE" : "$"+deliveryFee.toFixed(2)}
                 </Text>
               </View>
 
@@ -37,7 +42,7 @@ const CartBottom = () => {
                 </Text>
 
                 <Text className="font-poppins-bold text-xl text-white">
-                  $63.97
+                  ${(deliveryFee + orderPrice).toFixed(2)}
                 </Text>
               </View>
             </View>
