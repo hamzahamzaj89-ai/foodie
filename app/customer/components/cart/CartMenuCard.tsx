@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Image,
   Pressable,
@@ -12,6 +12,7 @@ import {
 } from "lucide-react-native";
 import { useCartStore } from "../../store/useCartStore";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
+import { toast } from "@/app/shared/utils/toast";
 
 type Addon = {
   id: string;
@@ -41,6 +42,45 @@ export default function CartMenuCard({
   const menu = item as ICartItem
 
 
+   const updateItem = useCartStore((state) => state.updateItem)
+
+  //useMemo
+  //calculatingPrices
+     let  customizationsPrice = useMemo(()=> {
+                return menu.customizations.reduce((crr , cus) => {
+                           if (!cus.required) {
+                            return  crr + cus.price;
+                           }
+
+                           return crr
+  
+                } , 0)
+     } , [menu.customizations])
+  
+     let addOnsPrice = useMemo(() => {
+  
+  
+       return menu.addOns.reduce((crr , cus) => {
+                         return  crr + cus.price;
+                         
+                } , 0)
+  
+     } , [menu.addOns])
+  
+  
+     let requiredCustomizationsPrice = useMemo(() => {
+  
+      return menu.customizations.reduce((crr , cus) => {
+  
+          if (cus.required) {
+                   return crr + cus.price;
+          }
+           
+          return crr
+      } , 0)
+  
+     }, [menu.customizations])
+  
 
 
 
@@ -53,14 +93,51 @@ export default function CartMenuCard({
   );
 
 
+
+
   const onIncrease= () => {
+      
+      if (!menu) {
+          return toast.error("404" , "no menu is found")
+      }
+
+
+
+     updateItem({
+          ...menu,
+          quantity : menu.quantity + 1
+     }
+     )
+       
 
   }
 
 
   const onDecrease = () => {
+         if (!menu) {
+          return toast.error("404" , "No menu is found")
+      }
+
+
+      if (menu.quantity <= 1) {
+          return toast.error("You cannot decarese more")
+      } 
+
+
+     updateItem({
+          ...menu,
+          quantity : menu.quantity - 1
+     }
+     )
+
+ 
 
   }
+
+
+
+
+
 
   return (
     <View
@@ -111,11 +188,13 @@ export default function CartMenuCard({
           >
 
 
-            {menu.customizations.map((item , index) => 
+            {menu.customizations.slice(0,3).map((item , index) => 
                        <>
 
                        {index !== menu.customizations.length -1  ? item.name +  "  • " : item.name }
                        
+
+
                        </>
             )}
             
@@ -185,7 +264,7 @@ export default function CartMenuCard({
           </Text>
 
           <Text className="mt-0.5 font-poppins-bold text-xl text-white">
-            ${(menu.price * menu.quantity).toFixed(2)}
+            ${(((menu.price + requiredCustomizationsPrice) * menu.quantity) + customizationsPrice + addOnsPrice).toFixed(2)}
           </Text>
         </View>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Image,
   Pressable,
@@ -45,6 +45,16 @@ export default function CartDealCard({
 
   
 
+    let addOnsPrice = useMemo(() => {
+    
+    
+         return deal.addOns.reduce((crr , cus) => {
+                           return  crr + cus.price;
+                           
+                  } , 0)
+    
+       } , [deal.addOns])
+
   const remainingAddons = Math.max(
     totalAddonCount - visibleAddons.length,
     0
@@ -58,7 +68,6 @@ export default function CartDealCard({
      updateItem({
       ...deal,
       quantity: deal.quantity + 1,
-      price: deal.price + deal.newPrice
 
      })
   }
@@ -76,7 +85,6 @@ export default function CartDealCard({
      updateItem({
       ...deal,
      quantity: deal.quantity - 1,
-     price: deal.price - deal.newPrice
 
      })
 
@@ -174,7 +182,7 @@ export default function CartDealCard({
             </Text>
 
             <Text className="mt-0.5 font-poppins-bold text-3xl text-white">
-              ${deal.price}
+              ${(deal.price * deal.quantity )  + addOnsPrice}
             </Text>
           </View>
 

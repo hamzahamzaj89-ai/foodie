@@ -29,7 +29,7 @@ export interface ICartItem {
   type?: string;
 
 
-
+  
   imageUrl: string | null;
 
 
@@ -52,7 +52,6 @@ export interface ICartDeal {
 
   id: string;
 
-  newPrice: number;
   
 
   title: string;

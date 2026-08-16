@@ -25,8 +25,6 @@ const ToastContainer = ({
       minHeight: 72,
       borderRadius: 22,
       backgroundColor: "#111317",
-      borderWidth: 1,
-      borderColor: "#2B2E34",
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 18,

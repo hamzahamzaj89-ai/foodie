@@ -136,8 +136,8 @@ export default function MenuDetailsScreen() {
         id: menu?.id as string,
         type: "cartItem",
         imageUrl: menu?.image_url as string,
-        price: menu?.price as number,
         title: menu?.title as string,
+        price: menu.price,
         quantity: quantity,
         customizations: customizations,
         addOns: addOns
@@ -182,13 +182,12 @@ export default function MenuDetailsScreen() {
               />
 
 
-              {menu.menu_customization_group.map((item, inwdex) => (
+              {menu.menu_customization_group.map((item, index) => (
                 <>
                   <CustomizationSection
                     data={item.customization_group as any}
                     setData={setCustomizations}
                     selectedCustomizations={customizations}
-                    
                     currentRef={currentRef}
                   />
                 </>

@@ -133,7 +133,6 @@ const dealItems = deal.menus.map((item) => {
       quantity: quantity,
       addOns: addOns,
       items: dealItems,
-      newPrice: newPrice,
 
       discount: Math.round(oldPrice) - Math.round(newPrice),
       type: "deal",
