@@ -77,8 +77,7 @@ export default function AddressInfoPage() {
 
           <Text className="mt-3 max-w-[320px] text-center font-poppins-medium text-sm leading-6 text-zinc-500">
             Sign in to access your saved addresses,
-            {" "}
-            or add an address just for this order.
+           
           </Text>
 
           {/* Actions */}
@@ -93,39 +92,7 @@ export default function AddressInfoPage() {
                  Icon={LogInIcon}
                />
 
-            {/* Guest Address */}
 
-            <Pressable
-              onPress={() =>
-                router.push(
-                  "/customer/(pages)/AddressForm"
-                )
-              }
-              className="mt-4 py-3.5 flex-row items-center justify-between rounded-2xl  bg-card px-5"
-              android_ripple={{
-                color: "rgba(255,138,43,0.08)",
-              }}
-            >
-              <View className="flex-row items-center">
-                <View className="h-9 w-9 items-center justify-center rounded-xl bg-primaryCard">
-                  <Plus
-                    size={19}
-                    color="#FF8A2B"
-                    strokeWidth={2.5}
-                  />
-                </View>
-
-                <Text className="ml-3 font-poppins-semibold text-sm text-white">
-                  Add Address for this Order
-                </Text>
-              </View>
-
-              <ChevronRight
-                size={19}
-                color="#FF8A2B"
-                strokeWidth={2.3}
-              />
-            </Pressable>
           </View>
         </View>
       </View>
