@@ -73,6 +73,7 @@ export default function DealDetail() {
   console.log(dealId)
 
   const handleCartDeal = () => {
+
     if (!deal) {
       return toast.error("$404", "No Deal Found");
     }
@@ -83,12 +84,12 @@ export default function DealDetail() {
 
         quantity: quantity,
         addOns: addOns,
-        price: cart.price + (quantity * newPrice)
       };
 
       updateItem(cartDeal);
          toast.success("Deal as been updated successfully")
       return;
+
     }
 
 
@@ -116,6 +117,7 @@ const dealItems = deal.menus.map((item) => {
     title: menu.title,
     price: menu.price,
     quantity: item.quantity,
+    
     customizations: customizations,
     
     addOns: [],
@@ -135,7 +137,7 @@ const dealItems = deal.menus.map((item) => {
       items: dealItems,
 
       discount: Math.round(oldPrice) - Math.round(newPrice),
-      type: "deal",
+      type: "cartDeal",
       freeDelivery: deal.free_delivery,
       oldPrice: oldPrice,
     };

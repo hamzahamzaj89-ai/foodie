@@ -4,13 +4,21 @@ import {
   ThemeProvider,
   DarkTheme,
 } from "@react-navigation/native";
+import { View } from 'react-native';
 
 
 export default function RootLayout() {
 
 
-
-  
+       
+  // Custom theme matching your app's background
+const CustomTheme = {
+  ...DarkTheme, // or DefaultTheme
+  colors: {
+    ...DarkTheme.colors,
+    background: '#121212', // Change this to your screen background color
+  },
+};
      
 
 
@@ -19,11 +27,23 @@ export default function RootLayout() {
 
        <>
 
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+
+
            
-           <Slot screenOptions={{headerShown: false}}/>
+
+           
+           <Stack screenOptions={{headerShown: false}}>
+
+                    <Stack.Screen  name='(tabs)'/>
+
+                    <Stack.Screen name="(auth)"/>
+
+
+           </Stack>
   
   
-  
+  </View>
   </>
 
        

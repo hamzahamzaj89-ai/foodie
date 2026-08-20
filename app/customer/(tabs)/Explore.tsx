@@ -93,7 +93,7 @@ export default function Explore() {
             </View>
           </>
         }
-        renderItem={({item , index}) => <FoodCard index={index}/>}
+        renderItem={({item , index}) => <FoodCard index={index} onPress={() => {}} />}
       />
     </SafeAreaView>
       </View>

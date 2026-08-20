@@ -22,6 +22,7 @@ import Loader from "@/app/shared/components/Loader";
 import StatusScreen from "../screens/StatusScreen";
 import MenuSection from "../components/Home/MenuSection";
 import { useResturantStore } from "@/app/shared/store/useResturantStore";
+import { useAppStore } from "@/app/shared/store/useAppStore";
 
 const Home = () => {
   const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
@@ -37,7 +38,13 @@ const Home = () => {
     { id: "8" },
   ];
 
+
   const { data: restaurant, error } = useResturant(restaurantId);
+
+  const session = useAppStore((state) => state.session)
+
+
+
 
   const setSelectedRestaurant = useResturantStore((state) => state.setSelectedRestaurant)
 

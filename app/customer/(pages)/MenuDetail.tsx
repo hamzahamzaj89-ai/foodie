@@ -21,6 +21,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 
 
+
+
 export default function MenuDetailsScreen() {
   
 
@@ -36,6 +38,8 @@ export default function MenuDetailsScreen() {
   const { data: menu, isPending, error } = useMenuItem(menuId as string);
 
   const  addItem = useCartStore((state) => state.addItem)
+  const updateItem = useCartStore((state) => state.updateItem);
+
 
   const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
 
@@ -121,7 +125,10 @@ export default function MenuDetailsScreen() {
     }
      
 
-    addItem(cartItem)
+    updateItem(cartItem)
+
+
+    toast.success("Your cart has been updtaed successfully")
        
 
    return
@@ -134,7 +141,7 @@ export default function MenuDetailsScreen() {
 
         const cartItem = {
         id: menu?.id as string,
-        type: "cartItem",
+        type: "cartMenu",
         imageUrl: menu?.image_url as string,
         title: menu?.title as string,
         price: menu.price,

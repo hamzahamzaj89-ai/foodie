@@ -16,8 +16,8 @@ import SignupForm from "@/app/shared/components/Auth/SignUpForm";
 import SocialLogin from "@/app/shared/components/Auth/SocialLogin";
 import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
 import Button from "@/app/shared/components/Button";
-import { useSignUp } from "../shared/hooks/Auth/useSignUp";
-import { toast } from "../shared/utils/toast";
+import { useSignUp } from "../../shared/hooks/Auth/useSignUp";
+import { toast } from "../../shared/utils/toast";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -54,7 +54,7 @@ export default function SignUp() {
      console.log("sucess")
 
 
-     router.push("/(auth)/VerifyEmail")
+     router.push("/customer/(auth)/VerifyEmail")
 
    
      
@@ -133,8 +133,9 @@ export default function SignUp() {
         <AuthFooter
           text="Already have an account?"
           actionText="Sign In"
-          onPress={() => router.back()}
+          onPress={() => router.replace("/customer/(auth)/SignIn")}
         />
+        
       </ScrollView>
     </SafeAreaView>
   );

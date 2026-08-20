@@ -64,7 +64,6 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
          return sum + (crr.price * crr.quantity);
 }, 0)?? 0
 
-       return addonsTotal 
          
 
 
@@ -72,10 +71,13 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
          return sum + (crr.price * crr.quantity);
 }, 0)?? 0
 
-       return customizationsTotal 
+
+      
 
 
-       return (addonsTotal + customizationsTotal + (item.price + item.quantity))
+
+
+       return (addonsTotal + customizationsTotal + (item.price * item.quantity))
 
 
 }

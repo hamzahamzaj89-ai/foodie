@@ -42,7 +42,7 @@ const CartBottom = ({orderPrice , qualifiesForFreeDelivery}:{orderPrice : number
                 </Text>
 
                 <Text className="font-poppins-bold text-xl text-white">
-                  ${(deliveryFee + orderPrice).toFixed(2)}
+                  ${qualifiesForFreeDelivery ? (orderPrice).toFixed(2) : (deliveryFee + orderPrice).toFixed(2)}
                 </Text>
               </View>
             </View>

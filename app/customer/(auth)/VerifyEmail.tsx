@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import * as Linking from "expo-linking";
-import Button from "../shared/components/Button";
-import StatusScreen from "../customer/screens/StatusScreen";
+import Button from "../../shared/components/Button";
+import StatusScreen from "../screens/StatusScreen";
 
 export default function VerifyEmailScreen() {
   return (

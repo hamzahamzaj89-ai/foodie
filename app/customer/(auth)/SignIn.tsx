@@ -15,8 +15,8 @@ import LoginForm from "@/app/shared/components/Auth/LoginForm";
 import SocialLogin from "@/app/shared/components/Auth/SocialLogin";
 import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
 import Button from "@/app/shared/components/Button";
-import { toast } from "../shared/utils/toast";
-import { useSignIn } from "../shared/hooks/Auth/useSignIn";
+import { toast } from "../../shared/utils/toast";
+import { useSignIn } from "../../shared/hooks/Auth/useSignIn";
 
 
 
@@ -114,8 +114,10 @@ export default function SignIn() {
         <AuthFooter
           text="Don't have an account?"
           actionText="Create Account"
-          onPress={() => router.push("/(auth)/SignUp")}
+          onPress={() => router.replace("/customer/SignUp")}
         />
+
+        
       </ScrollView>
     </SafeAreaView>
   );

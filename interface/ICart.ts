@@ -1,3 +1,4 @@
+import { UUIDTypes } from "uuid";
 import { IDealMenu, IDealMenuItem } from "./IDeal";
 
 export interface ICartCustomization {
@@ -39,8 +40,6 @@ export interface ICartItem {
 
   customizations: ICartCustomization[];
   addOns: ICartAddOns[] | [];
-
-
 }
 
 
@@ -52,12 +51,9 @@ export interface ICartDeal {
 
   id: string;
 
-
-
   title: string;
 
-
-  type: "menuItem" | "deal";
+  type: "cartMenu" | "cartDeal";
 
   items: IDealItems[];
 

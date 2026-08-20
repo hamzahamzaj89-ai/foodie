@@ -16,11 +16,14 @@ import { router } from "expo-router";
 import { toast } from "@/app/shared/utils/toast";
 import InfoModal from "../components/InfoModal";
 import { useAppStore } from "@/app/shared/store/useAppStore";
+import { prepareOrderPayload } from "@/app/shared/utils/bulkTransformations";
+import { useResturantStore } from "@/app/shared/store/useResturantStore";
 
 export default function Cart() {
   const cartItems = useCartStore((state) => state.items);
   const session = useAppStore((state) => state.session)
   const [visible, setVisible] = useState(false);
+  const restaurantId = useResturantStore((state) => state.selectedRestaurant?.id)
 
   let orderPrice = useMemo(() => {
     return cartItems.reduce((crr, item) => {
@@ -28,16 +31,25 @@ export default function Cart() {
     }, 0);
   }, [cartItems]);
 
-  const qualifiesForFreeDelivery = useMemo(() => {
+  const notQualifiesForFreeDelivery = useMemo(() => {
     return cartItems.some(
-      (item) => item.type === "deal" && (item as ICartDeal).freeDelivery,
+      (item) =>  (item.type === "cartMenu") ||  (item.type === "cartDeal" && !(item as ICartDeal).freeDelivery),
     );
   }, [cartItems]);
 
+
+
+
   const handleNavigation = () => {
 
-       
 
+     if (cartItems.length === 0) {
+          return toast.info("Please add the items in the cart to continue order")
+     }
+
+
+
+     
          if (!session) {
           return setVisible(true)
          }
@@ -68,7 +80,7 @@ export default function Cart() {
           }}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
           renderItem={({ item }) =>
-            item?.type === "deal" ? (
+            item?.type === "cartDeal" ? (
               <CartDealCard item={item} />
             ) : (
               <CartMenuCard item={item} />
@@ -79,7 +91,7 @@ export default function Cart() {
               {/* Add More */}
               <CartBottom
                 orderPrice={orderPrice}
-                qualifiesForFreeDelivery={qualifiesForFreeDelivery}
+                qualifiesForFreeDelivery={!notQualifiesForFreeDelivery}
               />
             </>
           }

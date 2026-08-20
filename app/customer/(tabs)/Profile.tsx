@@ -49,7 +49,7 @@ export default function Profile() {
      buttonTitle="Sign In"
      left={true}
      Icon={LogInIcon}
-     onPress={() => router.push("/(auth)/SignIn")}
+     onPress={() => router.push("/customer/(auth)/SignIn")}
      />
      </View>
   

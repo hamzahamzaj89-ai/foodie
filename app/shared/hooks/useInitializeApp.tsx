@@ -21,6 +21,8 @@ export function useInitializeApp() {
   const setSession = useAppStore((state) => state.setSession);
   const setInitialized = useAppStore((state) => state.setIsinitialized);
   const isInitialized = useAppStore((state) => state.isInitialized)
+  const setLoading = useAppStore((state) => state.setLoading)
+  const setError = useAppStore((state) => state.setError)
   const setAppState = useAppStore(
     (state) => state.setAppState
   );
@@ -36,6 +38,9 @@ export function useInitializeApp() {
 
 
   async function loadSession() {
+
+    setLoading(true)
+
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -43,6 +48,10 @@ export function useInitializeApp() {
 
 
     setSession(session as Session);
+
+    setLoading(false)
+
+
   }
 
 
@@ -68,7 +77,6 @@ export function useInitializeApp() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log(session)
       setSession(session as Session);
     });
 
