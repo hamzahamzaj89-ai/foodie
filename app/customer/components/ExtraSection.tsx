@@ -30,7 +30,6 @@ export default function ExtraSection({
 
 
 
-
   useEffect(() => {
     
      if (customizations.required) {

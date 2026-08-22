@@ -76,7 +76,7 @@ export default function AddressCard({
             />
 
             <Text className="ml-1 font-poppins-medium text-[10px] text-zinc-500">
-              {address.name}
+              {capitalize(address.name)}
             </Text>
           </View>
         </View>

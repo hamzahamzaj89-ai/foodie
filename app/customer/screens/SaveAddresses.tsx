@@ -49,10 +49,10 @@ export default function SavedAddresses() {
          return 
       }
        
-          setSelectedAddress(addresses[selectedAddressIndex])
+      setSelectedAddress(addresses[selectedAddressIndex])
 
  
-    } , [addresses])
+    } , [addresses , selectedAddressIndex])
 
 
   if (error) {
@@ -89,7 +89,8 @@ export default function SavedAddresses() {
 
   const handleContinue = () => {
     if (!selectedAddress) return toast.error("Plesae add a address for this order");
-
+   
+     router.push("/customer/(pages)/OrderPreview")
 
 
   };
@@ -230,7 +231,7 @@ export default function SavedAddresses() {
           <View className="absolute w-[100%] px-5 py-5 flex justify-center items-center  rounded-t-3xl bg-black bottom-0">
 
                          <Button
-                           onPress={() => {}}
+                           onPress={handleContinue}
                            text = {"Continue with order"}
                            Icon={ChevronRight}
                            left={true}

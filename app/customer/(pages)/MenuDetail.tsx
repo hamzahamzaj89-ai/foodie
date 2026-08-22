@@ -46,7 +46,7 @@ export default function MenuDetailsScreen() {
 
 
 
-  const currentRef = useRef(false);
+  const currentRef = useRef(true);
 
   console.log(menuId)
 
@@ -159,6 +159,10 @@ export default function MenuDetailsScreen() {
     toast.success("Added to cart successfully")
 
   };
+
+
+
+  console.log(currentRef.current)
 
 
 

@@ -13,8 +13,27 @@ import SpecialInstructionCard from "../components/OrderPreview.tsx/SpecialInstru
 import Header from "../components/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OrderInformationCard from "../components/OrderPreview.tsx/OrderInformationCard";
+import { useAddressStore } from "../store/useAddressStore";
+import { useCartStore } from "../store/useCartStore";
+import CartMenuCard from "../components/cart/CartMenuCard";
+import CartDealCard from "../components/cart/CartDealCard";
+import AddressCard from "../components/OrderPreview.tsx/AddressCard";
+import { IAddress } from "@/interface/IAddress";
 
 export default function OrderDetailScreen() {
+
+
+
+   const selectedAddress = useAddressStore((state) => state.selectedAddress)
+   const cartItems = useCartStore((state) => state.items)
+
+
+
+
+
+
+
+
   return (
     <SafeAreaView className="flex-1 bg-black px-5 ">
       <ScrollView
@@ -25,7 +44,7 @@ export default function OrderDetailScreen() {
       >
         {/* Header */}
 
-        <View className=" -mt-1">
+        <View className=" ">
                <Header
                title={"Order Details"}
             description={"See Your Order Details"}
@@ -39,62 +58,69 @@ export default function OrderDetailScreen() {
         <OrderStatusCard status="Delivered" deliveredAt="Jul 30 • 9:15 PM" />
 
         {/* Items */}
+      <View className="mt-6 bg-card rounded-2xl">
 
-        <View className="mt-6 bg-card rounded-2xl">
-          <OrderItemCard
-            image={require("@/assets/images/burger.png")}
-            title="Cheese Burger"
-            customization="Double Patty • Extra Cheese"
-            quantity={2}
-            price={24}
+       {
+        cartItems.map((item , index) => (
+                <>
+
+                {
+                  item.type === "cartMenu" && (<>
+
+                       
+          <CartMenuCard
+               key={index}
+               item = {item}
           />
           
             <View className="px-4">
                 <View className="mt- h-[1px] bg-primaryCard "/>
             </View>
+       
+                  </>)
+                }
+                
+                
+                </>
+        ))
+       }
 
-          <OrderItemCard
-            image={require("@/assets/images/burger.png")}
-            title="Beef Wrap"
-            customization="Extra Cheese"
-            quantity={1}
-            price={12.99}
-          />
         </View>
 
         {/* Deal */}
 
         <View className="mt-3 ">
-          <DealPreviewCard
-            image={require("@/assets/images/deal1.jpeg")}
-            title="Family Feast Deal"
-            subtitle="Perfect for 3–4 People"
-            quantity={1}
-            price={34.99}
-            items={[
-              {
-                id: "1",
-                name: "Cheese Burger",
-                quantity: 2,
-              },
-              {
-                id: "2",
-                name: "Large Fries",
-                quantity: 2,
-              },
-              {
-                id: "3",
-                name: "Coca Cola",
-                quantity: 4,
-              },
-            ]}
+          {
+        cartItems.map((item , index) => (
+                <>
+
+                {
+                  item.type === "cartDeal" && (<>
+
+                       
+          <View className="mt-2">
+              <CartDealCard
+               key={index}
+               item = {item}
           />
+          
+          </View>
+           
+       
+                  </>)
+                }
+                
+                
+                </>
+        ))
+       }
         </View>
 
         {/* Special Instructions */}
 
         <View className="mx-0 mt-6 rounded-3xl bg-card p-0">
-          <SpecialInstructionCard note="No onions. Extra ketchup." />
+
+          <AddressCard address={selectedAddress as IAddress} />
         </View>
 
         {/* Payment */}
