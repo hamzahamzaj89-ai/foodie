@@ -48,21 +48,6 @@ export default function MenuDetailsScreen() {
 
   const currentRef = useRef(true);
 
-  console.log(menuId)
-
-
-
-  //loader, undefined , error
-   if (isPending)  return <Loader />;
-    
-  
-    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
-      
-    
-  
-    if (!menu) return <StatusScreen type="error" message="Not Found" title="404 error" />;
-    
-
 
   
    //caculating prices
@@ -98,6 +83,23 @@ export default function MenuDetailsScreen() {
 
    }, [customizations ])
 
+
+
+
+
+  //loader, undefined , error
+   if (isPending)  return <Loader />;
+    
+  
+    if (error)  return <StatusScreen type="error" message={error.message} title={error.name} />;
+      
+    
+  
+    if (!menu) return <StatusScreen type="error" message="Not Found" title="404 error" />;
+    
+
+
+  
 
 
   const handleCart = () => {
@@ -162,7 +164,6 @@ export default function MenuDetailsScreen() {
 
 
 
-  console.log(currentRef.current)
 
 
 

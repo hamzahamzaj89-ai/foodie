@@ -14,6 +14,7 @@ import { useCartStore } from "../../store/useCartStore";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
 import Counter from "../Counter";
+import clsx from "clsx";
 
 type Addon = {
   id: string;
@@ -35,8 +36,10 @@ type CartMenuCardProps = {
 
 export default function CartMenuCard({
    item,
+   type = "cart"
 }: {
-    item: ICartItem | ICartDeal
+    item: ICartItem | ICartDeal,
+    type?:string
 }) {
 
 
@@ -171,19 +174,23 @@ export default function CartMenuCard({
 
         {/* Details */}
 
-        <View className="ml-4 flex-1">
+        <View className="ml-4 flex-1 text-center flex-wrap  flex-row items-center   mt-0">
           {/* Name */}
 
-          <Text
+           <View>
+              <Text
             numberOfLines={1}
             className="font-poppins-semibold text-lg text-white"
           >
             {menu.title}
           </Text>
 
+           </View>
           {/* Customization */}
 
-          <Text
+            {
+              menu.customizations.length > 0 && (<>
+              <Text
             numberOfLines={1}
             className="mt-1 font-poppins-medium text-xs text-zinc-400"
           >
@@ -192,7 +199,7 @@ export default function CartMenuCard({
             {menu.customizations.slice(0,3).map((item , index) => 
                        <>
 
-                       {index !== menu.customizations.length -1  ? item.name +  "  • " : item.name }
+                       {index !== menu.customizations.length -1  ? item.name +  "   • " : item.name }
                        
 
 
@@ -200,9 +207,15 @@ export default function CartMenuCard({
             )}
             
           </Text>
+              </>)
+            }
 
           {/* Addons */}
 
+          {
+            menu.addOns.length > 0 && (<>
+
+            
           <Pressable
             onPress={() => {}}
             className="mt-3 flex-row items-center"
@@ -247,12 +260,21 @@ export default function CartMenuCard({
               }}
             />
           </Pressable>
+            </>)
+          }
+
         </View>
       </View>
 
       {/* Divider */}
 
-      <View className="my-4 h-[1px] bg-white/5" />
+          {type === "cart" ? (<>
+          <View className="my-4 h-[1px] bg-white/5" />
+          </>) : (<>
+                    <View className="my-1 h-[1px] " />
+
+
+          </>)}
 
       {/* Bottom */}
 
@@ -264,20 +286,35 @@ export default function CartMenuCard({
             Item total
           </Text>
 
-          <Text className="mt-0.5 font-poppins-bold text-xl text-white">
+          <Text className={clsx(
+            "mt-0.5 font-poppins-bold text-xl text-buttonBackground",
+             type === "orderPreview" && "text-buttonBackground"
+          )}>
             ${(((menu.price + requiredCustomizationsPrice) * menu.quantity) + customizationsPrice + addOnsPrice).toFixed(2)}
           </Text>
         </View>
 
         {/* Quantity */}
 
-         <View className="-mr-4">
+        {
+          type === "cart" ? (<>
+              <View className="-mr-4">
             <Counter
               quantity={menu.quantity}
               onIncrease={onIncrease}
               onDecrease={onDecrease}
             />
           </View>
+          </>) : (<>
+
+          <View className=" px-4 py-2 rounded-3xl bg-primaryCard ">
+            <Text className="text-buttonBackground -mb-1  font-poppins-semibold ">
+              QTY ×2
+            </Text>
+
+          </View>
+          </>)
+        }
       </View>
     </View>
   );

@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { ArrowLeft, ChevronRight } from "lucide-react-native";
 
-import CartMenuCard from "@/app/customer/components/cart/CartMenuCard";
-import CartDealCard from "@/app/customer/components/cart/CartDealCard";
+import CartMenuCard from "@/app/customer/components/ItemCards/MenuCard";
+import CartDealCard from "@/app/customer/components/ItemCards/DealCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CartBottom from "../components/cart/CartBottom";
+import CartBottom from "../components/ItemCards/Bottom";
 import Button from "@/app/shared/components/Button";
 import TabHeader from "../components/TabHeader";
 import { useCartStore } from "../store/useCartStore";

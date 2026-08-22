@@ -15,8 +15,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import OrderInformationCard from "../components/OrderPreview.tsx/OrderInformationCard";
 import { useAddressStore } from "../store/useAddressStore";
 import { useCartStore } from "../store/useCartStore";
-import CartMenuCard from "../components/cart/CartMenuCard";
-import CartDealCard from "../components/cart/CartDealCard";
+import CartMenuCard from "../components/ItemCards/MenuCard";
+import CartDealCard from "../components/ItemCards/DealCard";
 import AddressCard from "../components/OrderPreview.tsx/AddressCard";
 import { IAddress } from "@/interface/IAddress";
 
@@ -71,6 +71,7 @@ export default function OrderDetailScreen() {
           <CartMenuCard
                key={index}
                item = {item}
+               type="orderPreview"
           />
           
             <View className="px-4">

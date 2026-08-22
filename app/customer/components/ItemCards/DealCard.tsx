@@ -14,10 +14,10 @@ import {
 import ViewDealItems from "./ViewDealItems";
 import Counter from "../Counter";
 import { useCartStore } from "../../store/useCartStore";
-import CartDealAddOnsPreview from "./CartDealAddOnsPreview";
-import CartAddOnsExpanded from "./CartAddOnsExpanded";
-import CartDealAddOns from "./CartDealAddOns";
-import CartDealMenuItems from "./CartDealMenuItems";
+import CartDealAddOnsPreview from "./DealAddOnsPreview";
+import CartAddOnsExpanded from "./AddOnsExpanded";
+import CartDealAddOns from "./DealAddOns";
+import CartDealMenuItems from "./DealMenuItems";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
 

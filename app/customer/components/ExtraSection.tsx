@@ -129,8 +129,7 @@ export default function ExtraSection({
   }
 
 
-  console.log(selectedCustomizations.length)
-      
+
 
   
   return (

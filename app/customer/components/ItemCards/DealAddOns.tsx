@@ -1,8 +1,8 @@
 import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react-native'
-import CartDealAddOnsPreview from './CartDealAddOnsPreview'
-import CartAddOnsExpanded from './CartAddOnsExpanded'
+import CartDealAddOnsPreview from './DealAddOnsPreview'
+import CartAddOnsExpanded from './AddOnsExpanded'
 import { ICartAddOns } from '@/interface/ICart'
 
 const CartDealAddOns = ({
