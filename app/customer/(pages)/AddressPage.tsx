@@ -3,11 +3,19 @@ import React from 'react'
 import { useAppStore } from '@/app/shared/store/useAppStore'
 import SavedAddresses from '../screens/SaveAddresses'
 import AddressInfoPage from '../screens/AddressInfoScreen'
+import { useUserAddresses } from '@/app/shared/hooks/useAddresses'
   
   const AddressPage = () => {
 
 
     const session = useAppStore((state) => state.session)
+
+
+  
+
+
+
+
 
 
     return (

@@ -1,5 +1,5 @@
-  import { View, Text } from 'react-native'
-  import React, { useEffect } from 'react'
+import { View, Text } from 'react-native'
+import React, { useEffect } from 'react'
 import { useAppStore } from './shared/store/useAppStore'
 import { Redirect, SplashScreen } from 'expo-router'
   
@@ -10,7 +10,6 @@ import { Redirect, SplashScreen } from 'expo-router'
 
 
 
-      console.log(appStore)
 
 
         if (!appStore.isInitialized) {

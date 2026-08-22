@@ -68,16 +68,26 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
 
 
        const customizationsTotal = (item as ICartItem).customizations?.reduce((sum, crr) => {
-         return sum + (crr.price * crr.quantity);
+           if (!crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
 }, 0)?? 0
 
 
+   const requiredCustomizations = (item as ICartItem).customizations?.reduce((sum, crr) => {
+            if (crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
+}, 0)?? 0
+      
       
 
+         console.log(addonsTotal)
 
 
-
-       return (addonsTotal + customizationsTotal + (item.price * item.quantity))
+       return (addonsTotal + customizationsTotal + ((item.price + requiredCustomizations) * item.quantity))
 
 
 }

@@ -86,7 +86,7 @@ export default function AddressInfoPage() {
             {/* Sign In */}
 
                <Button
-                 onPress={() => {router.push("/(auth)/SignIn")}}
+                 onPress={() => {router.push("/customer/(auth)/SignIn")}}
                  text={"Continue to SignIn"}
                  left={true}
                  Icon={LogInIcon}

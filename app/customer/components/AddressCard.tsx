@@ -1,23 +1,13 @@
+import { capitalize } from "@/app/shared/utils/helpingFunctions";
+import { IAddress } from "@/interface/IAddress";
 import { BriefcaseBusiness, Check, ChevronRight, Home, MapPin, UserRound } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 
-type AddressType = "home" | "work" | "other";
-
-type Address = {
-  id: string;
-  type: AddressType;
-  title: string;
-  name: string;
-  phone: string;
-  city: string;
-  address: string;
-};
-
 
 
 type AddressCardProps = {
-  address: Address;
+  address: IAddress;
   selected: boolean;
   onPress: () => void;
   onEdit: () => void;
@@ -75,7 +65,7 @@ export default function AddressCard({
 
         <View className="ml-3 flex-1">
           <Text className="font-poppins-semibold text-base text-white">
-            {address.title}
+            {capitalize(address.type )}
           </Text>
 
           <View className="mt-0.5 flex-row items-center">
@@ -129,7 +119,7 @@ export default function AddressCard({
 
       <View className="mt-3 flex-row items-center justify-between">
         <Text className="font-poppins-medium text-[11px] text-zinc-600">
-          {address.phone}
+          {address.phone_number}
         </Text>
 
         <Pressable

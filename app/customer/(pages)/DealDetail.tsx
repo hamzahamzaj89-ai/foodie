@@ -161,7 +161,7 @@ const dealItems = deal.menus.map((item) => {
         <SafeAreaView className="flex-1 bg-black px-4 ">
           <View className="flex-1">
             <View className="mb-2">
-              <Header title="Deal Details" onPress={() => router.back()} />
+              <Header title="Deal Details" description={"Best deal available for you "} onPress={() => router.back()} />
             </View>
 
             <ScrollView

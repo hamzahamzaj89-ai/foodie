@@ -11,7 +11,6 @@ import { toastConfig } from "@/app/config/toastConfig";
 import { queryClient } from "@/app/lib/QueryClient";
 
 import * as NavigationBar from "expo-navigation-bar";
-import AuthGuard from './shared/guard/AuthGuard';
 import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 
 
@@ -46,7 +45,6 @@ const CustomTheme = {
 
       <QueryClientProvider client={queryClient}>
     <SafeAreaProvider>
-         <AuthGuard/>
          <ThemeProvider value={CustomTheme}>
 
       <Slot screenOptions={{headerShown: false}}/>

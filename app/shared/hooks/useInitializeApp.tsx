@@ -106,7 +106,6 @@ export function useInitializeApp() {
 
         subscription = subscribeToAuth();
       } catch (error) {
-        console.error(error);
       } finally {
         setInitialized(true);
         await SplashScreen.hideAsync();

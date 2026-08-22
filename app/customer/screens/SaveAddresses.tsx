@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -7,7 +7,9 @@ import {
 } from "react-native";
 import {
   ArrowLeft,
+  ArrowRight,
   BriefcaseBusiness,
+  Building,
   Check,
   ChevronRight,
   Home,
@@ -19,101 +21,95 @@ import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddressCard from "../components/AddressCard";
 import Button from "@/app/shared/components/Button";
+import { useUserAddresses } from "@/app/shared/hooks/useAddresses";
+import Loader from "@/app/shared/components/Loader";
+import StatusScreen from "./StatusScreen";
+import Header from "../components/Header";
+import AddressListSkeleton from "../components/skeletons/Addresses/AddressSkeletonList";
+import { useAppStore } from "@/app/shared/store/useAppStore";
+import { useAddressStore } from "../store/useAddressStore";
+import { IAddress } from "@/interface/IAddress";
+import { toast } from "@/app/shared/utils/toast";
+import { capitalize } from "@/app/shared/utils/helpingFunctions";
 
-type AddressType = "home" | "work" | "other";
 
-type Address = {
-  id: string;
-  type: AddressType;
-  title: string;
-  name: string;
-  phone: string;
-  city: string;
-  address: string;
-};
-
-const addresses: Address[] = [
-  {
-    id: "1",
-    type: "home",
-    title: "Home",
-    name: "Hamza Mukhtiar",
-    phone: "+92 300 1234567",
-    city: "Lahore",
-    address: "House 24, Street 12, Johar Town",
-  },
-  {
-    id: "2",
-    type: "work",
-    title: "Work",
-    name: "Hamza Mukhtiar",
-    phone: "+92 300 1234567",
-    city: "Lahore",
-    address: "Office 12, Main Boulevard, Gulberg",
-  },
-  {
-    id: "3",
-    type: "other",
-    title: "Other",
-    name: "Hamza Mukhtiar",
-    phone: "+92 300 1234567",
-    city: "Lahore",
-    address: "House 18, Model Town",
-  },
-];
 
 export default function SavedAddresses() {
-  const [selectedAddress, setSelectedAddress] =
-    useState("1");
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
 
-  const selected = addresses.find(
-    (item) => item.id === selectedAddress
-  );
+  const setSelectedAddress = useAddressStore((state) => state.setSelectedAddress)
+  const selectedAddress = useAddressStore((state) => state.selectedAddress)
+
+  const {data:addresses , isPending , error} = useUserAddresses();
+
+
+    useEffect(() => {
+
+      if (!addresses || addresses?.length === 0) {
+         return 
+      }
+       
+          setSelectedAddress(addresses[selectedAddressIndex])
+
+ 
+    } , [addresses])
+
+
+  if (error) {
+     return <StatusScreen
+     type="error"
+         title="Server Error"
+         message={error.message}
+         buttonTitle="Go Back"
+         right ={true}
+         Icon={ArrowLeft}
+         onPress={() => {router.back()}}
+     />
+  }
+
+
+
+    if (addresses?.length === 0) {
+        return <StatusScreen
+        type="info"
+         title="Address Not Found"
+         message="No addresses is available for this user"
+         buttonTitle="Add a address"
+         right ={true}
+         Icon={Building}
+         onPress={() => {router.push("/customer/(pages)/AddressForm")}}
+             
+        />
+  }
+
+
+
+
+
 
   const handleContinue = () => {
-    if (!selected) return;
+    if (!selectedAddress) return toast.error("Plesae add a address for this order");
 
-    // Later pass this address to your checkout/order state.
-    //
-    // Example:
-    //
-    // setDeliveryAddress(selected);
-    //
-    // Then navigate back to checkout.
 
-    router.back();
+
   };
+
+
+
+
+
+
+
+
 
   return (
     <SafeAreaView className="flex-1 bg-black">
       <View className="flex-1">
         {/* Header */}
-
-        <View className="px-5">
-          <View className="flex-row items-center pt-2">
-            <Pressable
-              onPress={() => router.back()}
-              className="h-11 w-11 items-center justify-center rounded-2xl bg-card"
-            
-            >
-              <ArrowLeft
-                size={21}
-                color="#FFFFFF"
-                strokeWidth={2.3}
-              />
-            </Pressable>
-
-            <View className="ml-4">
-              <Text className="font-poppins-bold text-xl text-white">
-                Saved Addresses
-              </Text>
-
-              <Text className="mt-0.5 font-poppins-medium text-xs text-zinc-500">
-                Choose where we should deliver
-              </Text>
-            </View>
-          </View>
-        </View>
+         
+         <View className="px-5">
+          <Header title="Saved Addresses" description="Choose where we should deliver" />
+         </View>
 
         {/* Content */}
 
@@ -121,7 +117,7 @@ export default function SavedAddresses() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingHorizontal: 20,
-            paddingTop: 30,
+            paddingTop: 10,
             paddingBottom: 140,
           }}
         >
@@ -133,15 +129,21 @@ export default function SavedAddresses() {
             </Text>
 
             <Text className="font-poppins-medium text-xs text-zinc-400">
-              {addresses.length} saved
+              {addresses?.length} saved
             </Text>
           </View>
 
           {/* Address List */}
 
-          {addresses.map((address) => {
-            const selected =
-              selectedAddress === address.id;
+            {
+              isPending ? (<> 
+
+               <AddressListSkeleton/>
+              
+              </>) : (<>
+                   {addresses.map((address , index) => {
+            const selected = index === selectedAddressIndex
+              
 
             return (
               <AddressCard
@@ -149,7 +151,7 @@ export default function SavedAddresses() {
                 address={address}
                 selected={selected}
                 onPress={() =>
-                  setSelectedAddress(address.id)
+                  setSelectedAddressIndex(index)
                 }
                 onEdit={() => {
                   // Later:
@@ -165,6 +167,8 @@ export default function SavedAddresses() {
             );
           })}
 
+                </>)
+            }
           {/* Add New Address */}
 
           <Pressable
@@ -193,7 +197,7 @@ export default function SavedAddresses() {
 
           {/* Selected Address Preview */}
 
-          {selected && (
+          {selectedAddress && (
             <View className="mt-7 rounded-2xl border border-[#1C2621] bg-[#101814] p-4">
               <View className="flex-row items-center">
                 <View className="h-9 w-9 items-center justify-center rounded-xl bg-[#1C2621]">
@@ -206,14 +210,14 @@ export default function SavedAddresses() {
 
                 <View className="ml-3 flex-1">
                   <Text className="font-poppins-semibold text-sm text-white">
-                    Delivering to {selected.title}
+                    Delivering to {capitalize(selectedAddress.type)}
                   </Text>
 
                   <Text
                     numberOfLines={1}
                     className="mt-1 font-poppins-medium text-xs text-zinc-500"
                   >
-                    {selected.address}, {selected.city}
+                    {selectedAddress.address}, {selectedAddress.city}
                   </Text>
                 </View>
               </View>
