@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Pressable,
   Text,
   View,
 } from "react-native";
@@ -8,6 +9,7 @@ import {
   ChevronRight,
   CircleCheckBig,
 } from "lucide-react-native";
+import { router } from "expo-router";
 
 type Props = {
   status: "Delivered" | "Preparing" | "Cancelled";
@@ -19,7 +21,7 @@ export default function OrderStatusCard({
   deliveredAt,
 }: Props) {
   return (
-    <View className=" mt-4 rounded-2xl bg-card p-5">
+    <Pressable onPress={() => {router.push("/customer/(pages)/OrderStatusPage")}} className=" mt-4 rounded-2xl bg-card p-5">
      <View className="flex px-1 flex-row justify-between items-center">
          <Text className="font-poppins-bold text-2xl text-white">
         Order Status
@@ -52,6 +54,6 @@ export default function OrderStatusCard({
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }

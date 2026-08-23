@@ -97,7 +97,9 @@ const MenuSection = ({ restaurantId }: { restaurantId: string }) => {
               <SearchBar />
             </View>
 
-            <DealCarousel restaurantId={restaurantId} />
+              <View className=""> 
+                <DealCarousel restaurantId={restaurantId} />
+              </View>
 
             <View className="px-4 pt-2 pb-14">
               <Categories category={category} setCategory={setCategory} />

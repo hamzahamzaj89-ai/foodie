@@ -9,7 +9,7 @@ import DealSkeleton from "../skeletons/Home/DealSkeleton";
 
 const { width } = Dimensions.get("window");
 
-const CARD_WIDTH = width  ;
+const CARD_WIDTH = width -10  ;
 const CARD_HEIGHT = 170;
 
 
@@ -41,7 +41,7 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
 
 
   return (
-    <View className="mt-4 ">
+    <View className="mt-4 flex  justify-center items-center ">
 
       <Carousel
         loop={true}

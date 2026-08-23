@@ -228,7 +228,7 @@ export default function SavedAddresses() {
 
         {/* Bottom Action */}
 
-          <View className="absolute w-[100%] px-5 py-5 flex justify-center items-center  rounded-t-3xl bg-black bottom-0">
+          <View className="absolute w-[100%] px-5 py-5 mb-3 flex justify-center items-center  rounded-t-3xl bg-black bottom-0">
 
                          <Button
                            onPress={handleContinue}
