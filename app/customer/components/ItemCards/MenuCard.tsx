@@ -309,7 +309,7 @@ export default function CartMenuCard({
 
           <View className=" px-4 py-2 rounded-3xl bg-primaryCard ">
             <Text className="text-buttonBackground -mb-1  font-poppins-semibold ">
-              QTY ×2
+              QTY ×{menu.quantity}
             </Text>
 
           </View>

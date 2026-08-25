@@ -58,6 +58,9 @@ export default function Cart() {
 
   };
 
+
+  
+
   return (
     <>
       <SafeAreaView className="flex-1 p-4 pt-0 justify-center bg-black">
@@ -121,7 +124,7 @@ export default function Cart() {
           primaryText="SignIn"
           secondaryText="close"
           onSecondaryPress={() => setVisible(false)}
-          onPrimaryPress={() => router.push("/(auth)/SignIn")}
+          onPrimaryPress={() => router.push("/customer/(auth)/SignIn")}
           onClose={() => setVisible(false)}
         />
       )}

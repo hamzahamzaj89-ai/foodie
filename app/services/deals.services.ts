@@ -65,6 +65,8 @@ const { data , error } = await supabase
     is_active,
     created_at,
     updated_at,
+    deal_price,
+    original_price,
 
     addOns:deal_add_ons(
         id,

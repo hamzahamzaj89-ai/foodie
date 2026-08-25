@@ -25,8 +25,11 @@ import { toast } from "@/app/shared/utils/toast";
 
 export default function CartDealCard({
            item,
+           type = "cart"
+
 } : {
   item: ICartDeal | ICartItem
+  type:string
 }) {
 
 
@@ -189,13 +192,25 @@ export default function CartDealCard({
             </Text>
           </View>
 
-          <View className="-mr-4">
+          {
+          type === "cart" ? (<>
+              <View className="-mr-4">
             <Counter
               quantity={deal.quantity}
               onIncrease={onIncrease}
               onDecrease={onDecrease}
             />
           </View>
+          </>) : (<>
+
+          <View className=" px-4 py-2 rounded-3xl bg-primaryCard ">
+            <Text className="text-buttonBackground -mb-1  font-poppins-semibold ">
+              QTY ×{deal.quantity}
+            </Text>
+
+          </View>
+          </>)
+        }
         </View>
       </View>
     </View>

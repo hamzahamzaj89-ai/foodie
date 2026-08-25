@@ -62,8 +62,6 @@ const OrderStatusTimeLineStep = ({stepIndex , currentIndex , step , totalSteps ,
                                             : "bg-[#17191D]"
                                       }`}
                                       style={{
-                                        borderWidth: upcoming ? 1 : 0,
-                                        borderColor: "#30333A",
                                       }}
                                     >
                                       {completed ? (

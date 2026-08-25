@@ -7,6 +7,8 @@ export const queryKeys = {
     menu: (id: string) => ["public", "food", id] as const,
     categories: ["public", "categories"] as const,
     addresses : ["public" , "addresses"] as const,
+
+
     
     menus: (id:string , category:string) => ["public" , "menus" , category, id ] as const,
     getAddOns: (restaurantId:string) =>  ["public" , "addOns" , restaurantId ] as const,

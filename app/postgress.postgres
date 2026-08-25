@@ -1,0 +1,586 @@
+CREATE OR REPLACE FUNCTION public.create_order(
+    p_order JSONB
+)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+
+    v_user_id UUID;
+    v_address_id UUID;
+    v_order_id UUID;
+
+    v_expected_deals INTEGER := 0;
+    v_inserted_deals INTEGER := 0;
+
+    v_expected_items INTEGER := 0;
+    v_inserted_items INTEGER := 0;
+
+    v_expected_customizations INTEGER := 0;
+    v_inserted_customizations INTEGER := 0;
+
+    v_expected_addons INTEGER := 0;
+    v_inserted_addons INTEGER := 0;
+
+BEGIN
+
+    ----------------------------------------------------------------
+    -- 1. GET AUTHENTICATED USER
+    ----------------------------------------------------------------
+
+    v_user_id := auth.uid();
+
+    IF v_user_id IS NULL THEN
+        RAISE EXCEPTION 'User is not authenticated';
+    END IF;
+
+
+    ----------------------------------------------------------------
+    -- 2. GET ORDER ID
+    ----------------------------------------------------------------
+
+    v_order_id := (p_order->>'id')::UUID;
+
+
+  
+
+    ----------------------------------------------------------------
+    -- 4. CREATE ORDER
+    ----------------------------------------------------------------
+
+    INSERT INTO public.orders (
+        id,
+        user_id,
+        restaurant_id,
+        user_name,
+        phone_number,
+        special_instruction,
+        address,
+        city,
+        first_order_image,
+        first_order_name,
+        total_items
+    )
+    VALUES (
+        v_order_id,
+        v_user_id,
+        (p_order->>'restaurantId')::UUID,
+        p_order->'address'->>'name',
+        p_order->'address'->>'phoneNumber',
+        p_order->'address'->>'specialInstruction',
+        p_order->'address'->>'address',
+        p_order->'address'->>'city',
+        p_order->>'firstOrderImage',
+        p_order->>'firstOrderName',
+        (p_order->>'total')::INTEGER
+    );
+
+
+    ----------------------------------------------------------------
+    -- 5. COUNT FRONTEND DEALS
+    ----------------------------------------------------------------
+
+    SELECT COUNT(*)
+    INTO v_expected_deals
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'deals',
+            '[]'::JSONB
+        )
+    );
+
+
+    ----------------------------------------------------------------
+    -- 6. INSERT DEALS
+    --
+    -- Frontend only provides:
+    --
+    -- {
+    --     "id": "...",
+    --     "deal_id": "...",
+    --     "quantity": 1
+    -- }
+    --
+    -- Title, image and price come from the database.
+    ----------------------------------------------------------------
+
+    INSERT INTO public.order_deals (
+        id,
+        order_id,
+        deal_id,
+        title,
+        image_url,
+        unit_price,
+        quantity
+    )
+    SELECT
+        (deal->>'id')::UUID,
+
+        v_order_id,
+
+        d.id,
+
+        d.title,
+
+        d.image_url,
+
+        d.price,
+
+        (deal->>'quantity')::INTEGER
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'deals',
+            '[]'::JSONB
+        )
+    ) AS deal
+
+    JOIN public.deals d
+        ON d.id = (deal->>'dealId')::UUID;
+
+
+    GET DIAGNOSTICS
+        v_inserted_deals = ROW_COUNT;
+
+
+    ----------------------------------------------------------------
+    -- 7. VERIFY ALL DEALS EXISTED
+    ----------------------------------------------------------------
+
+    IF v_inserted_deals <> v_expected_deals THEN
+
+        RAISE EXCEPTION
+            'Deal insertion mismatch. Expected %, inserted %',
+            v_expected_deals,
+            v_inserted_deals;
+
+    END IF;
+
+
+    ----------------------------------------------------------------
+    -- 8. APPEND DEAL MENU ITEMS TO p_order.items
+    --
+    -- Existing frontend items are preserved.
+    --
+    -- New deal items are fetched from:
+    --
+    -- order_deals
+    --      ↓
+    -- deal_menu_group
+    --      ↓
+    -- menus
+    ----------------------------------------------------------------
+
+    p_order := jsonb_set(
+        p_order,
+        '{items}',
+
+        COALESCE(
+            p_order->'items',
+            '[]'::JSONB
+        )
+
+        ||
+
+        (
+            SELECT COALESCE(
+                jsonb_agg(
+                    jsonb_build_object(
+
+                        'id',
+                        dg.id,
+
+                        'orderDealId',
+                        od.id,
+
+                        'menuId',
+                        dg.menu_id,
+
+                        'quantity',
+                        dg.quantity
+
+                    )
+                ),
+                '[]'::JSONB
+            )
+
+            FROM public.order_deals od
+
+            JOIN public.deal_group dg
+                ON dg.deal_id = od.deal_id
+
+        
+
+            WHERE od.order_id = v_order_id
+        )
+    );
+
+
+
+
+
+    p_order := jsonb_set(
+        p_order,
+        '{addons}',
+
+        COALESCE(
+            p_order->'addons',
+            '[]'::JSONB
+        )
+
+        ||
+
+        (
+            SELECT COALESCE(
+                jsonb_agg(
+                    jsonb_build_object(
+
+                        'id',
+                        da.id,
+
+                        'orderDealId',
+                        od.id,
+                        'orderItemId',
+                        null,
+                        'included',
+                        true,
+
+                      
+                        'addonId',
+                        da.addon_id,
+
+                        'quantity',
+                        da.quantity
+
+                    )
+                ),
+                '[]'::JSONB
+            )
+
+            FROM public.order_deals od
+
+            JOIN public.deal_add_ons da
+                ON da.deal_id = od.deal_id
+
+        
+
+            WHERE od.order_id = v_order_id
+        )
+    );
+
+
+    ----------------------------------------------------------------
+    -- 9. APPEND DEAL CUSTOMIZATIONS TO p_order.customizations
+    --
+    -- Existing frontend customizations are preserved.
+    --
+    -- Database relationship:
+    --
+    -- order_deals
+    --      ↓
+    -- deal_customization_group
+    --      ↓
+    -- customization_group
+    --      ↓
+    -- customizations
+    ----------------------------------------------------------------
+
+    p_order := jsonb_set(
+        p_order,
+        '{customizations}',
+
+        COALESCE(
+            p_order->'customizations',
+            '[]'::JSONB
+        )
+
+        ||
+
+        (
+            SELECT COALESCE(
+                jsonb_agg(
+                    jsonb_build_object(
+
+                        'id',
+                        dmc.id,
+
+                        'orderItemId',
+                        dmc.deals_group_id,
+
+                        'customizationId',
+                        dmc.customization_id,
+
+                        'quantity',
+                        dmc.quantity
+
+                    )
+                ),
+                '[]'::JSONB
+            )
+
+            FROM public.order_deals od
+
+            JOIN public.deal_menu_customizations dmc
+                ON dmc.deal_id = od.deal_id
+
+
+            WHERE od.order_id = v_order_id
+        )
+    );
+
+
+    ----------------------------------------------------------------
+    -- 10. COUNT ALL MENU ITEMS
+    --
+    -- This now includes:
+    --
+    -- 1. Normal frontend items
+    -- 2. Database-generated deal items
+    ----------------------------------------------------------------
+
+    SELECT COUNT(*)
+    INTO v_expected_items
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'items',
+            '[]'::JSONB
+        )
+    );
+
+
+    ----------------------------------------------------------------
+    -- 11. INSERT ALL MENU ITEMS
+    ----------------------------------------------------------------
+
+    INSERT INTO public.order_items (
+        id,
+        order_id,
+        order_deal_id,
+        menu_id,
+        title,
+        image_url,
+        unit_price,
+        quantity
+    )
+    SELECT
+
+        (item->>'id')::UUID,
+
+        v_order_id,
+
+        CASE
+            WHEN item->>'orderDealId' IS NULL
+                THEN NULL
+            ELSE
+                (item->>'orderDealId')::UUID
+        END,
+
+        m.id,
+
+        m.title,
+
+        m.image_url,
+
+        m.price,
+
+        (item->>'quantity')::INTEGER
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'items',
+            '[]'::JSONB
+        )
+    ) AS item
+
+    JOIN public.menu m
+        ON m.id = (item->>'menuId')::UUID;
+
+
+    GET DIAGNOSTICS
+        v_inserted_items = ROW_COUNT;
+
+
+    ----------------------------------------------------------------
+    -- 12. VERIFY ALL MENU ITEMS
+    ----------------------------------------------------------------
+
+    IF v_inserted_items <> v_expected_items THEN
+
+        RAISE EXCEPTION
+            'Menu item insertion mismatch. Expected %, inserted %',
+            v_expected_items,
+            v_inserted_items;
+
+    END IF;
+
+
+    ----------------------------------------------------------------
+    -- 13. COUNT ALL CUSTOMIZATIONS
+    ----------------------------------------------------------------
+
+    SELECT COUNT(*)
+    INTO v_expected_customizations
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'customizations',
+            '[]'::JSONB
+        )
+    );
+
+
+    ----------------------------------------------------------------
+    -- 14. VERIFY CUSTOMIZATION IDs
+    ----------------------------------------------------------------
+
+
+
+    ----------------------------------------------------------------
+    -- 15. INSERT CUSTOMIZATIONS
+    ----------------------------------------------------------------
+
+    INSERT INTO public.order_item_customizations (
+        id,
+        order_item_id,
+        customization_id,
+        name,
+        image_url,
+        unit_price,
+        quantity
+    )
+    SELECT
+
+        (customization->>'id')::UUID,
+
+        (customization->>'orderItemId')::UUID,
+
+        c.id,
+
+        c.name,
+
+        c.image_url,
+
+        c.price,
+
+        (customization->>'quantity')::INTEGER
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'customizations',
+            '[]'::JSONB
+        )
+    ) AS customization
+
+    JOIN public.customizations c
+        ON c.id =
+            (customization->>'customizationId')::UUID;
+
+
+    GET DIAGNOSTICS
+        v_inserted_customizations = ROW_COUNT;
+
+
+    ----------------------------------------------------------------
+    -- 16. VERIFY CUSTOMIZATIONS
+    ----------------------------------------------------------------
+
+    IF v_inserted_customizations <>
+       v_expected_customizations THEN
+
+        RAISE EXCEPTION
+            'Customization insertion mismatch. Expected %, inserted %',
+            v_expected_customizations,
+            v_inserted_customizations;
+
+    END IF;
+
+
+    ----------------------------------------------------------------
+    -- 17. COUNT ADDONS
+    ----------------------------------------------------------------
+
+    SELECT COUNT(*)
+    INTO v_expected_addons
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'addons',
+            '[]'::JSONB
+        )
+    );
+
+
+  
+
+    ----------------------------------------------------------------
+    -- 19. INSERT ADDONS
+    ----------------------------------------------------------------
+
+    INSERT INTO public.order_item_addons (
+        id,
+        order_deal_id,
+        order_item_id,
+        addon_id,
+        name,
+        image_url,
+        unit_price,
+        quantity,
+        included
+    )
+    SELECT
+
+        (addon->>'id')::UUID,
+        (addon->>'orderDealId')::UUID,
+        (addon->>'orderItemId')::UUID,
+
+        a.id,
+
+        a.name,
+
+        a.image_url,
+
+        a.price,
+
+        (addon->>'quantity')::INTEGER,
+        (addon->>'included')::BOOLEAN
+
+    FROM jsonb_array_elements(
+        COALESCE(
+            p_order->'addons',
+            '[]'::JSONB
+        )
+    ) AS addon
+
+    JOIN public.addons a
+        ON a.id =
+            (addon->>'addonId')::UUID;
+
+
+    GET DIAGNOSTICS
+        v_inserted_addons = ROW_COUNT;
+
+
+    ----------------------------------------------------------------
+    -- 20. VERIFY ADDONS
+    ----------------------------------------------------------------
+
+    IF v_inserted_addons <> v_expected_addons THEN
+
+        RAISE EXCEPTION
+            'Addon insertion mismatch. Expected %, inserted %',
+            v_expected_addons,
+            v_inserted_addons;
+
+    END IF;
+
+
+    ----------------------------------------------------------------
+    -- 21. SUCCESS
+    ----------------------------------------------------------------
+
+    RETURN v_order_id;
+
+END;
+$$;

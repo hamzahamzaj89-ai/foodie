@@ -34,7 +34,7 @@ import { Text, View } from "react-native";
              <Text
         className={`font-poppins-semibold ${
           highlight
-            ? "text-xl text-white"
+            ? "text-xl text-buttonBackground"
             : discount
             ? "text-base text-[#22C55E]"
             : "text-base text-white"

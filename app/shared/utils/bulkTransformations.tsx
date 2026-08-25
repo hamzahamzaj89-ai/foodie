@@ -1,3 +1,4 @@
+import { IAddress } from "@/interface/IAddress";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { IOrderPayload } from "@/interface/IOrderPayLoad";
 
@@ -7,9 +8,26 @@ import { v4 as uuidv4 } from "uuid";
 
 export function prepareOrderPayload(
   cart: (ICartItem | ICartDeal)[],
+  address: IAddress,
   restaurantId: string,
-): IOrderPayload {
+) {
   const orderId = uuidv4();
+
+
+  let firstDealImage = "";
+  let firstDealName = "";
+
+  let firstOrderImage = "";
+  let firstOrderName = "";
+
+
+  const orderAddress = {
+      city : address.city,
+      address: address.address,
+      phoneNumber : address.phone_number,
+      specialInstruction: address.special_instruction as string,
+      name: address.name
+  }
 
   const deals: IOrderPayload["deals"] = [];
   const items: IOrderPayload["items"] = [];
@@ -22,6 +40,11 @@ export function prepareOrderPayload(
     // ============================================================
 
     if (cartItem.type === "cartDeal") {
+      if (firstDealImage === "" && firstDealName === "") {
+        firstDealImage = cartItem.imageUrl as string;
+        firstDealName = cartItem.title as string;
+      }
+
       const orderDealId = uuidv4();
 
       const deal = cartItem as ICartDeal;
@@ -37,6 +60,7 @@ export function prepareOrderPayload(
       // ----------------------------------------------------------
 
       for (const addon of deal.addOns) {
+       
         addons.push({
           id: uuidv4(),
 
@@ -59,6 +83,11 @@ export function prepareOrderPayload(
     // NORMAL MENU ITEM
     // ============================================================
     else {
+
+       if (firstOrderImage === "" || firstOrderName === "") {
+          firstOrderImage = firstOrderImage;
+          firstOrderName = firstOrderName;
+        }
       const menuItem = cartItem as ICartItem;
 
       const orderItemId = uuidv4();
@@ -86,6 +115,8 @@ export function prepareOrderPayload(
           customizationId: customization.id,
 
           quantity: customization.quantity,
+          groupName: customization.groupName,
+          groupId: customization.groupId
         });
       }
 
@@ -110,8 +141,15 @@ export function prepareOrderPayload(
     }
   }
 
+  if (deals.length > 0) {
+    firstOrderImage = firstDealImage;
+    firstOrderName = firstDealName;
+  }
+
   return {
     id: orderId,
+    firstOrderImage,
+    firstOrderName,
 
     restaurantId: restaurantId,
 
@@ -122,6 +160,9 @@ export function prepareOrderPayload(
     customizations,
 
     addons,
+
+    address : orderAddress,
+
 
     total: cart.length,
   };

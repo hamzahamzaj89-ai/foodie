@@ -2,6 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface IOrderPayload {
   id: string;
+  firstOrderImage: string;
+  firstOrderName : string;
+  
 
   restaurantId: string;
   total: number;
@@ -25,6 +28,9 @@ export interface IOrderPayload {
     orderItemId: string;
     customizationId: string;
     quantity: number;
+    groupName: string;
+    groupId: string;
+
   }[];
 
   addons: {
@@ -34,7 +40,17 @@ export interface IOrderPayload {
 
     addonId: string;
     quantity: number;
-    included: false;
+    included: boolean;
 
   }[];
+
+  address: {
+      city: string;
+      address: string;
+      name: string;
+      phoneNumber: string;
+      specialInstruction: string;
+
+
+  }
 }

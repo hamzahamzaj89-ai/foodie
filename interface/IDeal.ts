@@ -16,6 +16,9 @@ export interface IDealDetail {
 
   fixed_discount: number | null;
 
+  deal_price: number;
+  original_price: number;
+  
   free_delivery: boolean;
 
   start_date: string;

@@ -37,15 +37,9 @@ export default function DealDetail() {
   const dealMenusItems = useRef([]);
 
   //memos
-  const oldPrice = useMemo(() => {
-    return calculateDealPrice(deal?.menus) + calculateDealAddOnsPrice(deal?.addOns) + calculateDealMenuCustomizationsPrice(deal?.menus);
-  }, [deal]);
+  const oldPrice =  deal?.original_price?? 0
 
-  const newPrice = useMemo(() => {
-    return deal?.fixed_discount
-      ? oldPrice - deal?.fixed_discount
-      : oldPrice - ((deal?.discount_percentage ?? 0) / 100) * oldPrice;
-  }, [deal]);
+  const newPrice = deal?.deal_price?? 0
 
   let addOnsPrice = useMemo(() => {
     return addOns.reduce((crr, cus) => {
