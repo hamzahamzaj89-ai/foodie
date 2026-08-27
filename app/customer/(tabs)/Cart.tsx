@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { ArrowLeft, ChevronRight } from "lucide-react-native";
+import { ArrowLeft, ChevronRight, ShoppingBag, Utensils, UtensilsCrossed } from "lucide-react-native";
 
 import CartMenuCard from "@/app/customer/components/ItemCards/MenuCard";
 import CartDealCard from "@/app/customer/components/ItemCards/DealCard";
@@ -18,6 +18,7 @@ import InfoModal from "../components/InfoModal";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 import { prepareOrderPayload } from "@/app/shared/utils/bulkTransformations";
 import { useResturantStore } from "@/app/shared/store/useResturantStore";
+import EmptyCart from "../screens/EmptyScreen";
 
 export default function Cart() {
   const cartItems = useCartStore((state) => state.items);
@@ -58,6 +59,21 @@ export default function Cart() {
 
   };
 
+
+  if (cartItems.length <= 0) {
+     return (<>
+       <EmptyCart
+       title="Your cart is empty"
+       description="Looks like you haven't added anything yet. Discover something delicious and make your next meal special"
+        MainIcon={ShoppingBag}
+        SecondaryIcon={Utensils}
+        onPress={() => router.push("/customer/(tabs)/Home")}
+        buttonText="Explore Food"
+        buttonIcon={UtensilsCrossed}
+        right={true}
+       />
+     </>)
+  }
 
   
 

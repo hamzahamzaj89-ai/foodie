@@ -29,7 +29,7 @@ export default function CartDealCard({
 
 } : {
   item: ICartDeal | ICartItem
-  type:string
+  type?:string
 }) {
 
 
