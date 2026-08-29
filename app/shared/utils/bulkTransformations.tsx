@@ -82,11 +82,13 @@ export function prepareOrderPayload(
     // NORMAL MENU ITEM
     // ============================================================
     else {
-      if (firstOrderImage === "" || firstOrderName === "") {
-        firstOrderImage = firstOrderImage;
-        firstOrderName = firstOrderName;
-      }
+      
       const menuItem = cartItem as ICartItem;
+
+      if (firstOrderImage === "" || firstOrderName === "") {
+        firstOrderImage = menuItem.imageUrl as string;
+        firstOrderName = menuItem.title as string;
+      }
 
       const orderItemId = uuidv4();
 
@@ -144,6 +146,9 @@ export function prepareOrderPayload(
     firstOrderImage = firstDealImage;
     firstOrderName = firstDealName;
   }
+
+
+  console.log(subTotal , deliveryFee)
 
   return {
     id: orderId,

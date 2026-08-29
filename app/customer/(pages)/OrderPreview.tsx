@@ -76,11 +76,13 @@ export default function OrderPreview({
 
 
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     try {
-      const order = createOrder(orderPayload);
+      const order = await createOrder(orderPayload);
 
-      toast.success("Your order has been created successfully: ");
+
+           toast.success("your order has been created")
+           
     } catch (error) {
       console.log("order creation failed" + error);
     }
