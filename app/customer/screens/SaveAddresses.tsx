@@ -31,6 +31,7 @@ import { useAddressStore } from "../store/useAddressStore";
 import { IAddress } from "@/interface/IAddress";
 import { toast } from "@/app/shared/utils/toast";
 import { capitalize } from "@/app/shared/utils/helpingFunctions";
+import SecondaryButton from "@/app/shared/components/SecondaryButton";
 
 
 
@@ -172,29 +173,15 @@ export default function SavedAddresses() {
             }
           {/* Add New Address */}
 
-          <Pressable
-            onPress={() =>
-              router.push(
-                "/customer/(pages)/AddressForm"
-              )
-            }
-            className="mt-3 h-[58px] flex-row items-center justify-center rounded-2xl  bg-card"
-            android_ripple={{
-              color: "rgba(255,138,43,0.08)",
-            }}
-          >
-            <View className="h-4 w-4 items-center justify-center rounded-xl ">
-              <Plus
-                size={18}
-                color="#FF8A2B"
-                strokeWidth={2.6}
-              />
-            </View>
+          <View className="mt-3"></View>
 
-            <Text className="ml-2 font-poppins-semibold text-sm text-[#FF8A2B]">
-              Add New Address
-            </Text>
-          </Pressable>
+         <SecondaryButton
+         text="Add a Address"
+         onPress={() => router.push("/customer/AddressForm")}
+         right
+         Icon={Plus}
+
+         />
 
           {/* Selected Address Preview */}
 

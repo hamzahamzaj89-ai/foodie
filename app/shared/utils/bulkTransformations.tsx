@@ -29,11 +29,22 @@ export function prepareOrderPayload(
     name: address.name,
   };
 
+
+
   const deals: IOrderPayload["deals"] = [];
   const items: IOrderPayload["items"] = [];
   const customizations: IOrderPayload["customizations"] = [];
   const addons: IOrderPayload["addons"] = [];
 
+
+
+
+
+  //generating order number
+  const orderNumber = generateOrderNumber();
+
+ // bulk transforming
+ 
   for (const cartItem of cart) {
     // ============================================================
     // DEAL
@@ -165,6 +176,8 @@ export function prepareOrderPayload(
 
     addons,
 
+    orderNumber,
+
     address: orderAddress,
 
     subTotal,
@@ -172,4 +185,20 @@ export function prepareOrderPayload(
 
     total: cart.length,
   };
+}
+
+
+
+
+
+export function generateOrderNumber(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let code = "";
+
+  for (let i = 0; i < 6; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return `BK-${code}`;
 }

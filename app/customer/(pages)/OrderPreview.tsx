@@ -30,6 +30,7 @@ import {
   calculatePreviewTotals,
 } from "@/app/shared/utils/calculatingPrice";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
+import { router } from "expo-router";
 
 export default function OrderPreview({
   type = "orderPreview",
@@ -78,10 +79,21 @@ export default function OrderPreview({
 
   const handleOrder = async () => {
     try {
-      const order = await createOrder(orderPayload);
+      const orderNumber = await createOrder(orderPayload);
 
 
-           toast.success("your order has been created")
+      console.log(orderNumber)
+
+
+      router.push({
+        pathname: "/customer/(pages)/OrderSuccessPage",
+        params: {
+          orderNumber,
+          status: "pending"
+        }
+      })
+
+      toast.success("your order has been created")
            
     } catch (error) {
       console.log("order creation failed" + error);

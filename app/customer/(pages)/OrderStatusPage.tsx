@@ -15,7 +15,7 @@ import {
   PackageCheck,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import Header from "../components/Header";
 import OrderStatusHeader from "../components/OrderStatusPage/OrderStatusHeader";
 import OrderStatusTimeLineStep from "../components/OrderStatusPage/OrderStatusTimeLineStep";
@@ -76,8 +76,11 @@ const STATUS_INDEX: Record<OrderStatus, number> = {
 };
 
 export default function OrderStatusScreen() {
+  //getting the params 
+    const {status , orderNumber} = useLocalSearchParams();
+
   // Later this will come from your order/Supabase data.
-  const currentStatus: OrderStatus = "pending";
+  const currentStatus: OrderStatus = status as OrderStatus;
 
   const currentIndex = STATUS_INDEX[currentStatus];
 
