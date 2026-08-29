@@ -2,7 +2,8 @@ import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react-native'
 import ViewDealItems from './ViewDealItems'
-import { ICartItem } from '@/interface/ICart'
+import { ICartAddOns, ICartDealAddons, ICartItem, IDealItems } from '@/interface/ICart'
+import { IDealAddOns } from '@/interface/IDeal'
 
 const CartDealMenuItems = ({
   onPress,
@@ -12,7 +13,7 @@ const CartDealMenuItems = ({
 }: {
   onPress: () => void
   expanded: boolean
-  menuItems: ICartItem[]
+  menuItems: (IDealItems | ICartDealAddons)[]
 }) => {
   return (
 

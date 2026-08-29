@@ -12,6 +12,15 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 
+
+type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "preparing"
+  | "picked_up"
+  | "delivered";
+
+
 type Props = {
   image: any;
   title: string;
@@ -24,7 +33,7 @@ type Props = {
 
   price: number;
 
-  status: "Delivered" | "Preparing" | "Cancelled";
+  status: OrderStatus;
 };
 
 export default function DealOrderCard({
@@ -36,16 +45,16 @@ export default function DealOrderCard({
   status,
 }: Props) {
   const statusColor =
-    status === "Delivered"
+    status === "delivered"
       ? "#22C55E"
-      : status === "Preparing"
+      : status === "preparing"
       ? "#F59E0B"
       : "#EF4444";
 
   const statusBackground =
-    status === "Delivered"
+    status === "delivered"
       ? "#1C2621"
-      : status === "Preparing"
+      : status === "preparing"
       ? "#33260D"
       : "#331A1A";
 
@@ -66,7 +75,9 @@ export default function DealOrderCard({
       {/* Banner */}
 
       <Image
-        source={image}
+        source={{
+          uri: image as string
+        }}
         resizeMode="cover"
         className="h-44 w-full"
       />
@@ -98,7 +109,7 @@ export default function DealOrderCard({
         {/* Status */}
 
         <View className="flex-row items-center mt-2 justify-between">
-          <Text className="font-poppins-semibold text mt-1 text-zinc-400">
+          <Text className="font-poppins-semibold text mt-2 text-zinc-400">
             Status
           </Text>
 

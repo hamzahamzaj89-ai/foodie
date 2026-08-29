@@ -24,7 +24,7 @@ type OrderStatus =
   | "pending"
   | "confirmed"
   | "preparing"
-  | "out_for_delivery"
+  | "picked_up"
   | "delivered";
 
 type StatusStep = {
@@ -54,7 +54,7 @@ const STATUS_STEPS: StatusStep[] = [
     icon: CookingPot,
   },
   {
-    id: "out_for_delivery",
+    id: "picked_up",
     title: "Out for Delivery",
     description: "Rider is on the way",
     icon: MapPin,
@@ -71,7 +71,7 @@ const STATUS_INDEX: Record<OrderStatus, number> = {
   pending: 0,
   confirmed: 1,
   preparing: 2,
-  out_for_delivery: 3,
+  picked_up: 3,
   delivered: 4,
 };
 

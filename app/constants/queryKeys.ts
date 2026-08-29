@@ -21,6 +21,7 @@ export const queryKeys = {
 
   user: {
     profile: ["user", "profile"] as const,
+    
     orders: ["user", "orders"] as const,
     favorites: ["user", "favorites"] as const,
     addresses: ["user", "addresses"] as const,

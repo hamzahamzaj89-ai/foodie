@@ -8,6 +8,7 @@ export interface IOrderPayload {
   subTotal: number;
   deliveryFee: number;
   orderNumber:string;
+  dealIncluded: boolean;
   
 
   restaurantId: string;

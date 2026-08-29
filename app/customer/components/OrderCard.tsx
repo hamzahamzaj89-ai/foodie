@@ -10,7 +10,20 @@ import {
   ChevronRight,
 } from "lucide-react-native";
 
-export default function OrderCard() {
+export default function OrderCard({
+  title,
+  imageUrl,
+  status,
+  moreItems,
+ price
+
+}:{
+   title:string
+   imageUrl:string
+   status:string
+   moreItems:number 
+   price: number
+}) {
 
   return (
     <Pressable
@@ -24,7 +37,9 @@ export default function OrderCard() {
 
            <View className="w-20 h-24 relative">
               <Image
-            source={require("@/assets/images/burger.png")}
+            source={{
+              uri: imageUrl as string
+            }}
             resizeMode="contain"
             className="h-36 w-36 absolute -left-5 -top-4 "
           />
@@ -35,18 +50,18 @@ export default function OrderCard() {
         <View className="ml-10 mt-3 flex-1 justify-between">
           <View>
             <Text className="font-poppins-semibold text-lg text-white">
-              Cheese Burger
+              {title}
             </Text>
 
             <Text className="mt-1 font-poppins-medium text-xs text-zinc-400">
-              +5 More Items
+              +{moreItems} More Items
             </Text>
 
          
           </View>
 
           <Text className="font-poppins-bold text-xl text-white">
-            $34.99
+            ${price}
           </Text>
         </View>
       </View>
@@ -68,7 +83,7 @@ export default function OrderCard() {
           />
 
           <Text className="ml-2 font-poppins-semibold text-sm text-[#22C55E]">
-            Delivered
+            {status}
           </Text>
         </View>
 

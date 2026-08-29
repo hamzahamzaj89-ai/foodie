@@ -20,6 +20,7 @@ import CartDealAddOns from "./DealAddOns";
 import CartDealMenuItems from "./DealMenuItems";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
+import clsx from "clsx";
 
 
 
@@ -56,7 +57,7 @@ export default function CartDealCard({
     
             
          return deal.addOns.reduce((crr , cus) => {
-                           return  crr + cus.price;
+                           return  crr + cus.price ;
                            
                   } , 0)
     
@@ -187,7 +188,11 @@ export default function CartDealCard({
               Deal Total
             </Text>
 
-            <Text className="mt-0.5 font-poppins-bold text-3xl text-white">
+            <Text className={clsx(
+              ["mt-0.5 font-poppins-bold text-3xl ",
+              type ==="cart"? "text-buttonBackground" : "text-white"
+              ]
+            )}>
               ${(deal.price * deal.quantity )  + addOnsPrice}
             </Text>
           </View>

@@ -6,7 +6,7 @@ type OrderStatus =
    | "pending"
   | "confirmed"
   | "preparing"
-  | "out_for_delivery"
+  | "picked_up"
   | "delivered";
 
 
@@ -58,7 +58,7 @@ const OrderStatusHeader = ({currentStep}: {currentStep: StatusStep}) => {
                   : currentStep.id === "preparing"
                     ? "Your food is being freshly prepared."
                     : currentStep.id ===
-                        "out_for_delivery"
+                        "picked_up"
                       ? "Your rider is on the way with your order."
                       : "Your order has been delivered. Enjoy your meal!"}
             </Text>

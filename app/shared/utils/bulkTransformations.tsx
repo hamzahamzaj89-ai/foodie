@@ -44,7 +44,7 @@ export function prepareOrderPayload(
   const orderNumber = generateOrderNumber();
 
  // bulk transforming
- 
+
   for (const cartItem of cart) {
     // ============================================================
     // DEAL
@@ -183,6 +183,7 @@ export function prepareOrderPayload(
     subTotal,
     deliveryFee,
 
+    dealIncluded: deals.length > 0,
     total: cart.length,
   };
 }

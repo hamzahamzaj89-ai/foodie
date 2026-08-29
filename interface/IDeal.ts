@@ -39,8 +39,9 @@ export interface IDealDetail {
 export  interface IDealAddOns {
   id: string;
   quantity: number;
+  
   addOns : IAddOns |  IAddOns[];
-
+  
 }
 
 

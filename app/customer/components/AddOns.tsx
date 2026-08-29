@@ -51,8 +51,7 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
         image_url: selectedCard.image_url,
         name: selectedCard.name,
         price: selectedCard.price,
-        quantity: 1,
-      },
+        quantity: 1      },
     ]);
   };
 

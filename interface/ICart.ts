@@ -22,6 +22,8 @@ export interface ICartAddOns {
 
 
 
+
+
 export interface ICartItem {
 
   id: string;
@@ -33,7 +35,7 @@ export interface ICartItem {
   
   imageUrl: string | null;
 
-
+   
   price: number;
 
   quantity: number;
@@ -47,6 +49,17 @@ export interface IDealItems extends ICartItem {
 }
 
 
+
+export interface ICartDealAddons {
+  id:string;
+  
+   title: string;
+   quantity : number;
+   imageUrl : string;
+
+
+}
+
 export interface ICartDeal {
 
   id: string;
@@ -55,8 +68,8 @@ export interface ICartDeal {
 
   type: "cartMenu" | "cartDeal";
 
-  items: IDealItems[];
-
+  items: (IDealItems | ICartDealAddons)[];
+  
   oldPrice: number;
 
   price: number;

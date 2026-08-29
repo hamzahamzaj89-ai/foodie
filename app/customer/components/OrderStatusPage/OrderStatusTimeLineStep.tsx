@@ -8,7 +8,7 @@ type OrderStatus =
   | "pending"
   | "confirmed"
   | "preparing"
-  | "out_for_delivery"
+  | "picked_up"
   | "delivered";
 
 interface StatusStep  {
@@ -22,7 +22,7 @@ const STATUS_INDEX: Record<OrderStatus, number> = {
   pending: 0,
   confirmed: 1,
   preparing: 2,
-  out_for_delivery: 3,
+  picked_up: 3,
   delivered: 4,
 };
 

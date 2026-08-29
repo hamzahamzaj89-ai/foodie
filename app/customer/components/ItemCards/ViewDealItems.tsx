@@ -1,23 +1,24 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
 import ViewCardItem from './ViewCardItem';
-import { IDealItems } from '@/interface/ICart';
+import { ICartDealAddons, IDealItems } from '@/interface/ICart';
+import { IDealAddOns } from '@/interface/IDeal';
 
 const ViewDealItems = ({
    menuItems
 } : {
-   menuItems: IDealItems[]
+   menuItems: (IDealItems | ICartDealAddons)[]
 }) => {
 
 
   return (
-    <View className='flex h flex-col'>
+    <View className='flex '>
 
            <FlatList
               
              data={menuItems}
              contentContainerStyle={{
-                 paddingBottom: 120
+                 paddingBottom: 0
              }}
              scrollEnabled= {false}
              showsVerticalScrollIndicator={false}

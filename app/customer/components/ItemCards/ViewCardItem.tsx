@@ -1,9 +1,10 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
-import { ICartItem } from '@/interface/ICart'
+import { ICartDealAddons, ICartItem } from '@/interface/ICart'
+import { IDealAddOns } from '@/interface/IDeal'
 
 const ViewCardItem = ({item}:{
-  item: ICartItem
+  item: ICartItem | ICartDealAddons
 }) => {
 
 

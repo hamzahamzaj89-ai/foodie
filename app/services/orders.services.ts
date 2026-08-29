@@ -4,6 +4,7 @@ import { toast } from "../shared/utils/toast";
 import { IOrderCard } from "@/interface/IOrder";
 
 
+const PAGE_SIZE = 4;
 
 
 
@@ -43,21 +44,26 @@ export async function createOrder(order:IOrderPayload) {
 
 
 
-export async function getOrders (status:string) {
 
+export async function getOrders (status:string[] , page:number) {
+
+const start = page ?? 0;
 
 const { data, error } = await supabase
   .from("orders")
   .select(`
+    id,
     status,
-    name:firstOrderName,
-    imageUrl:firstOrderImage,
+    name:first_order_name,
+    imageUrl:first_order_image,
     total,
     itemsLength: order_items_length,
-    createdAt: created_at
+    createdAt: created_at,
+    dealIncluded: deal_included
     `)
-  .eq("status", status)
-  .order("created_at", { ascending: false });
+  .in("status", ["pending", "preparing", "ready"])
+  .order("created_at", { ascending: false })
+  .range(start, start + PAGE_SIZE);
 
 
   if (error) {
@@ -67,7 +73,22 @@ const { data, error } = await supabase
 
 
 
-  return data as IOrderCard[];
+     
+     const hasNextPage = data.length > PAGE_SIZE;
+       
+  
+     
+  console.log(hasNextPage)
+  
+     return {
+  
+        data: data  as IOrderCard[],
+        hasNextPage
+  
+     }
+  
+
+
 
 
 

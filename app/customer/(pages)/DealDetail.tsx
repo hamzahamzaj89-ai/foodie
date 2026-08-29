@@ -16,11 +16,12 @@ import { ICartAddOns, ICartDeal, ICartItem } from "@/interface/ICart";
 import { useCartStore } from "../store/useCartStore";
 import { useDealItem, useDeals } from "@/app/shared/hooks/useDeals";
 import { calculateDealAddOnsPrice, calculateDealMenuCustomizationsPrice, calculateDealPrice } from "@/app/shared/utils/calculatingPrice";
-import { IDealDetail, IDealMenuItem } from "@/interface/IDeal";
+import { IDealAddOns, IDealDetail, IDealMenuItem } from "@/interface/IDeal";
 import Loader from "@/app/shared/components/Loader";
 import StatusScreen from "../screens/StatusScreen";
 import { toast } from "@/app/shared/utils/toast";
 import { ICustomizationOption } from "@/interface/IMenu";
+import { IAddOns } from "@/interface/IAddOns";
 
 export default function DealDetail() {
   const { dealId } = useLocalSearchParams();
@@ -87,6 +88,21 @@ export default function DealDetail() {
     }
 
 
+  
+
+    const addonsItems = deal.addOns.map((item: IDealAddOns , index:number) => {
+          return {
+                id: item.id,
+                quantity: item.quantity,
+                imageUrl: (item.addOns as IAddOns).image_url,
+                title: (item.addOns as IAddOns).name
+
+          }
+    })
+
+
+    
+
 
 const dealItems = deal.menus.map((item) => {
   const menu = item.menu as IDealMenuItem;
@@ -128,7 +144,7 @@ const dealItems = deal.menus.map((item) => {
       title: deal.title as string,
       quantity: quantity,
       addOns: addOns,
-      items: dealItems,
+      items: [...dealItems , ...addonsItems],
 
       discount: Math.round(oldPrice) - Math.round(newPrice),
       type: "cartDeal",
@@ -154,7 +170,7 @@ const dealItems = deal.menus.map((item) => {
       <View className="flex-1 bg-black">
         <SafeAreaView className="flex-1 bg-black px-4 ">
           <View className="flex-1">
-            <View className="mb-2">
+            <View className="mb-3">
               <Header title="Deal Details" description={"Best deal available for you "} onPress={() => router.back()} />
             </View>
 
