@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import OrderStatusCard from "@/app/customer/components/OrderPreview.tsx/OrderStatusCard";
 import OrderItemCard from "@/app/customer/components/OrderPreview.tsx/OrderItemCard";
@@ -25,6 +25,11 @@ import { useResturantStore } from "@/app/shared/store/useResturantStore";
 import { useCreateOrders } from "@/app/shared/hooks/useOrders";
 import { IOrderPayload } from "@/interface/IOrderPayLoad";
 import { toast } from "@/app/shared/utils/toast";
+import {
+  calculateItemTotalPrice,
+  calculatePreviewTotals,
+} from "@/app/shared/utils/calculatingPrice";
+import { ICartDeal, ICartItem } from "@/interface/ICart";
 
 export default function OrderPreview({
   type = "orderPreview",
@@ -37,26 +42,54 @@ export default function OrderPreview({
     (state) => state.selectedRestaurant?.id,
   );
 
+  let deliveryFee = useResturantStore(
+    (state) => state.selectedRestaurant?.delivery_fee,
+  )?? 0.0;
+
   const { mutateAsync: createOrder, error, isPending } = useCreateOrders();
   let orderPayload: IOrderPayload;
 
-  useEffect(() => {
-    orderPayload = prepareOrderPayload(
+  let subTotal = 0.0;
+
+  let AddonsTotal = 0.0;
+  let menuTotal = 0.0;
+  let dealTotal = 0.0;
+
+  //  useMemos
+
+  orderPayload = useMemo(() => {
+    let totals = calculatePreviewTotals(cartItems);
+
+    AddonsTotal = totals.addonsTotal;
+    menuTotal = totals.menuTotal;
+    dealTotal = totals.dealTotal;
+
+    return prepareOrderPayload(
       cartItems,
       selectedAddress as IAddress,
+      AddonsTotal + menuTotal + dealTotal,
+      deliveryFee as number,
       restaurantId as string,
     );
   }, [cartItems]);
+
+
+
 
   const handleOrder = () => {
     try {
       const order = createOrder(orderPayload);
 
-      toast.success("Your order has been created successfully: ")
+      toast.success("Your order has been created successfully: ");
     } catch (error) {
       console.log("order creation failed" + error);
     }
   };
+
+
+
+
+  
 
   return (
     <SafeAreaView className="flex-1 bg-black px-5 ">
@@ -129,10 +162,10 @@ export default function OrderPreview({
         {/* Payment */}
 
         <PaymentSummaryCard
-          itemsTotal={36.99}
-          dealsTotal={34.99}
-          deliveryFee={2.99}
-          serviceFee={0.0}
+          menuTotal={menuTotal}
+          dealsTotal={dealTotal}
+          deliveryFee={deliveryFee as number}
+          addonsTotal={AddonsTotal}
           tax={0.0}
           discount={0}
         />

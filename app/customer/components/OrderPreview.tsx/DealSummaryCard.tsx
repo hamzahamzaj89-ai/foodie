@@ -6,27 +6,29 @@ import {
 import Row from "../Row";
 
 type Props = {
-  itemsTotal: number;
+  menuTotal: number;
   dealsTotal: number;
   deliveryFee: number;
-  serviceFee: number;
+  addonsTotal: number;
+  
   tax: number;
   discount: number;
 };
 
 export default function PaymentSummaryCard({
-  itemsTotal,
+  menuTotal,
   dealsTotal,
   deliveryFee,
-  serviceFee,
+  addonsTotal,
+
   tax,
   discount,
 }: Props) {
   const total =
-    itemsTotal +
+    menuTotal +
     dealsTotal +
     deliveryFee +
-    serviceFee +
+    addonsTotal +
     tax -
     discount;
 
@@ -41,7 +43,7 @@ export default function PaymentSummaryCard({
       <View className="mt-6 w-[100%]  flex flex-col">
         <Row
           label="Items Total"
-          value={itemsTotal}
+          value={menuTotal}
         />
 
         <Row
@@ -49,16 +51,18 @@ export default function PaymentSummaryCard({
           value={dealsTotal}
         />
 
+
+        <Row
+          label="Addons Total"
+          value={addonsTotal}
+        />
+     
+
+       
         <Row
           label="Delivery Fee"
           value={deliveryFee}
         />
-
-        <Row
-          label="Service Fee"
-          value={serviceFee}
-        />
-
         <Row
           label="Tax"
           value={tax}
@@ -71,7 +75,7 @@ export default function PaymentSummaryCard({
         />
       </View>
 
-      <View className="my-2 h-[1px] bg-[#23262D]" />
+      <View className="mt-1 mb-3 h-[1px] bg-[#23262D]" />
 
       <Row
         label="Grand Total"

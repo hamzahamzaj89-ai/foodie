@@ -21,8 +21,8 @@ import { Text, View } from "react-native";
           <Text
         className={`font-poppins-medium ${
           highlight
-            ? "text-lg text-white"
-            : "text-base text-zinc-400"
+            ? "text-xl font-poppins-bold text-white"
+            : "text-base font-poppins-medium text-zinc-400"
         }`}
       >
     {label}
@@ -32,12 +32,12 @@ import { Text, View } from "react-native";
 
            
              <Text
-        className={`font-poppins-semibold ${
+        className={` ${
           highlight
-            ? "text-xl text-buttonBackground"
+            ? "text-xl font-poppins-semibold text-buttonBackground"
             : discount
-            ? "text-base text-[#22C55E]"
-            : "text-base text-white"
+            ? "text-base font-poppins-semibold text-[#22C55E]"
+            : "text-base font-poppins-semibold text-white"
         }`}
       >
         {discount ? "-" : ""}${value.toFixed(2)}

@@ -5,9 +5,11 @@ export interface IOrderPayload {
   firstOrderImage: string;
   firstOrderName : string;
   
+  subTotal: number;
+  deliveryFee: number;
 
   restaurantId: string;
-  total: number;
+  total: number; // Number of the order items
 
 
   deals: {
@@ -30,6 +32,8 @@ export interface IOrderPayload {
     quantity: number;
     groupName: string;
     groupId: string;
+    included: boolean;
+    
 
   }[];
 

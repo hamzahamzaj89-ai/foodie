@@ -84,11 +84,113 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
       
       
 
-         console.log(addonsTotal)
 
 
        return (addonsTotal + customizationsTotal + ((item.price + requiredCustomizations) * item.quantity))
 
 
 }
+
+
+
+
+
+
+
+
+export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
+
+
+
+  
+      const addonsTotal = item.reduce((sum , crr) => {
+                 return crr.addOns?.reduce((sum, crr) => {
+         return sum + (crr.price * crr.quantity);
+}, 0)?? 0
+      } , 0) 
+
+
+
+
+    const menuTotal = item.reduce((sum , crr) => {
+
+              
+          if (crr.type === "cartMenu") {
+              const customizationsTotal = (crr as ICartItem).customizations?.reduce((sum, crr) => {
+           if (!crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
+}, 0)?? 0
+
+
+
+
+       const requiredCustomizations = (crr as ICartItem).customizations?.reduce((sum, crr) => {
+            if (crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
+}, 0)?? 0
+
+
+
+
+                 return sum + (customizationsTotal + ((crr.price + requiredCustomizations) * crr.quantity))
+
+         
+
+          }
+          return sum
+             
+      } , 0) 
+
+
+        const dealTotal = item.reduce((sum , crr) => {
+
+              
+          if (crr.type === "cartDeal") {
+          
+
+
+
+
+             return sum + (crr.price * crr.quantity)
+
+         
+
+          }
+          return sum
+             
+      } , 0) 
+
+
+      return {
+       addonsTotal,
+       dealTotal,
+       menuTotal
+      }
+
+
+
+}
+   
+
+    
+
+
+
+
+      
+      
+
+
+
+
+
+
+
+
+
+
 

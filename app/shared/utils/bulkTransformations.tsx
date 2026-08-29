@@ -9,10 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 export function prepareOrderPayload(
   cart: (ICartItem | ICartDeal)[],
   address: IAddress,
+  subTotal: number,
+  deliveryFee:number,
   restaurantId: string,
 ) {
   const orderId = uuidv4();
-
 
   let firstDealImage = "";
   let firstDealName = "";
@@ -20,14 +21,13 @@ export function prepareOrderPayload(
   let firstOrderImage = "";
   let firstOrderName = "";
 
-
   const orderAddress = {
-      city : address.city,
-      address: address.address,
-      phoneNumber : address.phone_number,
-      specialInstruction: address.special_instruction as string,
-      name: address.name
-  }
+    city: address.city,
+    address: address.address,
+    phoneNumber: address.phone_number,
+    specialInstruction: address.special_instruction as string,
+    name: address.name,
+  };
 
   const deals: IOrderPayload["deals"] = [];
   const items: IOrderPayload["items"] = [];
@@ -60,7 +60,6 @@ export function prepareOrderPayload(
       // ----------------------------------------------------------
 
       for (const addon of deal.addOns) {
-       
         addons.push({
           id: uuidv4(),
 
@@ -83,11 +82,10 @@ export function prepareOrderPayload(
     // NORMAL MENU ITEM
     // ============================================================
     else {
-
-       if (firstOrderImage === "" || firstOrderName === "") {
-          firstOrderImage = firstOrderImage;
-          firstOrderName = firstOrderName;
-        }
+      if (firstOrderImage === "" || firstOrderName === "") {
+        firstOrderImage = firstOrderImage;
+        firstOrderName = firstOrderName;
+      }
       const menuItem = cartItem as ICartItem;
 
       const orderItemId = uuidv4();
@@ -113,10 +111,11 @@ export function prepareOrderPayload(
           orderItemId: orderItemId,
 
           customizationId: customization.id,
+          included: false,
 
           quantity: customization.quantity,
           groupName: customization.groupName,
-          groupId: customization.groupId
+          groupId: customization.groupId,
         });
       }
 
@@ -161,8 +160,10 @@ export function prepareOrderPayload(
 
     addons,
 
-    address : orderAddress,
+    address: orderAddress,
 
+    subTotal,
+    deliveryFee,
 
     total: cart.length,
   };
