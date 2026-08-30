@@ -9,6 +9,8 @@ import {
 import {
   ChevronRight,
   CircleCheckBig,
+  LucideIcon,
+  LucideProps,
 } from "lucide-react-native";
 import { router } from "expo-router";
 
@@ -34,6 +36,7 @@ type Props = {
   price: number;
 
   status: OrderStatus;
+  Icon:LucideIcon
 };
 
 export default function DealOrderCard({
@@ -43,20 +46,21 @@ export default function DealOrderCard({
   moreItems,
   price,
   status,
+  Icon
 }: Props) {
   const statusColor =
     status === "delivered"
       ? "#22C55E"
       : status === "preparing"
       ? "#F59E0B"
-      : "#EF4444";
+      : "#22C55E";
 
   const statusBackground =
     status === "delivered"
       ? "#1C2621"
       : status === "preparing"
       ? "#33260D"
-      : "#331A1A";
+      : "#1C2621";
 
   return (
     <View
@@ -119,7 +123,7 @@ export default function DealOrderCard({
               backgroundColor: statusBackground,
             }}
           >
-            <CircleCheckBig
+            <Icon
               size={15}
               color={statusColor}
               strokeWidth={2.5}

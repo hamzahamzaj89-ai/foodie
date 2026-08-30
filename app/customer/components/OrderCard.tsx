@@ -8,6 +8,7 @@ import {
 import {
   CircleCheckBig,
   ChevronRight,
+  LucideIcon,
 } from "lucide-react-native";
 
 export default function OrderCard({
@@ -15,7 +16,8 @@ export default function OrderCard({
   imageUrl,
   status,
   moreItems,
- price
+ price,
+ Icon
 
 }:{
    title:string
@@ -23,6 +25,7 @@ export default function OrderCard({
    status:string
    moreItems:number 
    price: number
+   Icon:LucideIcon
 }) {
 
   return (
@@ -76,7 +79,7 @@ export default function OrderCard({
         {/* Status */}
 
         <View className="flex-row items-center rounded-2xl bg-[#1C2621] px-3 py-2">
-          <CircleCheckBig
+          <Icon
             size={16}
             color="#22C55E"
             strokeWidth={2.5}

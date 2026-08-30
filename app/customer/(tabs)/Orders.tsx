@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
 import OrderTabs from "@/app/customer/components/Tabs";
@@ -11,24 +11,46 @@ import { useInfiniteOrders } from "@/app/shared/hooks/useOrders";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { formatOrderDate } from "@/app/shared/utils/formatOrderDate";
-
-
+import {
+  CircleCheckBig,
+  Clock3,
+  CookingPot,
+  LucideIcon,
+  MapPin,
+  PackageCheck,
+} from "lucide-react-native";
+import {
+  OrderStatus,
+  STATUS_INDEX,
+  STATUS_STEPS,
+} from "@/app/shared/utils/getOrderStatus";
 
 const tabs = ["Ongoing", "Completed", "Cancelled"];
 
-type OrderStatus =
-  | "pending"
-  | "confirmed"
-  | "preparing"
-  | "picked_up"
-  | "delivered";
+let lastDate = "";
 
 
 export default function OrdersScreen() {
   const [selectedTab, setSelectedTab] = useState("Ongoing");
-    let lastDate = "";
 
-  let status = ["pending", "confirmed", "preparing", "picked_up"];
+  const [status , setStatus] = useState(["pending", "confirmed", "preparing", "picked_up"])
+
+  useEffect(() => {
+    function checkCondition() {
+      if (selectedTab === "Completed") {
+        return (setStatus(["delivered"]));
+      } else if (selectedTab === "Cancelled") {
+        return (setStatus(["cancelled"]));
+      } else {
+        return (setStatus(["pending", "confirmed", "preparing", "picked_up"]));
+      }
+    }
+
+    checkCondition();
+  }, [selectedTab]);
+
+
+
   const {
     data,
     isPending,
@@ -59,14 +81,8 @@ export default function OrdersScreen() {
     index: number;
   }
 
-
-
-  
-
-
-
   return (
-    <SafeAreaView className="flex-1 bg-[#050608] px-4">
+    <SafeAreaView className="flex-1 bg-black px-4">
       <FlatList
         data={orders}
         keyExtractor={(item) => item.id}
@@ -83,11 +99,13 @@ export default function OrdersScreen() {
                 </View>
               </>
             ) : (
-              <StatusScreen
+              <View className="h-[500px] flex-col justify-center items-center">
+                  <StatusScreen
                 type="error"
-                message="Not Found"
+                message={`There is no ${selectedTab} orders available`}
                 title="404 error"
               />
+              </View>
             )}
           </>
         }
@@ -102,7 +120,7 @@ export default function OrdersScreen() {
 
             {/* Tabs */}
 
-            <View className="mt-2 mb-6">
+            <View className="mt-2 mb-1">
               <OrderTabs
                 selected={selectedTab}
                 onSelect={setSelectedTab}
@@ -130,7 +148,7 @@ export default function OrdersScreen() {
         }}
 
         renderItem={({ item }) => {
-          const orderDate = formatOrderDate(item.createdAt)
+          const orderDate = formatOrderDate(item.createdAt);
           const showHeader = lastDate !== orderDate;
 
           lastDate = orderDate;
@@ -144,18 +162,25 @@ export default function OrdersScreen() {
                   image={item.imageUrl}
                   title={item.name}
                   previewItem="2 Cheese Burgers"
-                  moreItems={item.itemsLength -1}
+                  moreItems={item.itemsLength - 1}
                   price={Number(item.total.toFixed(2))}
                   status={item.status as OrderStatus}
+                  Icon={
+                    STATUS_STEPS[STATUS_INDEX[item.status as OrderStatus]]
+                      .icon as LucideIcon
+                  }
                 />
               ) : (
-                <OrderCard 
-                imageUrl={item.imageUrl}
+                <OrderCard
+                  imageUrl={item.imageUrl}
                   title={item.name}
-                  moreItems={item.itemsLength -1}
+                  moreItems={item.itemsLength - 1}
                   price={Number(item.total.toFixed(2))}
                   status={item.status as OrderStatus}
-                
+                  Icon={
+                    STATUS_STEPS[STATUS_INDEX[item.status as OrderStatus]]
+                      .icon as LucideIcon
+                  }
                 />
               )}
             </>

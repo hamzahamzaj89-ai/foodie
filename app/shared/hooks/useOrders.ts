@@ -9,8 +9,10 @@ export function useInfiniteOrders( status: string[]) {
 
   const [page, setPage] = useState(0);
 
+
+
   return useInfiniteQuery({
-    queryKey: queryKeys.user.orders,
+    queryKey: queryKeys.user.statusOrders(status),
 
     queryFn: ({ pageParam }) =>
       getOrders(status, pageParam),
@@ -26,6 +28,8 @@ export function useInfiniteOrders( status: string[]) {
 
       // Next offset
       return allPages.reduce((total, page) => total + page.data.length, 0);
+
+
     },
   });
 }

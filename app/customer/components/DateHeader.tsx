@@ -10,8 +10,8 @@ export default function DateHeader({
   title: string;
 }) {
   return (
-    <View className=" px-1 mb-4 mt-2">
-      <Text className="font-poppins-semibold text-xl text-white">
+    <View className=" px-1 mb-2 mt-4">
+      <Text className="font-poppins-bold text-2xl text-white">
         {title}
       </Text>
     </View>

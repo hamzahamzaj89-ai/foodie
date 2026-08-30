@@ -49,6 +49,8 @@ export async function getOrders (status:string[] , page:number) {
 
 const start = page ?? 0;
 
+console.log(status)
+
 const { data, error } = await supabase
   .from("orders")
   .select(`
@@ -61,7 +63,7 @@ const { data, error } = await supabase
     createdAt: created_at,
     dealIncluded: deal_included
     `)
-  .in("status", ["pending", "preparing", "ready"])
+  .in("status", status)
   .order("created_at", { ascending: false })
   .range(start, start + PAGE_SIZE);
 

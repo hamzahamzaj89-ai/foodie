@@ -21,6 +21,7 @@ export const queryKeys = {
 
   user: {
     profile: ["user", "profile"] as const,
+    statusOrders: (status :string[]) => ["user" , "orders", status] as const,
     
     orders: ["user", "orders"] as const,
     favorites: ["user", "favorites"] as const,
