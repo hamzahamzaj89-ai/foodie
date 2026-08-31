@@ -54,7 +54,7 @@ export default function ExtraSection({
 
           
 
-          const selected = selectedCustomizations.findIndex((item) => item.id === selectedCard.id)
+          const selected = selectedCustomizations.findIndex((item) => item.customizationId === selectedCard.id)
 
 
           if (selected > -1) {
@@ -84,9 +84,9 @@ export default function ExtraSection({
             groupId: customizations.id ,
             groupName: customizations.name,
             required: customizations.required,
-            id:  selectedCard.id ,
-            name: selectedCard.name  ,
-            image_url: selectedCard.image_url as string,
+            customizationId:  selectedCard.id ,
+            title: selectedCard.name  ,
+            imageUrl: selectedCard.image_url as string,
             price: selectedCard.price,
             quantity: 1
          }])
@@ -116,9 +116,9 @@ export default function ExtraSection({
             groupId: customizations.id ,
             groupName: customizations.name  ,
             required: customizations.required,
-            id:  selectedCard.id ,
-            name: selectedCard.name  ,
-            image_url: selectedCard.image_url as string,
+            customizationId:  selectedCard.id ,
+            title: selectedCard.name  ,
+            imageUrl: selectedCard.image_url as string,
             price: selectedCard.price,
             quantity: 1
          }])
@@ -172,7 +172,7 @@ export default function ExtraSection({
               <CustomizationCard
             onPress={() => {handleSingleData(item)}}
             customization={item}
-            selected = {(selectedCustomizations.find((i) => i?.id === item.id) && true)}
+            selected = {(selectedCustomizations.find((i) => i?.customizationId === item.id) && true)}
           />
                
 
@@ -183,7 +183,7 @@ export default function ExtraSection({
               <CustomizationCard
             onPress={() => {handledata(item)}}
             customization={item}
-            selected = {(selectedCustomizations.find((i) => i?.id === item.id) && true)}
+            selected = {(selectedCustomizations.find((i) => i?.customizationId === item.id) && true)}
           />
              </>)}
            

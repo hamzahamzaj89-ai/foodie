@@ -1,13 +1,13 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
 import ViewCardItem from './ViewCardItem';
-import { ICartDealAddons, IDealItems } from '@/interface/ICart';
 import { IDealAddOns } from '@/interface/IDeal';
+import { ICartAddOns, IDealMenuItems } from '@/interface/ICart';
 
 const ViewDealItems = ({
    menuItems
 } : {
-   menuItems: (IDealItems | ICartDealAddons)[]
+   menuItems: (IDealMenuItems | ICartAddOns)[]
 }) => {
 
 
@@ -22,7 +22,7 @@ const ViewDealItems = ({
              }}
              scrollEnabled= {false}
              showsVerticalScrollIndicator={false}
-             keyExtractor={(item) => item.id}
+             keyExtractor={(item) => (item as ICartAddOns).addonId?? (item as IDealMenuItems).menuId}
 
              renderItem={({item , index}) => (
                 <>

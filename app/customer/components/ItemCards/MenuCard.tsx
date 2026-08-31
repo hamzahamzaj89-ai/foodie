@@ -15,35 +15,19 @@ import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
 import Counter from "../Counter";
 import clsx from "clsx";
-
-type Addon = {
-  id: string;
-  name: string;
-};
-
-type CartMenuCardProps = {
-  title?: string;
-  customization?: string;
-  price?: number;
-  quantity?: number;
-  image?: any;
-  addons?: Addon[];
-  totalAddonCount?: number;
-  onMinus?: () => void;
-  onPlus?: () => void;
-  onAddonsPress?: () => void;
-};
+import { ICardItems } from "@/interface/ICard";
 
 export default function CartMenuCard({
    item,
    type = "cart"
 }: {
-    item: ICartItem | ICartDeal,
+    item: ICartItem,
     type?:string
 }) {
 
 
-  const menu = item as ICartItem
+  const menu = item;
+
 
 
    const updateItem = useCartStore((state) => state.updateItem)
@@ -51,9 +35,9 @@ export default function CartMenuCard({
   //useMemo
   //calculatingPrices
      let  customizationsPrice = useMemo(()=> {
-                return menu.customizations.reduce((crr , cus) => {
+                return menu.customizations?.reduce((crr , cus) => {
                            if (!cus.required) {
-                            return  crr + cus.price;
+                            return  crr + (cus.price?? 0);
                            }
 
                            return crr
@@ -64,20 +48,20 @@ export default function CartMenuCard({
      let addOnsPrice = useMemo(() => {
   
   
-       return menu.addOns.reduce((crr , cus) => {
-                         return  crr + cus.price;
+       return menu.addons?.reduce((sum , crr) => {
+                         return  sum + (crr.price??0);
                          
                 } , 0)
   
-     } , [menu.addOns])
+     } , [menu.addons])
   
   
      let requiredCustomizationsPrice = useMemo(() => {
   
-      return menu.customizations.reduce((crr , cus) => {
+      return menu.customizations?.reduce((crr , cus) => {
   
           if (cus.required) {
-                   return crr + cus.price;
+                   return crr + (cus.price??0);
           }
            
           return crr
@@ -89,8 +73,8 @@ export default function CartMenuCard({
 
 
 
-  const visibleAddons = menu.addOns.slice(0, 3);
-  const totalAddonCount = menu.addOns.length
+  const visibleAddons = menu.addons.slice(0, 3);
+  const totalAddonCount = menu.addons.length
   const remainingAddons = Math.max(
     totalAddonCount - visibleAddons.length,
     0
@@ -108,9 +92,10 @@ export default function CartMenuCard({
 
 
      updateItem({
-          ...menu,
-          quantity : menu.quantity + 1
-     }
+         ...menu,
+          
+          quantity : menu.quantity + 1 
+         }
      )
        
 
@@ -137,6 +122,8 @@ export default function CartMenuCard({
  
 
   }
+
+
 
 
 
@@ -199,7 +186,7 @@ export default function CartMenuCard({
             {menu.customizations.slice(0,3).map((item , index) => 
                        <>
 
-                       {index !== menu.customizations.length -1  ? item.name +  "   • " : item.name }
+                       {index !== menu.customizations.length -1  ? item.title +  "   • " : item.title }
                        
 
 
@@ -213,7 +200,7 @@ export default function CartMenuCard({
           {/* Addons */}
 
           {
-            menu.addOns.length > 0 && (<>
+            menu.addons.length > 0 && (<>
 
             
           <Pressable
@@ -225,7 +212,7 @@ export default function CartMenuCard({
             <View className="h-8 flex-row items-center">
               {visibleAddons.map((addon, index) => (
                 <View
-                  key={addon.id}
+                  key={addon.addonId}
                   className="h-7 w-7 overflow-hidden rounded-full border-0 bg-primaryCard"
                   style={{
                     marginLeft: index === 0 ? 0 : -9,
@@ -234,7 +221,7 @@ export default function CartMenuCard({
                 >
                   <Image
                     source={{
-                      uri: menu.addOns[index].image_url
+                      uri: menu.addons[index].imageUrl
                     }}
                     resizeMode="contain"
                     className="h-full w-full"

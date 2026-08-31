@@ -94,6 +94,8 @@ const { data , error } = await supabase
           id,
           group_name,
           group_id,
+          required,
+          quantity,
 
           customization: customizations(
           id , 

@@ -1,10 +1,10 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
-import { ICartDealAddons, ICartItem } from '@/interface/ICart'
-import { IDealAddOns } from '@/interface/IDeal'
+import { IDealAddOns, IDealMenuItem } from '@/interface/IDeal'
+import { ICartAddOns, IDealMenuItems } from '@/interface/ICart'
 
 const ViewCardItem = ({item}:{
-  item: ICartItem | ICartDealAddons
+  item: IDealMenuItems | ICartAddOns
 }) => {
 
 
@@ -15,7 +15,7 @@ const ViewCardItem = ({item}:{
                  <View className="h-16 w-16   items-center justify-center rounded-2xl ">
                <Image
                  source={{
-                  uri: item.imageUrl as string
+                  uri: item.imageUrl
                  }}
                  resizeMode="contain"
                  className="h-16 w-16  "

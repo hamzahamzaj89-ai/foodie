@@ -4,19 +4,20 @@ import { IDealMenu, IDealMenuItem } from "./IDeal";
 export interface ICartCustomization {
   groupId: string;
   groupName: string;
-  id: string;
+  customizationId: string;
   required?: boolean;
-  image_url: string;
-  name: string;
+  imageUrl: string;
+  title: string;
   quantity: number;
-  price: number;
+  price?: number;
 }
 
 export interface ICartAddOns {
-  id: string;
-  image_url: string;
-  price: number;
-  name: string;
+  addonId: string;
+  imageUrl: string;
+  price?: number;
+  title: string;
+  included: boolean;
   quantity: number;
 }
 
@@ -26,10 +27,10 @@ export interface ICartAddOns {
 
 export interface ICartItem {
 
-  id: string;
+  menuId: string;
 
   title: string;
-  type?: string;
+  type: string;
 
 
   
@@ -40,35 +41,35 @@ export interface ICartItem {
 
   quantity: number;
 
-  customizations: ICartCustomization[];
-  addOns: ICartAddOns[] | [];
-}
-
-
-export interface IDealItems extends ICartItem {  
+  customizations: ICartCustomization[] | [];
+  addons: ICartAddOns[] | [];
 }
 
 
 
-export interface ICartDealAddons {
-  id:string;
-  
-   title: string;
-   quantity : number;
-   imageUrl : string;
 
+export interface IDealMenuItems {
+    menuId: string;
+    imageUrl: string;
+    quantity: number;
+    title:string;
+    customizations:  ICartCustomization[] | [];
+    addons: ICartAddOns[] | [];
 
 }
+
+
+
 
 export interface ICartDeal {
 
-  id: string;
+  dealId: string;
 
   title: string;
 
-  type: "cartMenu" | "cartDeal";
+  type: "menu" | "deal";
 
-  items: (IDealItems | ICartDealAddons)[];
+  items: (IDealMenuItems | ICartAddOns)[];
   
   oldPrice: number;
 
@@ -77,10 +78,9 @@ export interface ICartDeal {
   imageUrl: string | null;
 
 
-  discount: number;
 
   freeDelivery: boolean;
-  addOns: ICartAddOns[]
+  addons: ICartAddOns[]
   
 }
 

@@ -50,7 +50,7 @@ export function prepareOrderPayload(
     // DEAL
     // ============================================================
 
-    if (cartItem.type === "cartDeal") {
+    if (cartItem.type === "deal") {
       if (firstDealImage === "" && firstDealName === "") {
         firstDealImage = cartItem.imageUrl as string;
         firstDealName = cartItem.title as string;
@@ -62,7 +62,7 @@ export function prepareOrderPayload(
 
       deals.push({
         id: orderDealId,
-        dealId: deal.id,
+        dealId: deal.dealId,
         quantity: deal.quantity,
       });
 
@@ -70,7 +70,7 @@ export function prepareOrderPayload(
       // Addons belonging directly to the deal
       // ----------------------------------------------------------
 
-      for (const addon of deal.addOns) {
+      for (const addon of deal.addons) {
         addons.push({
           id: uuidv4(),
 
@@ -82,7 +82,7 @@ export function prepareOrderPayload(
 
           included: false, //determine whether addon belong to the deal
 
-          addonId: addon.id,
+          addonId: addon.addonId,
 
           quantity: addon.quantity,
         });
@@ -106,7 +106,7 @@ export function prepareOrderPayload(
       items.push({
         id: orderItemId,
 
-        menuId: menuItem.id,
+        menuId: menuItem.menuId,
 
         orderDealId: null,
 
@@ -123,8 +123,9 @@ export function prepareOrderPayload(
 
           orderItemId: orderItemId,
 
-          customizationId: customization.id,
+          customizationId: customization.customizationId,
           included: false,
+          required: customization.required as boolean,
 
           quantity: customization.quantity,
           groupName: customization.groupName,
@@ -136,7 +137,7 @@ export function prepareOrderPayload(
       // Addons
       // ----------------------------------------------------------
 
-      for (const addon of menuItem.addOns) {
+      for (const addon of menuItem.addons) {
         addons.push({
           id: uuidv4(),
 
@@ -144,7 +145,7 @@ export function prepareOrderPayload(
 
           orderItemId: orderItemId,
 
-          addonId: addon.id,
+          addonId: addon.addonId,
           included: false,
 
           quantity: addon.quantity,

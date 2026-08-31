@@ -21,6 +21,10 @@ import CartDealMenuItems from "./DealMenuItems";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { toast } from "@/app/shared/utils/toast";
 import clsx from "clsx";
+import { IOrderDeal } from "@/interface/IOrder";
+import { IDealCardProps } from "@/interface/ICard";
+
+
 
 
 
@@ -29,13 +33,15 @@ export default function CartDealCard({
            type = "cart"
 
 } : {
-  item: ICartDeal | ICartItem
-  type?:string
+  item: ICartDeal
+  type:string
 }) {
 
 
 
-  const deal = item as ICartDeal
+    const deal = item
+
+
 
   
 
@@ -47,8 +53,8 @@ export default function CartDealCard({
   const [expanded, setExpanded] = useState(false);
   const [addonsExpanded, setAddonsExpanded] = useState(false);
 
-  const visibleAddons = deal.addOns.slice(0, 3);
-  const totalAddonCount = deal.addOns.length
+  const visibleAddons = deal.addons.slice(0, 3);
+  const totalAddonCount = deal.addons.length
 
 
   
@@ -56,12 +62,16 @@ export default function CartDealCard({
     let addOnsPrice = useMemo(() => {
     
             
-         return deal.addOns.reduce((crr , cus) => {
-                           return  crr + cus.price ;
+         return deal.addons.reduce((sum , crr) => {
+                             if (!crr.included) {
+                                return  sum + ((crr).price?? 0) ;
+                             }
+                            return sum;
+
                            
                   } , 0)
     
-       } , [deal.addOns])
+       } , [deal.addons])
 
   const remainingAddons = Math.max(
     totalAddonCount - visibleAddons.length,
@@ -116,7 +126,9 @@ export default function CartDealCard({
       {/* Banner */}
 
       <Image
-        source={require("@/assets/images/deal1.jpeg")}
+        source={{
+          uri: deal.imageUrl as string
+        }}
         resizeMode="cover"
         className="h-44 w-full"
       />
@@ -132,10 +144,10 @@ export default function CartDealCard({
 
         {/* Deal Summary */}
 
-        <Text className="mt-1 font-poppins-medium text-base text-zinc-300">
+        <Text className="mt-1 font-poppins-medium text-base text-zinc-300" numberOfLines={3}>
            {
-            deal.items.map((item) => (
-                 item.quantity + " " + item.title + "  • "
+            deal.items.map((item , index) => (
+                       (index !== deal.items.length -1)  ? item.quantity + " " + item.title +  "    • " : item.title 
             ))
           }
         </Text>
@@ -144,7 +156,7 @@ export default function CartDealCard({
 
         <View className="mb-5 mt-5 self-start rounded-full bg-[#1C2621] px-4 pl py-2">
           <Text className="font-poppins-semibold text-sm text-[#44D17A]">
-            You Save ${deal.discount}
+            You Save ${( Math.round(deal.oldPrice) - Math.round(deal.price))}
           </Text>
         </View>
 
@@ -170,7 +182,7 @@ export default function CartDealCard({
                }}
                remainingAddons = {remainingAddons}
                visibleAddons ={visibleAddons}
-               addons  = {item.addOns}
+               addons  = {item.addons}
                addonsExpanded = {addonsExpanded}
 
          />
@@ -190,7 +202,7 @@ export default function CartDealCard({
 
             <Text className={clsx(
               ["mt-0.5 font-poppins-bold text-3xl ",
-              type ==="cart"? "text-buttonBackground" : "text-white"
+              type ==="cart"? "text-buttonBackground" : "text-buttonBackground"
               ]
             )}>
               ${(deal.price * deal.quantity )  + addOnsPrice}

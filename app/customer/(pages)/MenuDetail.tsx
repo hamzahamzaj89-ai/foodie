@@ -30,10 +30,10 @@ export default function MenuDetailsScreen() {
 
   const cart = useCartStore((state) => state.getCartItem(menuId as string));
 
-  const [customizations, setCustomizations] = useState<ICartCustomization[]>(cart ? (cart as ICartItem).customizations : []);
+  const [customizations, setCustomizations] = useState<ICartCustomization[] | []>(cart ? (cart as ICartItem).customizations : []);
 
 
-  const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? (cart as ICartItem).addOns : []);
+  const [addOns, setAddOns] = useState<ICartAddOns[] | []>(cart ? (cart as ICartItem).addons : []);
 
   const { data: menu, isPending, error } = useMenuItem(menuId as string);
 
@@ -54,7 +54,7 @@ export default function MenuDetailsScreen() {
      
    let  customizationsPrice = useMemo(()=> {
               return customizations.reduce((crr , cus) => {
-                       return  crr + cus.price;
+                       return  crr + (cus.price??0);
 
               } , 0)
    } , [customizations])
@@ -63,7 +63,7 @@ export default function MenuDetailsScreen() {
 
 
      return addOns.reduce((crr , cus) => {
-                       return  crr + cus.price;
+                       return  crr + (cus.price??0);
                        
               } , 0)
 
@@ -75,13 +75,13 @@ export default function MenuDetailsScreen() {
     return customizations.reduce((crr , cus) => {
 
         if (cus.required) {
-                 return crr + cus.price;
+                 return crr + (cus.price??0);
         }
          
         return crr
     } , 0)
 
-   }, [customizations ])
+   }, [customizations])
 
 
 
@@ -122,7 +122,7 @@ export default function MenuDetailsScreen() {
         price: cart.price + (quantity * (menu.price + requiredCustomizationsPrice)),
 
         customizations: customizations,
-        addOns: addOns
+        addons: addOns
 
     }
      
@@ -142,17 +142,17 @@ export default function MenuDetailsScreen() {
 
 
         const cartItem = {
-        id: menu?.id as string,
-        type: "cartMenu",
+        menuId: menu?.id as string,
+        type: "menu",
         imageUrl: menu?.image_url as string,
         title: menu?.title as string,
         price: menu.price,
         quantity: quantity,
         customizations: customizations,
-        addOns: addOns
+        addons: addOns
  
 
-    } as ICartItem
+    } 
 
     addItem(cartItem)
 

@@ -159,6 +159,8 @@ export default function OrdersScreen() {
 
               {item.dealIncluded ? (
                 <DealOrderCard
+                
+                id={item.id}
                   image={item.imageUrl}
                   title={item.name}
                   previewItem="2 Cheese Burgers"

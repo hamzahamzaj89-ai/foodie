@@ -1,7 +1,7 @@
 import { queryKeys } from "@/app/constants/queryKeys";
 import { queryClient } from "@/app/lib/QueryClient";
-import { createOrder, getOrders } from "@/app/services/orders.services";
-import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { createOrder, getOrder, getOrders } from "@/app/services/orders.services";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 
@@ -44,6 +44,8 @@ export function useCreateOrders() {
     queryClient.invalidateQueries({
       queryKey: queryKeys.user.orders
     });
+
+    
 }
 
     
@@ -54,3 +56,16 @@ export function useCreateOrders() {
 
 
 
+
+
+export function useOrder(orderId:string) {
+
+
+        return useQuery({
+    queryKey: queryKeys.user.order(orderId),
+
+    queryFn: () => getOrder(orderId),
+
+    enabled: !!orderId,
+  });
+}

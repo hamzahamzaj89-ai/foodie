@@ -22,6 +22,7 @@ import StatusScreen from "../screens/StatusScreen";
 import { toast } from "@/app/shared/utils/toast";
 import { ICustomizationOption } from "@/interface/IMenu";
 import { IAddOns } from "@/interface/IAddOns";
+import { Ticket } from "lucide-react-native";
 
 export default function DealDetail() {
   const { dealId } = useLocalSearchParams();
@@ -31,7 +32,7 @@ export default function DealDetail() {
   const [quantity, setQuantity] = useState(cart ? cart.quantity : 1);
   const addItem = useCartStore((state) => state.addItem);
 
-  const [addOns, setAddOns] = useState<ICartAddOns[]>(cart ? cart.addOns : []);
+  const [addOns, setAddOns] = useState<ICartAddOns[] | []>(cart ? cart.addons : []);
 
   const { data: deal, error, isPending } = useDealItem(dealId as string);
   const updateItem = useCartStore((state) => state.updateItem)
@@ -43,8 +44,8 @@ export default function DealDetail() {
   const newPrice = deal?.deal_price?? 0
 
   let addOnsPrice = useMemo(() => {
-    return addOns.reduce((crr, cus) => {
-      return crr + cus.price;
+    return addOns.reduce((sum, crr) => {
+      return sum + (crr.price??0);
     }, 0);
   }, [addOns]);
 
@@ -92,8 +93,10 @@ export default function DealDetail() {
 
     const addonsItems = deal.addOns.map((item: IDealAddOns , index:number) => {
           return {
-                id: item.id,
+                addonId: item.id,
                 quantity: item.quantity,
+                    included : true,
+
                 imageUrl: (item.addOns as IAddOns).image_url,
                 title: (item.addOns as IAddOns).name
 
@@ -109,12 +112,25 @@ const dealItems = deal.menus.map((item) => {
 
 
   const customizations = item.customizations.map((item) => {
+
+       const customization = item.customization as ICustomizationOption;
+
+
+        const customizationOptions = {
+             customizationId: customization.id,
+             imageUrl : customization.image_url,
+             title: customization.name,
+
+
+
+        }
  
     return {
       groupName: item.group_name,
       groupId: item.group_id,
-      ...item.customization as ICustomizationOption,
-      quantity : 1
+      required: item.required,
+      ...customizationOptions,
+      quantity : item.quantity
     }
        
 
@@ -122,15 +138,13 @@ const dealItems = deal.menus.map((item) => {
   })
 
   return {
-    id: menu.id,
-    imageUrl: menu.image_url,
+    menuId: menu.id,
+    imageUrl: menu.image_url as string,
     title: menu.title,
-    price: menu.price,
     quantity: item.quantity,
-    
     customizations: customizations,
     
-    addOns: [],
+    addons: [],
   };
 });
     
@@ -138,16 +152,15 @@ const dealItems = deal.menus.map((item) => {
     
 
     const cartItem: ICartDeal = {
-      id: deal.id as string,
+      dealId: deal.id as string,
       imageUrl: deal.image_url as string,
       price: newPrice,
       title: deal.title as string,
       quantity: quantity,
-      addOns: addOns,
+      addons: addOns,
       items: [...dealItems , ...addonsItems],
 
-      discount: Math.round(oldPrice) - Math.round(newPrice),
-      type: "cartDeal",
+      type: "deal",
       freeDelivery: deal.free_delivery,
       oldPrice: oldPrice,
     };

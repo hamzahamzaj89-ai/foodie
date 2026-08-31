@@ -28,7 +28,7 @@ const CartDealAddOnsPreview = ({
                  <View className="h-9 flex-row items-center">
                    {visibleAddons.map((addon, index:number) => (
                      <View
-                       key={addon.id}
+                       key={addon.addonId}
                        className="h-9 w-9 overflow-hidden rounded-full border-2 border-[#15181D] bg-primaryCard"
                        style={{
                          marginLeft: index === 0 ? 0 : -10,
@@ -38,7 +38,7 @@ const CartDealAddOnsPreview = ({
                      >
                        <Image
                          source={{
-                           uri: addon.image_url
+                           uri: addon.imageUrl
                          }}
                          resizeMode="cover"
                          className="h-full w-full"

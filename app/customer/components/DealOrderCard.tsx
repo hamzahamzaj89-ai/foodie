@@ -24,6 +24,9 @@ type OrderStatus =
 
 
 type Props = {
+  id:string;
+
+
   image: any;
   title: string;
 
@@ -40,6 +43,7 @@ type Props = {
 };
 
 export default function DealOrderCard({
+  id,
   image,
   title,
   previewItem,
@@ -153,7 +157,12 @@ export default function DealOrderCard({
 
           <Pressable
             onPress={() =>
-              router.push("/customer/(pages)/OrderPreview")
+              router.push({
+                pathname: "/customer/OrderDetail",
+                params: {
+                  orderId: id
+                }
+              })
             }
             className="flex-row items-center rounded-2xl border-2 border-buttonBackground px-5 py-3"
           >

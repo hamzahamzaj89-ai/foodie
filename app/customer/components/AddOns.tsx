@@ -34,7 +34,7 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
 
   const handledata = (selectedCard: IAddOns) => {
     const selected = selectedAddOns.findIndex(
-      (item) => item.id === selectedCard.id,
+      (item) => item.addonId === selectedCard.id,
     );
 
     if (selected > -1) {
@@ -47,11 +47,14 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
     setData((prev: ICartAddOns[]) => [
       ...prev,
       {
-        id: selectedCard.id,
-        image_url: selectedCard.image_url,
-        name: selectedCard.name,
+        addonId: selectedCard.id,
+        imageUrl: selectedCard.image_url,
+        included: false,
+
+        title: selectedCard.name,
         price: selectedCard.price,
-        quantity: 1      },
+        quantity: 1      
+      },
     ]);
   };
 
@@ -100,7 +103,7 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
                   onPress={() => {handledata(item)}}
                   customization={item}
                   selected={
-                    selectedAddOns.find((i) => i.id === item.id) && true
+                    selectedAddOns.find((i) => i.addonId === item.id) && true
                   }
                 />
               )}

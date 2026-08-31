@@ -2,6 +2,7 @@ import { IAddOns } from "@/interface/IAddOns";
 import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { IDealAddOns, IDealMenu, IDealMenuItem } from "@/interface/IDeal";
 import { ICustomizationOption } from "@/interface/IMenu";
+import { IOrderDeal, IOrderMenuItem } from "@/interface/IOrder";
 
 export const calculateDealPrice = (menus: IDealMenu[] | undefined) => {
 
@@ -60,8 +61,8 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
 
 
   
-      const addonsTotal = item.addOns?.reduce((sum, crr) => {
-         return sum + (crr.price * crr.quantity);
+      const addonsTotal = item.addons?.reduce((sum, crr) => {
+         return sum + ((crr.price??0) * crr.quantity);
 }, 0)?? 0
 
          
@@ -69,7 +70,7 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
 
        const customizationsTotal = (item as ICartItem).customizations?.reduce((sum, crr) => {
            if (!crr.required) {
-        return sum + (crr.price * crr.quantity)
+        return sum + ((crr.price??0) * crr.quantity)
             };
             return sum
 }, 0)?? 0
@@ -77,7 +78,7 @@ export const calculateItemTotalPrice = (item: ICartItem | ICartDeal) => {
 
    const requiredCustomizations = (item as ICartItem).customizations?.reduce((sum, crr) => {
             if (crr.required) {
-        return sum + (crr.price * crr.quantity)
+        return sum + ((crr.price??0) * crr.quantity)
             };
             return sum
 }, 0)?? 0
@@ -102,11 +103,13 @@ export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
 
 
 
+
+       
   
       const addonsTotal = item.reduce((sum , crr) => {
-                 return crr.addOns?.reduce((sum, crr) => {
-         return sum + (crr.price * crr.quantity);
-}, 0)?? 0
+                 return sum +  crr.addons.reduce((sum:number, crr) => {
+         return sum + ((crr.price??0) * crr.quantity);
+}, 0)
       } , 0) 
 
 
@@ -115,10 +118,10 @@ export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
     const menuTotal = item.reduce((sum , crr) => {
 
               
-          if (crr.type === "cartMenu") {
+          if (crr.type === "menu") {
               const customizationsTotal = (crr as ICartItem).customizations?.reduce((sum, crr) => {
            if (!crr.required) {
-        return sum + (crr.price * crr.quantity)
+        return sum + ((crr.price??0) * crr.quantity)
             };
             return sum
 }, 0)?? 0
@@ -128,7 +131,7 @@ export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
 
        const requiredCustomizations = (crr as ICartItem).customizations?.reduce((sum, crr) => {
             if (crr.required) {
-        return sum + (crr.price * crr.quantity)
+        return sum + ((crr.price??0) * crr.quantity)
             };
             return sum
 }, 0)?? 0
@@ -149,7 +152,7 @@ export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
         const dealTotal = item.reduce((sum , crr) => {
 
               
-          if (crr.type === "cartDeal") {
+          if (crr.type === "deal") {
           
 
 
@@ -183,6 +186,106 @@ export const calculatePreviewTotals = (item: (ICartItem | ICartDeal)[]) => {
 
       
       
+
+
+
+export const calculateOrderDetailTotal = ({
+       menus,
+       deals
+}:{
+       menus: IOrderMenuItem[]
+       deals:IOrderDeal[]
+}) => {
+
+
+
+     
+
+       
+  
+      const menuAddonsTotal = menus.reduce((sum , crr) => {
+                 return crr.addons?.reduce((sum:number, crr:any) => {
+         return sum + (crr.price * crr.quantity);
+}, 0)?? 0
+      } , 0) 
+
+       const dealAddonsTotal = deals.reduce((sum , crr) => {
+               
+                 return crr.addons?.reduce((sum:number, crr) => {
+
+                     if (crr.included) {
+                            return sum
+                     }
+
+
+         return sum + (crr.price * crr.quantity);
+}, 0)?? 0
+      } , 0) 
+
+
+
+
+    const menuTotal = menus.reduce((sum , crr) => {
+
+              
+        const customizationsTotal = (crr).customizations?.reduce((sum, crr) => {
+            if (!crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
+}, 0)?? 0
+
+
+
+       const requiredCustomizations = (crr).customizations?.reduce((sum, crr) => {
+            if (crr.required) {
+        return sum + (crr.price * crr.quantity)
+            };
+            return sum
+}, 0)?? 0
+
+
+
+
+                 return sum + (customizationsTotal + ((crr.price + requiredCustomizations) * crr.quantity))
+
+         
+
+          
+       
+             
+      } , 0) ??0
+
+
+        const dealTotal = deals.reduce((sum , crr) => {
+
+              
+          
+
+
+
+
+             return sum + (crr.price * crr.quantity)
+
+         
+
+       
+          return sum
+             
+      } , 0) 
+
+
+      return {
+       menuAddonsTotal,
+       dealAddonsTotal,
+       dealTotal,
+       menuTotal
+      }
+
+
+
+}
+   
 
 
 

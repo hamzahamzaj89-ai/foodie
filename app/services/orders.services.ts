@@ -1,7 +1,7 @@
 import { IOrderPayload } from "@/interface/IOrderPayLoad";
 import { supabase } from "../lib/supabase";
 import { toast } from "../shared/utils/toast";
-import { IOrderCard } from "@/interface/IOrder";
+import { IOrder, IOrderCard } from "@/interface/IOrder";
 
 
 const PAGE_SIZE = 4;
@@ -96,3 +96,32 @@ const { data, error } = await supabase
 
 
 }
+
+
+
+
+
+
+
+      
+export async function getOrder(orderId: string): Promise<IOrder> {
+  const { data, error } = await supabase.rpc("get_order", {
+    p_order_id: orderId,
+  });
+
+  if (error) {
+    console.log(error);
+    throw error;
+    
+  }
+
+
+
+  console.log(data)
+
+  return data as IOrder;
+}
+
+
+
+

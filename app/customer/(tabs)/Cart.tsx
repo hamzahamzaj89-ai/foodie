@@ -11,7 +11,7 @@ import TabHeader from "../components/TabHeader";
 import { useCartStore } from "../store/useCartStore";
 import OrderCard from "../components/OrderCard";
 import { calculateItemTotalPrice } from "@/app/shared/utils/calculatingPrice";
-import { ICartDeal } from "@/interface/ICart";
+import { ICartDeal, ICartItem } from "@/interface/ICart";
 import { router } from "expo-router";
 import { toast } from "@/app/shared/utils/toast";
 import InfoModal from "../components/InfoModal";
@@ -34,7 +34,7 @@ export default function Cart() {
 
   const notQualifiesForFreeDelivery = useMemo(() => {
     return cartItems.some(
-      (item) =>  (item.type === "cartMenu") ||  (item.type === "cartDeal" && !(item as ICartDeal).freeDelivery),
+      (item) =>  (item.type === "cartMenu") ||  (item.type === "deal" && !(item as ICartDeal).freeDelivery),
     );
   }, [cartItems]);
 
@@ -92,17 +92,17 @@ export default function Cart() {
 
         <FlatList
           data={cartItems}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => (item as ICartDeal).dealId?? (item as ICartItem).menuId}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 180,
           }}
           ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
           renderItem={({ item }) =>
-            item?.type === "cartDeal" ? (
-              <CartDealCard item={item} />
+            item?.type === "deal" ? (
+              <CartDealCard item={item as ICartDeal} type="cart"/>
             ) : (
-              <CartMenuCard item={item} />
+              <CartMenuCard item={item as ICartItem} type="cart"/>
             )
           }
           ListFooterComponent={

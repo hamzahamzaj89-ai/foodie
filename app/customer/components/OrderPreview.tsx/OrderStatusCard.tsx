@@ -10,9 +10,10 @@ import {
   CircleCheckBig,
 } from "lucide-react-native";
 import { router } from "expo-router";
+import { OrderStatus } from "@/app/shared/utils/getOrderStatus";
 
 type Props = {
-  status: "Delivered" | "Preparing" | "Cancelled";
+  status: OrderStatus;
   deliveredAt: string;
 };
 

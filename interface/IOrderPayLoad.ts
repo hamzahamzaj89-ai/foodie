@@ -34,6 +34,8 @@ export interface IOrderPayload {
     customizationId: string;
     quantity: number;
     groupName: string;
+    required: boolean;
+    
     groupId: string;
     included: boolean;
     
