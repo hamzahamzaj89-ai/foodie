@@ -11,6 +11,7 @@ import FoodCard from "@/app/customer/components/FoodCard";
 import SectionItems from "@/app/customer/components/SectionItems";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TabHeader from "../components/TabHeader";
+import { useAppStore } from "@/app/shared/store/useAppStore";
 
 const foods = [
   { id: "1" },
@@ -24,7 +25,21 @@ const foods = [
 ];
 
 export default function Explore() {
-  const [selectedSection, setSelectedSection] =  useState<string>("Popular");
+
+  const defaultSection = useAppStore((state)=> state.defaultSection);
+
+  const [selectedSection, setSelectedSection] =  useState<string>(defaultSection.id);
+
+
+    
+
+
+  
+
+
+
+
+
 
   return (
       <View className="flex-1 bg-black ">
@@ -93,7 +108,11 @@ export default function Explore() {
             </View>
           </>
         }
-        renderItem={({item , index}) => <FoodCard index={index} onPress={() => {}} />}
+        renderItem={({item , index}) =>   (
+              <>
+               <FoodCard index={index} onPress={() => {}} />
+              </>
+        )}
       />
     </SafeAreaView>
       </View>

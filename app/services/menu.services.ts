@@ -55,6 +55,11 @@ export async function getResturantMenus(restaurantId:string , category:string , 
    
 console.log(hasNextPage)
 
+
+     if (hasNextPage) {
+                data.pop()
+     }
+
    return {
 
       data: data  as IMenuCard[],

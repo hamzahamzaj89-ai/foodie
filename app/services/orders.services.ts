@@ -78,9 +78,13 @@ const { data, error } = await supabase
      
      const hasNextPage = data.length > PAGE_SIZE;
        
+
+
+          if (hasNextPage) {
+                data.pop()
+     }
   
      
-  console.log(hasNextPage)
   
      return {
   

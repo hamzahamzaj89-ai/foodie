@@ -5,6 +5,10 @@ export const queryKeys = {
     restaurants: ["public", "restaurants"] as const,
     restaurant: (id: string) => ["public", "restaurant", id] as const,
     menu: (id: string) => ["public", "food", id] as const,
+
+    sectionMenus: (restaurantId: string, sectionId: string) => ["public" , "menus", restaurantId, sectionId] as const,
+    sections: (restaurantId: string) => ["public", "sections", restaurantId] as const ,
+    
     categories: ["public", "categories"] as const,
     addresses : ["public" , "addresses"] as const,
 

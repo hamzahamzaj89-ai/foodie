@@ -33,6 +33,10 @@ export async function getActiveDeals(page:number , restaurantId:string) {
   
    const hasNextPage = data.length > PAGE_SIZE;
 
+        if (hasNextPage) {
+                data.pop()
+     }
+
    return {
 
       data: data  as IDealCard[],
