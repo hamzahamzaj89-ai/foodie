@@ -19,12 +19,12 @@ import StatusScreen from "../screens/StatusScreen";
 import { router } from "expo-router";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 import { useSignOut } from "@/app/shared/hooks/Auth/useSignOut";
+import TabHeader from "../components/TabHeader";
 
 export default function Profile() {
 
 
   const session = useAppStore((state) => state.session)
-
 
 
 
@@ -59,6 +59,14 @@ export default function Profile() {
     }
 
 
+      const user = session.user
+
+
+
+
+
+
+      console.log(user)
 
 
 
@@ -69,15 +77,15 @@ export default function Profile() {
       <View className="flex-1 px-4 pt-0">
         {/* Header */}
 
-        <Text className="text-3xl ml-2 font-poppins-bold text-white">
-          My Profile
-        </Text>
-
+         <TabHeader
+         title={"My Profile"}
+         description={"Manage your profile, Addresses, Likes"}
+         />
         {/* Profile Card */}
 
       
 
-       <ProfileCard/>
+       <ProfileCard name={user.user_metadata.full_name} email={user.email as string}/>
 
         {/* Menu */}
 

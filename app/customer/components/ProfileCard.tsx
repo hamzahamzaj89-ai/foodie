@@ -3,7 +3,18 @@ import React from 'react'
 import Button from '@/app/shared/components/Button'
 import { Edit } from 'lucide-react-native'
 
-const ProfileCard = () => {
+const ProfileCard = ({
+       name,
+       email
+}:{
+      name: string,
+      email:string
+}) => {
+
+
+
+
+
   return (
       <View className="mt-8 items-center rounded-2xl  bg-card px-6 py-8">
 
@@ -14,11 +25,12 @@ const ProfileCard = () => {
           />
 
           <Text className="mt-5 text-2xl font-poppins-bold text-white">
-            Hamza Mukhtiar
+            {name}
           </Text>
 
           <Text className="mt-1 text-sm font-poppins-medium text-zinc-400">
-            hamza@gmail.com
+
+            {email}
           </Text>
 
               <View className='w-[50%] mt-4'>
