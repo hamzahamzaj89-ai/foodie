@@ -119,7 +119,6 @@ export async function getSectionsMenus(
 
   const { data, error } = await query;
 
-  console.log(data);
 
   if (error) {
     console.log("section menus ");
@@ -167,7 +166,8 @@ export const  getSectionMenusCount = async (sectionId: string , defaultSectionId
   
     const { count, error } = await supabase
   .from("section_group")
-  .select("*", { count: "exact", head: true });
+  .select("*", { count: "exact", head: true })
+  .eq("section_id" , sectionId);
 
 
 

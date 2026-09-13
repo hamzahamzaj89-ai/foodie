@@ -15,6 +15,8 @@ import { IMenuCard } from "@/interface/IMenuCard";
 const MenuSection = ({ restaurantId }: { restaurantId: string }) => {
   const [category, setCategory] = useState("");
 
+  const [searchText , setSearchText] = useState("")
+
   const {
     data,
     isPending,
@@ -94,7 +96,7 @@ const MenuSection = ({ restaurantId }: { restaurantId: string }) => {
         ListHeaderComponent={
           <>
             <View className="px-4 ">
-              <SearchBar />
+              <SearchBar onVlaueChange={(text:string) => setSearchText(text)}/>
             </View>
 
               <View className=""> 

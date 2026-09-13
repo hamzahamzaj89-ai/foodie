@@ -17,6 +17,7 @@ const SearchField = ({onVlaueChange} : {onVlaueChange: (text:string) => void }) 
         />
 
         <TextInput
+            onChangeText={onVlaueChange}
           placeholder="Search food..."
           placeholderTextColor="#a1a1aa"
           className="flex-1 ml-2 h-full   align-text-bottom text-white font-poppins-medium text"

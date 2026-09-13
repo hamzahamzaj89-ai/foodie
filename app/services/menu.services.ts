@@ -1,19 +1,20 @@
-
 import { supabase } from "@/app/lib/supabase";
-import {IMenuItem} from "../../interface/IMenu";
+import { IMenuItem } from "../../interface/IMenu";
 import { IMenuCard } from "../../interface/IMenuCard";
 
 const PAGE_SIZE = 10;
 
-export async function getResturantMenus(restaurantId:string , category:string ,  page?: number ) {
+export async function getResturantMenus(
+  restaurantId: string,
+  category: string,
+  page?: number,
+) {
+  const start = page || 0;
 
-    
-
-    const start = page || 0
-
- let query  =   supabase
+  let query = supabase
     .from("menu")
-    .select(`
+    .select(
+      `
       id,
       title,
       price,
@@ -21,64 +22,43 @@ export async function getResturantMenus(restaurantId:string , category:string , 
       average_rating,
       reviews_count,
       created_at
-    `)
-    .eq("restaurant_id" , restaurantId)
+    `,
+    )
+    .eq("restaurant_id", restaurantId)
     .order("created_at", { ascending: false })
     .range(start, start + PAGE_SIZE);
 
+  if (category !== "") {
+    query.eq("category", category);
+  }
 
-    if (category !== "") {
-        query.eq("category" , category)
-    }
+  const { data, error } = await query;
 
+  if (error) {
+    console.log("helo");
 
-
-
-
-    const { data , error }  = await query;
-
-   
- 
-   if (error) {
-    console.log("helo")
-   
     throw error;
+  }
 
-   } 
-   
+  const hasNextPage = data.length > PAGE_SIZE;
 
+  console.log(hasNextPage);
 
-   
-   const hasNextPage = data.length > PAGE_SIZE;
-     
+  if (hasNextPage) {
+    data.pop();
+  }
 
-   
-console.log(hasNextPage)
-
-
-     if (hasNextPage) {
-                data.pop()
-     }
-
-   return {
-
-      data: data  as IMenuCard[],
-      hasNextPage
-
-   }
-
-
-
-
+  return {
+    data: data as IMenuCard[],
+    hasNextPage,
+  };
 }
-
-
-
 
 export async function getMenu(menuId: string) {
   const { data, error } = await supabase
     .from("menu")
-    .select(`
+    .select(
+      `
       id,
       title,
       description,
@@ -111,7 +91,8 @@ export async function getMenu(menuId: string) {
           )
         )
       )
-    `)
+    `,
+    )
     .eq("id", menuId)
     .order("display_order", {
       referencedTable: "menu_customization_group",
@@ -120,19 +101,13 @@ export async function getMenu(menuId: string) {
     .single();
 
   if (error) {
-
-    console.log(error)
+    console.log(error);
     throw error;
   }
 
-
-  
   if (!data) {
-  throw new Error("menu item not found");
-}
-
-
-
+    throw new Error("menu item not found");
+  }
 
   return data as IMenuItem;
 }
@@ -141,13 +116,40 @@ export async function getMenu(menuId: string) {
 
 
 
+export async function searchMenus(searchText: string, pageParam: number) {
+  const start = pageParam ?? 0;
+  const { data, error } = await supabase
+    .from("menu")
+    .select(
+      `
+       id,
+      title,
+      price,
+      image_url,
+      average_rating,
+      reviews_count,
+      created_at
+    `,
+    )
+    .ilike("title", `%${searchText}%`)
+    .order("title", { ascending: true })
+    .range(start, start + PAGE_SIZE);
+
+  if (error) {
+    throw error;
+  }
+
+  const hasNextPage = data.length > PAGE_SIZE;
 
 
+  if (hasNextPage) {
+    data.pop();
+  }
 
+  console.log(hasNextPage)
 
-
-
-
-
-
-
+  return {
+    data: data as IMenuCard[],
+    hasNextPage,
+  };
+}

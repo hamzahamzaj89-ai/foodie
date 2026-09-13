@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getMenu, getResturantMenus } from "@/app/services/menu.services";
+import { getMenu, getResturantMenus, searchMenus } from "@/app/services/menu.services";
 import { queryKeys } from "@/app/constants/queryKeys";
 import { useState } from "react";
 import { useResturantStore } from "../store/useResturantStore";
@@ -85,4 +85,29 @@ export function useInfiniteSectionMenus(sectionId: string , defaultSectionId:str
 
 
 
+export function useInfiniteSearchMenus(searchText: string) {
 
+  const [page, setPage] = useState(0);
+
+  return useInfiniteQuery({
+    queryKey: queryKeys.public.searchMenus(
+      searchText as string,
+    ),
+
+    queryFn: ({ pageParam }) =>
+      searchMenus(searchText, pageParam),
+
+    initialPageParam: 0,
+
+    enabled: searchText.trim() !== "",
+    
+    getNextPageParam(lastPage, allPages) {
+      if (!lastPage.hasNextPage) {
+        return undefined;
+      }
+
+      // Next offset
+      return allPages.reduce((total, page) => total + page.data.length, 0);
+    },
+  });
+}

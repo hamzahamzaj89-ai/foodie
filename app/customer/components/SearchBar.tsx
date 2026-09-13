@@ -9,15 +9,20 @@ import {
   SlidersHorizontal,
 } from "lucide-react-native";
 import SearchField from "./SearchField";
+import { router } from "expo-router";
 
-export default function SearchBar() {
+export default function SearchBar({
+  onVlaueChange
+} : {
+  onVlaueChange: (text:string) => void
+}) {
   return (
     <View className="flex-row items-center  ">
       {/* Search Bar */}
 
 
       <SearchField
-      onVlaueChange={(text:string) => {}}
+      onVlaueChange={onVlaueChange}
         
       />
      

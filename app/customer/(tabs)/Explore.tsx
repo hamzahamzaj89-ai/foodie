@@ -8,11 +8,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TabHeader from "../components/TabHeader";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 import { ISection } from "@/interface/ISectionPage";
-import { useInfiniteSectionMenus } from "@/app/shared/hooks/useMenu";
+import {
+  useInfiniteSearchMenus,
+  useInfiniteSectionMenus,
+} from "@/app/shared/hooks/useMenu";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { router } from "expo-router";
 import { useSectionMenusCount } from "@/app/shared/hooks/useSection";
+import { useDebounce } from "@/app/shared/hooks/useDebounce";
+import SearchLoader from "../components/SearchLoader";
+import ExploreLoader from "../components/ExploreLoader";
+import clsx from "clsx";
 
 const foods = [
   { id: "1" },
@@ -31,7 +38,10 @@ export default function Explore() {
   const [selectedSection, setSelectedSection] =
     useState<ISection>(defaultSection);
 
-  const {
+  
+  const [searchText, setSearchText] = useState("");
+
+  var {
     data,
     isPending,
     isError,
@@ -44,22 +54,39 @@ export default function Explore() {
 
 
 
+  const debouncedSearchText = useDebounce(searchText, 500);
 
 
-  const {data:menuCount} = useSectionMenusCount(selectedSection.id , defaultSection.id)
+  const searchQuery = useInfiniteSearchMenus(debouncedSearchText);
 
 
 
-
+  const { data: menuCount } = useSectionMenusCount(
+    selectedSection.id,
+    defaultSection.id,
+  );
 
   const menus = useMemo(() => {
     return data?.pages.flatMap((page) => page.data) ?? [];
   }, [data]);
 
+
+
+  const searchMenus = useMemo(() => {
+    return searchQuery.data?.pages.flatMap((page) => page.data) ?? [];
+
+  } , [searchQuery.data])
+
   if (error)
     return (
       <StatusScreen type="error" message={error.message} title={error.name} />
     );
+
+
+
+    console.log("input " + searchText)
+
+
 
   return (
     <View className="flex-1 bg-black ">
@@ -71,7 +98,7 @@ export default function Explore() {
           />
         </View>
         <FlatList
-          data={menus}
+          data={searchText.trim() !==  "" ?  searchMenus:  menus}
           keyExtractor={(item) => item.id}
           numColumns={2}
           showsVerticalScrollIndicator={false}
@@ -85,21 +112,28 @@ export default function Explore() {
           }}
 
           ListEmptyComponent={
-            <>
-              {isPending ? (
-                <>
-                  <View className="flex-1 justify-center items-center h-[180px]">
-                    <Loader />
-                  </View>
-                </>
-              ) : (
-                <StatusScreen
-                  type="error"
-                  message="Not Found"
-                  title="404 error"
-                />
-              )}
-            </>
+             <>
+             {
+                searchText.trim() !== "" ? (<>
+
+                      <SearchLoader isPending={searchQuery.isPending}/>
+                
+                </>) : (<>
+
+                    <ExploreLoader  isPending={isPending}/>
+                
+                </>)
+
+
+
+
+
+
+             }
+
+
+             
+             </>
           }
 
           onEndReachedThreshold={0.5}
@@ -125,29 +159,36 @@ export default function Explore() {
 
               <View className="px-4 m pt-0">
                 <View className="mt-0">
-                  <SearchBar />
+                  <SearchBar onVlaueChange={(text: string) => setSearchText(text)}/>
                 </View>
               </View>
 
               {/* Sections */}
-
-              <View className="mt-2 px-4">
-                <SectionItems
-                  selected={selectedSection}
-                  onSelect={(text: ISection) => setSelectedSection(text)}
-                />
-              </View>
+              {searchText.trim() === "" && (
+                <>
+                  <View className="mt-2 px-4">
+                    <SectionItems
+                      selected={selectedSection}
+                      onSelect={(text: ISection) => setSelectedSection(text)}
+                    />
+                  </View>
+                </>
+              )}
 
               {/* Current Section */}
 
-              <View className="mb-[68px] mt-1 flex-row items-center justify-between px-5">
+              <View className={
+                clsx("mb-[68px] flex-row items-center justify-between px-5",
+                  searchText.trim() !== "" ? " mt-4" : "  mt-1"
+                )
+              }>
                 <View>
                   <Text className="font-poppins-bold text-2xl text-white">
-                    {selectedSection.title}
+                    {searchText.trim() !== "" ? searchText: selectedSection.title}
                   </Text>
 
                   <Text className="mt-1 font-poppins-medium text-sm text-zinc-400">
-                    {menuCount?? 0} Meals Available
+                    {menuCount ?? 0} Meals Available
                   </Text>
                 </View>
 

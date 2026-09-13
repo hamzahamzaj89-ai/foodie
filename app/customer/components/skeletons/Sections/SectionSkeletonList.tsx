@@ -11,7 +11,7 @@ const SectionSkeletonList = () => {
         <Skeleton
           key={index}
           width={100 + (index % 3) * 15}
-          height={45}
+          height={38}
           radius={16}
         />
       ))}

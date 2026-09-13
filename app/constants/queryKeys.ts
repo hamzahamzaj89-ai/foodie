@@ -9,7 +9,9 @@ export const queryKeys = {
     sectionMenus: (sectionId: string) => ["public" , "menus", sectionId] as const,
     sections: (restaurantId: string) => ["public", "sections", restaurantId] as const ,
     sectionMenusCount: (sectionId:string) => ["public" , "menus", "count" , sectionId] as const ,
+    searchMenus: (searchText:string) => ["public" , "menus" , searchText] as const,
     
+
     categories: ["public", "categories"] as const,
     addresses : ["public" , "addresses"] as const,
 
