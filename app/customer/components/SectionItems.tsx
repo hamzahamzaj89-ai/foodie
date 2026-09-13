@@ -6,14 +6,15 @@ import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import SectionSkeletonList from "./skeletons/Sections/SectionSkeletonList";
 import { useAppStore } from "@/app/shared/store/useAppStore";
+import { ISection } from "@/interface/ISectionPage";
 
 
 export default function SectionItems({
   selected,
   onSelect,
 }: {
-  selected: string;
-  onSelect: (text: string) => void;
+  selected: ISection;
+  onSelect: (text: ISection) => void;
 }) {
 
   const defaultSection = useAppStore((state) => state.defaultSection)
@@ -21,9 +22,6 @@ export default function SectionItems({
     (state) => state.selectedRestaurant?.id,
   );
 
-  if (!restaurantId) {
-    return <></>;
-  }
 
   const {
     data,
@@ -39,6 +37,14 @@ export default function SectionItems({
   const sections = useMemo(() => {
     return data?.pages.flatMap((page) => page.data) ?? [];
   }, [data]);
+
+
+ 
+
+  
+
+
+
 
 
   if (error) return <></>;
@@ -89,12 +95,12 @@ export default function SectionItems({
       }
 
       renderItem={({ item }) => {
-        const active = selected === item.id;
+        const active = selected.id === item.id;
 
         return (
           <Pressable
-            onPress={() => onSelect(item.id)}
-            className="py-3.5 px-4"
+            onPress={() => onSelect(item)}
+            className="py-3 px-4"
             style={{
               borderRadius: 16,
 

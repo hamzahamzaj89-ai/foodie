@@ -32,31 +32,33 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
     error,
   } = useAddOns(selectedRestaurant?.id as string);
 
-  const handledata = (selectedCard: IAddOns) => {
-    const selected = selectedAddOns.findIndex(
-      (item) => item.addonId === selectedCard.id,
+
+
+const handleData = (selectedCard: IAddOns) => {
+  setData((prev) => {
+    const exists = prev.some(
+      (item) => item.addonId === selectedCard.id
     );
 
-    if (selected > -1) {
-      selectedAddOns.splice(selected, 1);
-      const newArray = [...selectedAddOns];
-      setData(newArray);
-      return;
+    if (exists) {
+      return prev.filter(
+        (item) => item.addonId !== selectedCard.id
+      );
     }
 
-    setData((prev: ICartAddOns[]) => [
+    return [
       ...prev,
       {
         addonId: selectedCard.id,
         imageUrl: selectedCard.image_url,
         included: false,
-
         title: selectedCard.name,
         price: selectedCard.price,
-        quantity: 1      
+        quantity: 1,
       },
-    ]);
-  };
+    ];
+  });
+};
 
   if (error) {
     return;
@@ -100,7 +102,7 @@ export default function AddOnsSection({ setData, selectedAddOns }: Props) {
               }}
               renderItem={({ item, index }) => (
                 <CustomizationCard
-                  onPress={() => {handledata(item)}}
+                  onPress={() => {handleData(item)}}
                   customization={item}
                   selected={
                     selectedAddOns.find((i) => i.addonId === item.id) && true

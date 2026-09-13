@@ -11,7 +11,6 @@ import { toastConfig } from "@/app/config/toastConfig";
 import { queryClient } from "@/app/lib/QueryClient";
 
 import * as NavigationBar from "expo-navigation-bar";
-import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 
 
 export default function RootLayout() {
@@ -32,25 +31,17 @@ export default function RootLayout() {
 
 
   // Custom theme matching your app's background
-const CustomTheme = {
-  ...DarkTheme, // or DefaultTheme
-  colors: {
-    ...DarkTheme.colors,
-    background: '#121212', // Change this to your screen background color
-  },
-};
+
 
   return (
 
 
       <QueryClientProvider client={queryClient}>
     <SafeAreaProvider>
-         <ThemeProvider value={CustomTheme}>
 
       <Slot screenOptions={{headerShown: false}}/>
 
         
-        </ThemeProvider>
 
        <Toast config={toastConfig}/>
 

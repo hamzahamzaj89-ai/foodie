@@ -20,14 +20,13 @@ export async function getActiveDeals(page:number , restaurantId:string) {
     .filter("start_date", "lte", "now()")
     .filter("end_date", "gte", "now()")
     .order("created_at", { ascending: false })
-    .range(start , start + PAGE_SIZE );
+    .range(start , start + PAGE_SIZE);
 
 
   if (error) {
     console.log(error)
 
     throw error;
-
   } 
 
   

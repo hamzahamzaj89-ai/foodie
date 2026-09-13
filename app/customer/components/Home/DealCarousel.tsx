@@ -40,6 +40,8 @@ export default function DealCarousel({restaurantId}: {restaurantId:string}) {
 
 
 
+
+
   return (
     <View className="mt-4 flex  justify-center items-center ">
 

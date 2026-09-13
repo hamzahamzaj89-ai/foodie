@@ -4,6 +4,7 @@ import { queryKeys } from "@/app/constants/queryKeys";
 import { useState } from "react";
 import { useResturantStore } from "../store/useResturantStore";
 import { toast } from "../utils/toast";
+import { getSectionsMenus } from "@/app/services/sections.services";
 
 export function useInfiniteMenus(resturantId: string, category: string) {
 
@@ -42,3 +43,46 @@ export function useMenuItem(menuId: string) {
     enabled: !!menuId,
   });
 }
+
+
+
+
+
+export function useInfiniteSectionMenus(sectionId: string , defaultSectionId:string) {
+
+  return useInfiniteQuery({
+    queryKey: queryKeys.public.sectionMenus(
+      sectionId as string,
+    ),
+
+
+
+
+    queryFn: ({ pageParam }) =>
+      getSectionsMenus(sectionId, defaultSectionId,   pageParam),
+
+    initialPageParam: 0,
+
+    enabled: !!sectionId,
+    
+    getNextPageParam(lastPage, allPages) {
+      if (!lastPage.hasNextPage) {
+        return undefined;
+      }
+
+      // Next offset
+      return allPages.reduce((total, page) => total + page.data.length, 0);
+    },
+  });
+}
+
+
+
+
+
+
+
+
+
+
+

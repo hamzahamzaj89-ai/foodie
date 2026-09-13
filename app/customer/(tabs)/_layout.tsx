@@ -8,7 +8,6 @@ import {
   Compass,
   CompassIcon,
 } from "lucide-react-native";
-import { useEffect } from "react";
 import { View, Text } from "react-native";
 
 type TabIconProps = {

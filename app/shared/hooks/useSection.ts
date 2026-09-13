@@ -1,6 +1,6 @@
 import { queryKeys } from "@/app/constants/queryKeys";
-import { getRestaurantSections } from "@/app/services/sections.services";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { getRestaurantSections, getSectionMenusCount } from "@/app/services/sections.services";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 
@@ -33,3 +33,26 @@ export function useInfiniteSections(resturantId: string) {
     },
   });
 }
+
+
+
+
+
+
+export function useSectionMenusCount(sectionId:string , defaultSectionId:string) {
+
+
+        return useQuery({
+    queryKey: queryKeys.public.sectionMenusCount(sectionId),
+
+    queryFn: () => getSectionMenusCount(sectionId , defaultSectionId),
+
+    enabled: !!sectionId,
+  });
+}
+
+
+
+
+
+

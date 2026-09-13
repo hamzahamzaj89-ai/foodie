@@ -92,7 +92,7 @@ export default function OrderCard({
 
         {/* Details */}
 
-        <Pressable className="flex-row items-center rounded-2xl border-[2px] border-buttonBackground px-4 py-3">
+        <Pressable  className="flex-row items-center rounded-2xl border-[2px] border-buttonBackground px-4 py-3">
           <Text className="font-poppins-semibold text-sm text-[#FF8A2B]">
             Details
           </Text>

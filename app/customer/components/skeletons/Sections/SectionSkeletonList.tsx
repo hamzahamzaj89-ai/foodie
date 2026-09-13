@@ -10,8 +10,9 @@ const SectionSkeletonList = () => {
       {skeletons.map((_, index) => (
         <Skeleton
           key={index}
-          width={70 + (index % 3) * 15}
-          height={20}
+          width={100 + (index % 3) * 15}
+          height={45}
+          radius={16}
         />
       ))}
     </View>

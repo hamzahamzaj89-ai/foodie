@@ -1,9 +1,6 @@
 import { Slot, Stack } from 'expo-router';
 import { useEffect } from 'react';
-import {
-  ThemeProvider,
-  DarkTheme,
-} from "@react-navigation/native";
+
 import { View } from 'react-native';
 
 
@@ -12,13 +9,7 @@ export default function RootLayout() {
 
        
   // Custom theme matching your app's background
-const CustomTheme = {
-  ...DarkTheme, // or DefaultTheme
-  colors: {
-    ...DarkTheme.colors,
-    background: '#121212', // Change this to your screen background color
-  },
-};
+
      
 
 

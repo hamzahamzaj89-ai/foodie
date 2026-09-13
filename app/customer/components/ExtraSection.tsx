@@ -45,88 +45,54 @@ export default function ExtraSection({
 
 
 
-  const handledata = (selectedCard:ICustomizationOption) => {
-  
+const handleData = (selectedCard: ICustomizationOption) => {
+  setData((prev) => {
+    // 1. Check if this customization is already selected
+    const exists = prev.some(
+      (item) => item.customizationId === selectedCard.id
+    );
 
+    // 2. If selected, remove it
+    if (exists) {
+      return prev.filter(
+        (item) => item.customizationId !== selectedCard.id
+      );
+    }
 
-           
+    // 3. Get how many are currently selected in this group
+    const selectedGroup = prev.filter(
+      (item) => item.groupId === customizations.id
+    );
 
+    // 4. Check maximum selection
+    if (selectedGroup.length >= customizations.max_selection) {
+      toast.error(
+        "Limit Accessed",
+        `You can only select ${customizations.max_selection} for this customization group`
+      );
 
-          
+      return prev;
+    }
 
-          const selected = selectedCustomizations.findIndex((item) => item.customizationId === selectedCard.id)
-
-
-          if (selected > -1) {
-            console.log(selected)
-            selectedCustomizations.splice(selected, 1)
-            const newArray = [...selectedCustomizations]
-           setData(newArray)
-           return
-          }
-
-
-
-
-
-          const selectedGroup = selectedCustomizations.filter((item) => item.groupId === customizations.id)
-
-          if (selectedGroup.length >= customizations.max_selection) {
-
-            toast.error("Limit Accseed","You can only select" + customizations.max_selection + "for this customization group")
-               return
-          }
-
-
-          
-          
-            setData((prev : ICartCustomization[]) => [...prev , {
-            groupId: customizations.id ,
-            groupName: customizations.name,
-            required: customizations.required,
-            customizationId:  selectedCard.id ,
-            title: selectedCard.name  ,
-            imageUrl: selectedCard.image_url as string,
-            price: selectedCard.price,
-            quantity: 1
-         }])
-
-  
-
-
-  }
-
+    // 5. Add the new customization
+    return [
+      ...prev,
+      {
+        groupId: customizations.id,
+        groupName: customizations.name,
+        required: customizations.required,
+        customizationId: selectedCard.id,
+        title: selectedCard.name,
+        imageUrl: selectedCard.image_url as string,
+        price: selectedCard.price,
+        quantity: 1,
+      },
+    ];
+  });
+};
 
   
-  const handleSingleData = (selectedCard:ICustomizationOption) => {
   
-
-
-
-          const selected = selectedCustomizations.findIndex((item) => item.groupId === customizations.id)
-
-
-          if (selected > -1) {
-
-           selectedCustomizations.splice(selected, 1)
-          }
-
-          
-            setData((prev : ICartCustomization[]) => [...prev , {
-            groupId: customizations.id ,
-            groupName: customizations.name  ,
-            required: customizations.required,
-            customizationId:  selectedCard.id ,
-            title: selectedCard.name  ,
-            imageUrl: selectedCard.image_url as string,
-            price: selectedCard.price,
-            quantity: 1
-         }])
-
-  
-
-
-  }
 
 
 
@@ -170,7 +136,7 @@ export default function ExtraSection({
              {customizations.max_selection <=1 ? (<>
                
               <CustomizationCard
-            onPress={() => {handleSingleData(item)}}
+            onPress={() => {handleData(item)}}
             customization={item}
             selected = {(selectedCustomizations.find((i) => i?.customizationId === item.id) && true)}
           />
@@ -181,7 +147,7 @@ export default function ExtraSection({
              
 
               <CustomizationCard
-            onPress={() => {handledata(item)}}
+            onPress={() => {handleData(item)}}
             customization={item}
             selected = {(selectedCustomizations.find((i) => i?.customizationId === item.id) && true)}
           />
