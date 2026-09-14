@@ -35,7 +35,12 @@ import SecondaryButton from "@/app/shared/components/SecondaryButton";
 
 
 
-export default function SavedAddresses() {
+export default function SavedAddresses({
+      bottomActionBar = true
+} : 
+{
+    bottomActionBar?: boolean
+}) {
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(0);
 
   const setSelectedAddress = useAddressStore((state) => state.setSelectedAddress)
@@ -215,7 +220,10 @@ export default function SavedAddresses() {
 
         {/* Bottom Action */}
 
-          <View className="absolute w-[100%] px-5 py-5 mb-3 flex justify-center items-center  rounded-t-3xl bg-black bottom-0">
+           {
+            bottomActionBar && (<>
+
+             <View className="absolute w-[100%] px-5 py-5 mb-3 flex justify-center items-center  rounded-t-3xl bg-black bottom-0">
 
                          <Button
                            onPress={handleContinue}
@@ -225,6 +233,8 @@ export default function SavedAddresses() {
                          />
 
           </View>
+            </>)
+           }
       </View>
     </SafeAreaView>
   );

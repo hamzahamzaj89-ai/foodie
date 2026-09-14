@@ -86,7 +86,7 @@ export default function SectionItems({
 
       onEndReachedThreshold={0.5}
       ListFooterComponent={
-        !isFetchingNextPage ? (
+        isFetchingNextPage ? (
           <>
                         <SectionSkeletonList/>
 

@@ -11,10 +11,17 @@ import { useInfiniteOrders } from "@/app/shared/hooks/useOrders";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { formatOrderDate } from "@/app/shared/utils/formatOrderDate";
+
 import {
   CircleCheckBig,
+  CircleX,
+  ClipboardList,
   Clock3,
   CookingPot,
+  Cross,
+  CrossIcon,
+  LogIn,
+  LogOut,
   LucideIcon,
   MapPin,
   PackageCheck,
@@ -24,6 +31,9 @@ import {
   STATUS_INDEX,
   STATUS_STEPS,
 } from "@/app/shared/utils/getOrderStatus";
+import { useAppStore } from "@/app/shared/store/useAppStore";
+import { router } from "expo-router";
+import EmptyOrder from "../screens/EmptyScreen";
 
 const tabs = ["Ongoing", "Completed", "Cancelled"];
 
@@ -32,8 +42,11 @@ let lastDate = "";
 
 export default function OrdersScreen() {
   const [selectedTab, setSelectedTab] = useState("Ongoing");
+  const session  = useAppStore((state) => state.session)
 
   const [status , setStatus] = useState(["pending", "confirmed", "preparing", "picked_up"])
+
+
 
   useEffect(() => {
     function checkCondition() {
@@ -60,14 +73,41 @@ export default function OrdersScreen() {
     isFetching,
     error,
     isFetchingNextPage,
-  } = useInfiniteOrders(status);
+  } = useInfiniteOrders(status , session);
 
-  if (error)
-    return (
-      <StatusScreen type="error" message={error.message} title={error.name} />
-    );
 
-  const orders = useMemo(() => {
+
+
+
+  if (session) {
+       return(<>
+
+
+
+           
+
+           <EmptyOrder
+        title="Your Ordres are empty"
+       description="Please Sign In to see your orders"
+        MainIcon={ClipboardList}
+        SecondaryIcon={CircleX}
+        onPress={() => router.push("/customer/SignIn")}
+        buttonText="Sign In"
+        buttonIcon={LogIn}
+        left={true}
+      
+
+       />
+       
+       
+       </>)
+  }
+
+
+
+
+  /// useMemos
+    const orders = useMemo(() => {
     return data?.pages.flatMap((page) => page.data) ?? [];
   }, [data]);
 
@@ -75,6 +115,14 @@ export default function OrdersScreen() {
     id: `skeleton-${index}`,
     index,
   }));
+
+
+  if (error)
+    return (
+      <StatusScreen type="error" message={error.message} title={error.name} />
+    );
+
+
 
   interface Skeletons {
     id: string;

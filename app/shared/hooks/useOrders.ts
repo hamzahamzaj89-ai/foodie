@@ -1,15 +1,14 @@
 import { queryKeys } from "@/app/constants/queryKeys";
 import { queryClient } from "@/app/lib/QueryClient";
 import { createOrder, getOrder, getOrders } from "@/app/services/orders.services";
+import { Session } from "@supabase/supabase-js";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 
-export function useInfiniteOrders( status: string[]) {
+export function useInfiniteOrders( status: string[] , session:Session|null) {
 
   const [page, setPage] = useState(0);
-
-
 
   return useInfiniteQuery({
     queryKey: queryKeys.user.statusOrders(status),
@@ -19,7 +18,7 @@ export function useInfiniteOrders( status: string[]) {
 
     initialPageParam: 0,
 
-    enabled: status.length > 0,
+    enabled: !!(session && status.length > 0),
     
     getNextPageParam(lastPage, allPages) {
       if (!lastPage.hasNextPage) {

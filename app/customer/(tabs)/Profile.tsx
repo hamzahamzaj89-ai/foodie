@@ -13,8 +13,8 @@ import {
   MapPinned,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ProfileCard from "../components/ProfileCard";
-import ProfileItem from "../components/ProfileItem";
+import ProfileCard from "../components/Profile/ProfileCard";
+import ProfileItem from "../components/Profile/ProfileItem";
 import StatusScreen from "../screens/StatusScreen";
 import { router } from "expo-router";
 import { useAppStore } from "@/app/shared/store/useAppStore";
@@ -25,6 +25,10 @@ export default function Profile() {
 
 
   const session = useAppStore((state) => state.session)
+
+
+
+  
 
 
 
@@ -66,7 +70,6 @@ export default function Profile() {
 
 
 
-      console.log(user)
 
 
 
@@ -85,7 +88,7 @@ export default function Profile() {
 
       
 
-       <ProfileCard name={user.user_metadata.full_name} email={user.email as string}/>
+       <ProfileCard name={user.user_metadata.full_name} email={user.email as string} />
 
         {/* Menu */}
 
@@ -93,6 +96,7 @@ export default function Profile() {
           <ProfileItem
             Icon={MapPinned}
             title="Saved Addresses"
+            onPress={() => router.push("/customer/UserSavedAddress")}
           />
 
           <ProfileItem

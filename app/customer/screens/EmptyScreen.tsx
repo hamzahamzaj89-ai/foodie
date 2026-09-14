@@ -51,7 +51,7 @@ export default function EmptyScreen({
                 <View className="absolute bottom-1 right-1 h-10 w-10 items-center justify-center rounded-full bg-[#18191C]">
             <SecondaryIcon
               size={19}
-              color="#A1A1AA"
+              color="#FF8A2B"
               strokeWidth={1.8}
             />
           </View>
@@ -67,7 +67,7 @@ export default function EmptyScreen({
       </Text>
 
       {/* Description */}
-      <Text className="mt-3 max-w-[300px] text-center font-poppins-medium text-sm leading-6 text-zinc-400">
+      <Text className="mt-2 max-w-[300px] text-center font-poppins-medium text-sm leading-6 text-zinc-400">
       {description}
       </Text>
 
