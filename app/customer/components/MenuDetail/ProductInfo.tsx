@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Pressable,
   Text,
   View,
 } from "react-native";
@@ -18,7 +19,7 @@ interface IProductInfo {
   calories: number 
 }
 
-export default function ProductInfo({productInfo} : {productInfo: IProductInfo}) {
+export default function ProductInfo({productInfo , onPress} : {productInfo: IProductInfo , onPress: () => void}) {
   return (
     <View className="-mt-4">
       {/* Food Name */}
@@ -33,7 +34,7 @@ export default function ProductInfo({productInfo} : {productInfo: IProductInfo})
       <View className="mt-3 flex-row items-center">
         {/* Rating */}
 
-        <View className="mr-5 flex-row items-center">
+        <Pressable onPress={onPress} className="mr-5 flex-row items-center">
           <Star
             size={16}
             color="#FFB547"
@@ -50,7 +51,7 @@ export default function ProductInfo({productInfo} : {productInfo: IProductInfo})
           <Text className="ml-1 font-poppins-medium text-zinc-400">
             ({productInfo.reviewsCount ?? 0})
           </Text>
-        </View>
+        </Pressable>
 
         {/* Time */}
 

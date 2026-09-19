@@ -55,50 +55,9 @@ export async function getResturantMenus(
 }
 
 export async function getMenu(menuId: string) {
-  const { data, error } = await supabase
-    .from("menu")
-    .select(
-      `
-      id,
-      title,
-      description,
-      calories,
-
-      old_price,
-      average_rating,
-      reviews_count,
-
-      price,
-      image_url,
-
-      menu_customization_group(
-        display_order,
-        
-        customization_group:customization_groups(
-          id,
-          name,
-          description,
-          required,
-          min_selection,
-          max_selection,
-
-          customizations(
-            id,
-            name,
-            description,
-            image_url,
-            price
-          )
-        )
-      )
-    `,
-    )
-    .eq("id", menuId)
-    .order("display_order", {
-      referencedTable: "menu_customization_group",
-      ascending: true,
-    })
-    .single();
+  const { data, error } = await supabase.rpc("get_menu", {
+    p_menu_id: menuId,
+  });
 
   if (error) {
     console.log(error);
@@ -111,7 +70,6 @@ export async function getMenu(menuId: string) {
 
   return data as IMenuItem;
 }
-
 
 
 
@@ -153,3 +111,34 @@ export async function searchMenus(searchText: string, pageParam: number) {
     hasNextPage,
   };
 }
+
+
+
+
+
+
+export async function rateMenu ({menuId , rating}: {menuId:string , rating:number}) {
+
+
+  console.log("clicked")
+
+
+     console.log(menuId)
+
+
+  const { data, error } = await supabase.rpc("add_menu_rating", {
+  p_menu_id: menuId,
+  p_rating: rating,
+});
+
+if (error) {
+  console.error("Rating error:", error);
+  return;
+}
+
+console.log("New average rating:", data);
+
+}
+
+
+

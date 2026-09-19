@@ -52,8 +52,11 @@ export interface IMenuItem {
 
   reviews_count: number;
   calories: number,
-
+  
   price: number;
+
+  user_rating: number;
+  
 
   image_url: string | null;
 

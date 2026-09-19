@@ -8,7 +8,7 @@ import CustomizationSection from "@/app/customer/components/ExtraSection";
 import AddOnSection from "@/app/customer/components/ExtraSection";
 import BottomActionBar from "@/app/customer/components/BottomActionBar";
 import { useLocalSearchParams } from "expo-router";
-import { useMenuItem } from "@/app/shared/hooks/useMenu";
+import { useMenuItem, useRateMenu } from "@/app/shared/hooks/useMenu";
 import StatusScreen from "../screens/StatusScreen";
 import Loader from "@/app/shared/components/Loader";
 import { useCartStore } from "../store/useCartStore";
@@ -18,6 +18,7 @@ import AddOnsSection from "../components/AddOns";
 import { ICustomizationGroup, IMenuCustomizationGroup } from "@/interface/IMenu";
 import { toast } from "@/app/shared/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
+import RatingModal from "../modals/RatingModal";
 
 
 
@@ -26,9 +27,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function MenuDetailsScreen() {
   
 
+
   const { menuId } = useLocalSearchParams();
 
   const cart = useCartStore((state) => state.getCartItem(menuId as string));
+
+  const [ratingModal, setRatingModal] = useState(false);
+  const [rating , setRating] = useState(0);
 
   const [customizations, setCustomizations] = useState<ICartCustomization[] | []>(cart ? (cart as ICartItem).customizations : []);
 
@@ -37,14 +42,18 @@ export default function MenuDetailsScreen() {
 
   const { data: menu, isPending, error } = useMenuItem(menuId as string);
 
+
   const  addItem = useCartStore((state) => state.addItem)
   const updateItem = useCartStore((state) => state.updateItem);
-
 
   const  [quantity , setQuantity] = useState<number>(cart?.quantity ?? 1)
 
 
+   useEffect(() => {
+       
+    setRating(menu?.user_rating??0)
 
+   } , [menu])
 
   const currentRef = useRef(true);
 
@@ -82,6 +91,9 @@ export default function MenuDetailsScreen() {
     } , 0)
 
    }, [customizations])
+
+
+
 
 
 
@@ -170,7 +182,11 @@ export default function MenuDetailsScreen() {
 
 
   return (
-    <View className="flex-1 bg-black">
+
+
+    <>
+
+     <View className="flex-1 bg-black">
       <FlatList
         data={[]}
         keyExtractor={(_, index) => index.toString()}
@@ -183,6 +199,7 @@ export default function MenuDetailsScreen() {
             <HeroSection imageUrl={menu.image_url} />
 
             <View className="px-5">
+
               <ProductInfo
                 productInfo={{
                   reviewsCount: menu.reviews_count,
@@ -191,6 +208,8 @@ export default function MenuDetailsScreen() {
                   description: menu.description,
                   calories: menu.calories,
                 }}
+
+                onPress={() => setRatingModal(true)}
               />
 
 
@@ -223,5 +242,18 @@ export default function MenuDetailsScreen() {
 
 
     </View>
+
+
+    <RatingModal
+    rating={rating}
+    onPress={(star) => setRating(star)}
+  visible={ratingModal}
+  onClose={() => setRatingModal(false)}
+  id={menuId as string}
+   
+  />
+    
+    </>
+   
   );
 }
