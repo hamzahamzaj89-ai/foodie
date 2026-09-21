@@ -50,7 +50,7 @@ export default function MenuDetailsScreen() {
 
 
    useEffect(() => {
-       
+       console.log(menu?.user_rating)
     setRating(menu?.user_rating??0)
 
    } , [menu])

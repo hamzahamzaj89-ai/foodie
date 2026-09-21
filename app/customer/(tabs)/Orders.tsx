@@ -39,30 +39,30 @@ const tabs = ["Ongoing", "Completed", "Cancelled"];
 
 let lastDate = "";
 
-
 export default function OrdersScreen() {
   const [selectedTab, setSelectedTab] = useState("Ongoing");
-  const session  = useAppStore((state) => state.session)
+  const session = useAppStore((state) => state.session);
 
-  const [status , setStatus] = useState(["pending", "confirmed", "preparing", "picked_up"])
-
-
+  const [status, setStatus] = useState([
+    "pending",
+    "confirmed",
+    "preparing",
+    "picked_up",
+  ]);
 
   useEffect(() => {
     function checkCondition() {
       if (selectedTab === "Completed") {
-        return (setStatus(["delivered"]));
+        return setStatus(["delivered"]);
       } else if (selectedTab === "Cancelled") {
-        return (setStatus(["cancelled"]));
+        return setStatus(["cancelled"]);
       } else {
-        return (setStatus(["pending", "confirmed", "preparing", "picked_up"]));
+        return setStatus(["pending", "confirmed", "preparing", "picked_up"]);
       }
     }
 
     checkCondition();
   }, [selectedTab]);
-
-
 
   const {
     data,
@@ -73,41 +73,10 @@ export default function OrdersScreen() {
     isFetching,
     error,
     isFetchingNextPage,
-  } = useInfiniteOrders(status , session);
-
-
-
-
-
-  if (session) {
-       return(<>
-
-
-
-           
-
-           <EmptyOrder
-        title="Your Ordres are empty"
-       description="Please Sign In to see your orders"
-        MainIcon={ClipboardList}
-        SecondaryIcon={CircleX}
-        onPress={() => router.push("/customer/SignIn")}
-        buttonText="Sign In"
-        buttonIcon={LogIn}
-        left={true}
-      
-
-       />
-       
-       
-       </>)
-  }
-
-
-
+  } = useInfiniteOrders(status, session);
 
   /// useMemos
-    const orders = useMemo(() => {
+  const orders = useMemo(() => {
     return data?.pages.flatMap((page) => page.data) ?? [];
   }, [data]);
 
@@ -116,17 +85,31 @@ export default function OrdersScreen() {
     index,
   }));
 
-
   if (error)
     return (
       <StatusScreen type="error" message={error.message} title={error.name} />
     );
 
-
-
   interface Skeletons {
     id: string;
     index: number;
+  }
+
+  if (!session) {
+    return (
+      <>
+        <EmptyOrder
+          title="Your Ordres are empty"
+          description="Please Sign In to see your orders"
+          MainIcon={ClipboardList}
+          SecondaryIcon={CircleX}
+          onPress={() => router.push("/customer/SignIn")}
+          buttonText="Sign In"
+          buttonIcon={LogIn}
+          left={true}
+        />
+      </>
+    );
   }
 
   return (
@@ -148,11 +131,11 @@ export default function OrdersScreen() {
               </>
             ) : (
               <View className="h-[500px] flex-col justify-center items-center">
-                  <StatusScreen
-                type="error"
-                message={`There is no ${selectedTab} orders available`}
-                title="404 error"
-              />
+                <StatusScreen
+                  type="error"
+                  message={`There is no ${selectedTab} orders available`}
+                  title="404 error"
+                />
               </View>
             )}
           </>
@@ -207,8 +190,7 @@ export default function OrdersScreen() {
 
               {item.dealIncluded ? (
                 <DealOrderCard
-                
-                id={item.id}
+                  id={item.id}
                   image={item.imageUrl}
                   title={item.name}
                   previewItem="2 Cheese Burgers"

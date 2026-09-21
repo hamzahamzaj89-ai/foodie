@@ -90,7 +90,7 @@ export default function SavedAddresses({
 
 
 
-
+    console.log(addresses)
 
 
   const handleContinue = () => {

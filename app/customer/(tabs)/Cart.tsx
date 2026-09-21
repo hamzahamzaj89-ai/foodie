@@ -34,7 +34,7 @@ export default function Cart() {
 
   const notQualifiesForFreeDelivery = useMemo(() => {
     return cartItems.some(
-      (item) =>  (item.type === "cartMenu") ||  (item.type === "deal" && !(item as ICartDeal).freeDelivery),
+      (item) =>  (item.type === "menu") ||  (item.type === "deal" && !!((item as ICartDeal).freeDelivery)),
     );
   }, [cartItems]);
 

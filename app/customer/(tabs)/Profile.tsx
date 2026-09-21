@@ -88,7 +88,7 @@ export default function Profile() {
 
       
 
-       <ProfileCard name={user.user_metadata.full_name} email={user.email as string} />
+       <ProfileCard name={user.user_metadata.full_name}  email={user.email as string} />
 
         {/* Menu */}
 

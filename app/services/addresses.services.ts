@@ -11,6 +11,9 @@ export async function getUserAddresses() {
     throw error;
   }
 
+
+  console.log(data)
+
   return data as IAddress[] ?? [];
 
 

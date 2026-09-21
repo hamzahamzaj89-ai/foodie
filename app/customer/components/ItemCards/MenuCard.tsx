@@ -164,7 +164,7 @@ export default function CartMenuCard({
         <View className="ml-4 flex-1 text-center flex-wrap  flex-row items-center   mt-0">
           {/* Name */}
 
-           <View>
+           <View className="flex ">
               <Text
             numberOfLines={1}
             className="font-poppins-semibold text-lg text-white"
@@ -172,10 +172,11 @@ export default function CartMenuCard({
             {menu.title}
           </Text>
 
-           </View>
+           </View >
           {/* Customization */}
 
-            {
+             <View className=" flex w-[100%]">
+                {
               menu.customizations.length > 0 && (<>
               <Text
             numberOfLines={1}
@@ -186,7 +187,7 @@ export default function CartMenuCard({
             {menu.customizations.slice(0,3).map((item , index) => 
                        <>
 
-                       {index !== menu.customizations.length -1  ? item.title +  "   • " : item.title }
+                       {index !== menu.customizations.length -1  ?   "• " + item.title : "• " + item.title }
                        
 
 
@@ -196,6 +197,7 @@ export default function CartMenuCard({
           </Text>
               </>)
             }
+             </View>
 
           {/* Addons */}
 
