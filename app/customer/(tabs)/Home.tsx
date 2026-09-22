@@ -24,6 +24,10 @@ import MenuSection from "../components/Home/MenuSection";
 import { useResturantStore } from "@/app/shared/store/useResturantStore";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 
+
+import * as Linking from "expo-linking";
+
+
 const Home = () => {
   const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
 
@@ -50,6 +54,11 @@ const Home = () => {
 
   useEffect(() => {
 
+
+
+  const redirectUrl = Linking.createURL("callback");
+
+console.log(redirectUrl);
 
     if (restaurant) {
          setSelectedRestaurant(restaurant)

@@ -29,16 +29,23 @@ export default function SignIn() {
   const onSubmit = async () => {
 
 
+    console.log("submitted")
+
     try {
 
 
-      await  mutateAsync({
+     const data =  await  mutateAsync({
         email,
         password
       })
 
 
+        
+
         router.back();
+
+
+        toast.success("Signed In successfully")
 
     } catch (error) {
         toast.error("Sign In Failed " , "Please Try again")
@@ -94,6 +101,7 @@ export default function SignIn() {
             left={true}
             onPress={onSubmit}
             disabled={isPending}
+            loading={isPending}
             />
            </View>
             </View>

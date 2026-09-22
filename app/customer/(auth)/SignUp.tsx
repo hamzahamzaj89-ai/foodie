@@ -117,6 +117,7 @@ export default function SignUp() {
          onPress={onSubmit}
          left={true}
          disabled={isPending}
+         loading={isPending}
          
          />
 

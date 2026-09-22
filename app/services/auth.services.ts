@@ -48,13 +48,21 @@ export async function signIn({
   email,
   password,
 }: SignInProps) {
-  const {  error } =
+
+
+
+  const {data ,  error } =
     await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+
+   return data;
+   
+
   if (error) {
+
     throw error;
   }
 

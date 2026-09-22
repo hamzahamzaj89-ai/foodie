@@ -19,19 +19,28 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.hamzamukhtiar.foodie"
     },
     "web": {
       "bundler": "metro"
     },
     "plugins": [
+
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/bell.png",
+          "color": "#FF8A2B"
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
         {
           "backgroundColor": "#000",
           "image": "./assets/images/foodie-logo.png",
-          "imageWidth": 220,
+          "imageWidth": 300,
           "resizeMode": "contain"
         }
       ],
@@ -43,6 +52,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4e2214bf-79b5-478b-8a78-f53e684ed230"
+      }
     }
   }
 }
