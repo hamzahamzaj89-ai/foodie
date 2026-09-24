@@ -28,6 +28,18 @@ import * as Linking from "expo-linking";
 import { getExpoPushToken } from "@/app/lib/notifications";
 import { useSaveToken } from "@/app/shared/hooks/useExpoToken";
 import { Platform } from "react-native";
+import * as Notifications from "expo-notifications";
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 
 
 const Home = () => {
@@ -49,6 +61,17 @@ const Home = () => {
   const setSelectedRestaurant = useResturantStore(
     (state) => state.setSelectedRestaurant,
   );
+
+
+
+  useEffect(() => {
+  const subscription =
+    Notifications.addNotificationReceivedListener((notification) => {
+      console.log("🔔 NOTIFICATION RECEIVED:", notification);
+    });
+
+  return () => subscription.remove();
+}, []);
 
   
 

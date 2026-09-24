@@ -58,13 +58,20 @@ export async function signIn({
     });
 
 
-   return data;
-   
+    if (error) {
 
-  if (error) {
+      console.log(error)
 
     throw error;
   }
+
+
+
+
+   return data;
+   
+
+  
 
 
 
