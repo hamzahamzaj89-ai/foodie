@@ -24,60 +24,69 @@ import MenuSection from "../components/Home/MenuSection";
 import { useResturantStore } from "@/app/shared/store/useResturantStore";
 import { useAppStore } from "@/app/shared/store/useAppStore";
 
-
 import * as Linking from "expo-linking";
+import { getExpoPushToken } from "@/app/lib/notifications";
+import { useSaveToken } from "@/app/shared/hooks/useExpoToken";
+import { Platform } from "react-native";
 
 
 const Home = () => {
   const restaurantId = "27913ca5-c2a2-4174-9ef1-73e466e50410";
 
-  const foods = [
-    { id: "1" },
-    { id: "2" },
-    { id: "3" },
-    { id: "4" },
-    { id: "5" },
-    { id: "6" },
-    { id: "7" },
-    { id: "8" },
-  ];
+  const platform = Platform.OS;
 
 
   const { data: restaurant, error } = useResturant(restaurantId);
 
-  const session = useAppStore((state) => state.session)
+  const session = useAppStore((state) => state.session);
+  let expoToken = null;
 
 
 
-
-  const setSelectedRestaurant = useResturantStore((state) => state.setSelectedRestaurant)
-
-  useEffect(() => {
+  const { mutate } = useSaveToken();
 
 
-
-  const redirectUrl = Linking.createURL("callback");
-
-console.log(redirectUrl);
-
-    if (restaurant) {
-         setSelectedRestaurant(restaurant)
-    }
-
-  } , [restaurant])
-
-
-
-  if (error) {
-       return <StatusScreen
-       title={error.name}
-       message={error.message}
-       type="error"
-       />
-  }
- 
+  const setSelectedRestaurant = useResturantStore(
+    (state) => state.setSelectedRestaurant,
+  );
 
   
+
+  useEffect(() => {
+    async function getToken() {
+      expoToken = await getExpoPushToken();
+
+    const data =  mutate({
+        expoPushToken : expoToken.token,
+        userId : session?.user.id,
+        platform: platform as ("ios" | "android"),
+        permission: expoToken.permission 
+      })
+
+
+
+
+    }
+
+    getToken();
+  }, []);
+
+
+
+
+
+  useEffect(() => {
+    if (restaurant) {
+      setSelectedRestaurant(restaurant);
+    }
+  }, [restaurant]);
+
+  if (error) {
+    return (
+      <StatusScreen title={error.name} message={error.message} type="error" />
+    );
+  }
+
   return (
     <>
       <View className="flex-1 bg-black ">
@@ -87,16 +96,7 @@ console.log(redirectUrl);
               <TabHeader Home={true} Icon1={Bell} Icon2={ShoppingBag} />
             </View>
 
-
-            
-
-            <MenuSection
-            restaurantId={restaurantId}
-            />
-
-
-
-
+            <MenuSection restaurantId={restaurantId} />
           </View>
         </SafeAreaView>
       </View>

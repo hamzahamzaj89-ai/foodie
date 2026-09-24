@@ -34,6 +34,8 @@ export const queryKeys = {
 
     orders: ["user", "orders"] as const,
     favorites: ["user", "favorites"] as const,
+    token: ["user" , "token"] as const,
+
     addresses: ["user", "addresses"] as const,
   },
 };
