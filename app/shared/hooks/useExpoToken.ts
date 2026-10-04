@@ -8,20 +8,19 @@ export function useSaveToken() {
   return useMutation({
     mutationFn: saveToken,
 
-     onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: queryKeys.user.token
-    });
+    onSuccess: (data: any) => {
+     
 
-
-    toast.success("Your token has been saved");
-    
-
-    
+      if (data) {
+         queryClient.invalidateQueries({
+        queryKey: queryKeys.user.token,
+      });
+        toast.success("Your token has been saved");
+      }
+    },
+    onError: (error) => {
+      toast.error("Error occured while saving token");
+      console.log(error);
+    },
+  });
 }
-
-    
-})
-}
-
-

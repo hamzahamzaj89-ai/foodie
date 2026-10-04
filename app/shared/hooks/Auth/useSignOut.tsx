@@ -3,6 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { signIn, signOut } from "@/app/services/auth.services";
 import { toast } from "../../utils/toast";
 import { queryClient } from "@/app/lib/QueryClient";
+import { useAppStore } from "../../store/useAppStore";
+
+
+const setSession = useAppStore((state)=> state.setSession)
 
 export function useSignOut() {
   return useMutation({
@@ -11,6 +15,8 @@ export function useSignOut() {
            queryClient.removeQueries({
                 queryKey: ["user"],
        });
+
+
 
           toast.success("You have been LogOut")
 

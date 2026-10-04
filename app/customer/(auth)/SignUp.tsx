@@ -18,6 +18,7 @@ import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
 import Button from "@/app/shared/components/Button";
 import { useSignUp } from "../../shared/hooks/Auth/useSignUp";
 import { toast } from "../../shared/utils/toast";
+import { useGoogleLogin } from "@/app/shared/hooks/Auth/useSignIn";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -28,6 +29,7 @@ export default function SignUp() {
 
 
   const { mutate, isPending, error } = useSignUp();
+  const {mutate: continueWithGoogle , isPending:loading} = useGoogleLogin();
 
 
 
@@ -125,10 +127,11 @@ export default function SignUp() {
         
 
 
-        <SocialLogin
-          onGooglePress={() => {}}
-          onApplePress={() => {}}
-        />
+          <SocialLogin
+                onGooglePress={() => {continueWithGoogle()}}
+                loading={loading}
+              />
+      
 
 
         <AuthFooter

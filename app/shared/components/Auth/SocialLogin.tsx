@@ -5,23 +5,53 @@ import {
   Text,
   View,
 } from "react-native";
+import { Circle } from "react-native-animated-spinkit";
 
 type Props = {
   onGooglePress: () => void;
-  onApplePress?: () => void;
+   loading:boolean;
 
-  showApple?: boolean;
 };
 
 export default function SocialLogin({
   onGooglePress,
-  onApplePress,
-  showApple = true,
+  loading = false
 }: Props) {
   return (
     <View className="mt-2 px-5">
-      {/* Google */}
 
+
+
+      {loading ?  (<>
+      
+
+
+       
+      <Pressable
+        onPress={onGooglePress}
+        disabled={loading}
+        className="mb-4 flex-row items-center justify-center  rounded-2xl bg-card px-5 py-4"
+        style={{
+          shadowColor: "#000",
+          shadowOpacity: 0.12,
+          shadowRadius: 16,
+          shadowOffset: {
+            width: 0,
+            height: 8,
+          },
+          elevation: 5,
+        }}
+      >
+      <Circle size={20} color="#FF8A2B" />
+
+
+
+      </Pressable>
+      
+      </>):  (<>
+      
+
+      
       <Pressable
         onPress={onGooglePress}
         className="mb-4 flex-row items-center justify-center rounded-2xl bg-card px-5 py-4"
@@ -46,8 +76,11 @@ export default function SocialLogin({
           Continue with Google
         </Text>
       </Pressable>
+      
+      </>)}
+      {/* Google */}
 
-      {/* Apple */}
+
 
       
     </View>

@@ -16,7 +16,7 @@ import SocialLogin from "@/app/shared/components/Auth/SocialLogin";
 import AuthFooter from "@/app/shared/components/Auth/AuthFooter";
 import Button from "@/app/shared/components/Button";
 import { toast } from "../../shared/utils/toast";
-import { useSignIn } from "../../shared/hooks/Auth/useSignIn";
+import { useGoogleLogin, useSignIn } from "../../shared/hooks/Auth/useSignIn";
 
 
 
@@ -25,6 +25,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
 
   const {mutateAsync, isPending, error} = useSignIn()
+  const {mutate: continueWithGoogle , isPending:loading} = useGoogleLogin();
 
   const onSubmit = async () => {
 
@@ -100,7 +101,7 @@ export default function SignIn() {
             text="Continue"
             left={true}
             onPress={onSubmit}
-            disabled={isPending}
+            disabled={isPending || loading}
             loading={isPending}
             />
            </View>
@@ -113,8 +114,8 @@ export default function SignIn() {
         {/* Social */}
 
         <SocialLogin
-          onGooglePress={() => {}}
-          onApplePress={() => {}}
+          onGooglePress={() => {continueWithGoogle()}}
+          loading={loading}
         />
 
         {/* Footer */}

@@ -14,7 +14,9 @@ const session = useAppStore((state) => state.session);
   }
 
       if (session) {
-    return router.replace("/customer/(tabs)/Home");
+     router.replace("/customer/Home");
+     return;
+     
   }
 
   return (

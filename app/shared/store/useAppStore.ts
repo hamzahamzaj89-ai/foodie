@@ -18,7 +18,7 @@ interface AppStore {
 
 
   isInitialized : boolean;
-  setSession: (session: Session) => void;
+  setSession: (session: Session | null) => void;
   setAppState: (state: IAppState) => void;
   setIsinitialized: (isInitialized: boolean) => void;
   clearSession: () => void;
